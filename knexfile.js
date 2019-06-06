@@ -1,19 +1,14 @@
 // Update with your config settings.
 
-const localPg = {
-  host: "localhost",
-  database: "database_api",
-  port: 5432,
-  user: "postgres",
-  password: "00Fire00"
-};
-
+require("dotenv").config();
+const pg = require("pg");
+pg.defaults.ssl = true;
 
 //const dbConnection = process.env.DATABASE_URL || localPg;
 
 const dbSettings = {
   client: "pg",
-  connection: localPg,
+  connection: process.env.DATABASE_URL,
   pool: {
     min: 2,
     max: 10
