@@ -1,59 +1,61 @@
 // Update with your config settings.
 
-module.exports = {
-
-  development: {
-    client: 'sqlite3',
-    useNullAsDefault: true,
-    connection: {
-      filename: './dev.sqlite3'
-    }
+const localPg = {
+  host: process.env.Host,
+  database: process.env.Database,
+  port: process.env.Port,
+  user: process.env.User,
+  password: process.env.Password || ""
+ };
+ 
+ //const dbConnection = process.env.DATABASE_URL || localPg;
+ 
+ const dbSettings = {
+  client: "pg",
+  connection: localPg,
+  pool: {
+    min: 2,
+    max: 10
   },
-
+  migrations: {
+    directory: "./migrations",
+    tableName: "dbmigrations"
+  },
+  seeds: {
+    directory: "./seeds"
+  }
+ };
+ const dbSettings2 = {
+  client: "pg",
+  connection: process.env.DATABASE_URL,
+  pool: {
+    min: 2,
+    max: 10
+  },
+  migrations: {
+    directory: "./migrations",
+    tableName: "dbmigrations"
+  },
+  seeds: {
+    directory: "./seeds"
+  }
+ };
+ 
+ module.exports = {
+  development: dbSettings,
+  production: dbSettings2,
   testing: {
-    client: 'sqlite3',
-    useNullAsDefault: true,
+    client: "sqlite3",
     connection: {
-      filename: './data/test.db3'
+      filename: "./data/test.db3"
     },
+    useNullAsDefault: true,
+ 
     migrations: {
-      directory: './data/migrations'
+      directory: "./migrations"
     },
     seeds: {
-      directory: './data/seeds'
+      directory: "./seeds"
     }
-  },
-
-  // staging: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user: 'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // },
-
-  // production: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user: 'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // }
-
-};
+  }
+ };
