@@ -1,16 +1,17 @@
 // Update with your config settings.
 
 const localPg = {
-  host: process.env.Host,
-  database: process.env.Database,
-  port: process.env.Port,
-  user: process.env.User,
-  password: process.env.Password || ""
- };
- 
- //const dbConnection = process.env.DATABASE_URL || localPg;
- 
- const dbSettings = {
+  host: "localhost",
+  database: "database_api",
+  port: 5432,
+  user: "postgres",
+  password: "00Fire00"
+};
+
+
+//const dbConnection = process.env.DATABASE_URL || localPg;
+
+const dbSettings = {
   client: "pg",
   connection: localPg,
   pool: {
@@ -24,8 +25,8 @@ const localPg = {
   seeds: {
     directory: "./seeds"
   }
- };
- const dbSettings2 = {
+};
+const dbSettings2 = {
   client: "pg",
   connection: process.env.DATABASE_URL,
   pool: {
@@ -39,9 +40,9 @@ const localPg = {
   seeds: {
     directory: "./seeds"
   }
- };
- 
- module.exports = {
+};
+
+module.exports = {
   development: dbSettings,
   production: dbSettings2,
   testing: {
@@ -50,7 +51,7 @@ const localPg = {
       filename: "./data/test.db3"
     },
     useNullAsDefault: true,
- 
+
     migrations: {
       directory: "./migrations"
     },
@@ -58,4 +59,4 @@ const localPg = {
       directory: "./seeds"
     }
   }
- };
+};
