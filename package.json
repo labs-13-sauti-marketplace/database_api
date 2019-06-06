@@ -13,8 +13,17 @@
     "helmet": "^3.18.0",
     "knex": "^0.17.3",
     "morgan": "^1.9.1",
+<<<<<<< Updated upstream
     "pg": "^7.11.0",
     "sqlite3": "^4.0.8"
+=======
+    "sqlite3": "^4.0.8"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose"
+>>>>>>> Stashed changes
   },
 
   "devDependencies": {
