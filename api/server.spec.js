@@ -15,7 +15,7 @@ describe('server.js', () => {
         expect(res.status).toBe(200)
       })
 
-      test('should return JSON', async () => {
+      test('should return text/html', async () => {
         const res = await request(server).get('/')
         expect(res.type).toBe('text/html')
       })
