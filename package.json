@@ -25,7 +25,6 @@
     "test": "cross-env DB_ENV=testing jest --watch --verbose"
 >>>>>>> Stashed changes
   },
-
   "devDependencies": {
     "jest": "^24.8.0",
     "nodemon": "^1.19.1",
