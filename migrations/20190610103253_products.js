@@ -5,26 +5,28 @@ exports.up = function (knex, Promise) {
     tbl
       .string('name', 128)
       .notNullable()
-      .unique()
     tbl
       .string('country', 128)
       .notNullable()
-      .unique()
     tbl
       .string('marketplace', 128)
       .notNullable()
-      .unique()
     tbl
       .string('category', 128)
       .notNullable()
-      .unique()
     tbl
       .string('sub-category', 128)
       .notNullable()
-      .unique()
     tbl
       .decimal('price', 128)
       .notNullable()
+    tbl
+      .integer('subcat_id')
+      .unsigned()
+      .references('id')
+      .inTable('sub-categories')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE')
   })
 };
 
