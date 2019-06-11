@@ -21,10 +21,10 @@ exports.up = function (knex, Promise) {
       .decimal('price', 128)
       .notNullable()
     tbl
-      .integer('subcat_id')
+      .integer('sub-category_id')
       .unsigned()
       .references('id')
-      .inTable('sub-categories')
+      .inTable('sub-category')
       .onDelete('CASCADE')
       .onUpdate('CASCADE')
   })

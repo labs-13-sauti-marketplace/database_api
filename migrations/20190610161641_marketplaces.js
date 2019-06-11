@@ -7,10 +7,10 @@ exports.up = function (knex, Promise) {
       .notNullable()
       .unique()
     tbl
-      .integer('border_id')
+      .integer('country_id')
       .unsigned()
       .references('id')
-      .inTable('border-crossings')
+      .inTable('countries')
       .onDelete('CASCADE')
       .onUpdate('CASCADE')
   })
