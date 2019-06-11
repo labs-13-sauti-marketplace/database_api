@@ -1,6 +1,6 @@
 
 exports.seed = function (knex, Promise) {
-  return knex('table_name').insert([
+  return knex('marketplaces').insert([
     { name: 'Bungoma', country_id: '1' }, // 1
     { name: 'Busia', country_id: '1' }, // 2
     { name: 'Eldoret', country_id: '1' }, // 3
@@ -25,4 +25,4 @@ exports.seed = function (knex, Promise) {
     { name: 'Oloitoktok', country_id: '1' }, // 22
     { name: 'Wajir', country_id: '1' }, // 23
   ]);
-};
+ };
