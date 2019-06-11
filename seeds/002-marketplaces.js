@@ -25,4 +25,4 @@ exports.seed = function (knex, Promise) {
     { name: 'Oloitoktok', country_id: '1' }, // 22
     { name: 'Wajir', country_id: '1' }, // 23
   ]);
-};
+ };
