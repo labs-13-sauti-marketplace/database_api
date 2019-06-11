@@ -1,0 +1,40 @@
+
+exports.seed = function (knex, Promise) {
+  return knex('table_name').insert([
+    { marketplace_id: '2', category_id: '1' },
+    { marketplace_id: '2', category_id: '2' },
+    { marketplace_id: '2', category_id: '3' },
+    { marketplace_id: '2', category_id: '4' },
+    { marketplace_id: '2', category_id: '5' },
+    { marketplace_id: '2', category_id: '6' },
+    { marketplace_id: '2', category_id: '7' },
+    { marketplace_id: '2', category_id: '8' },
+    { marketplace_id: '2', category_id: '9' },
+    { marketplace_id: '2', category_id: '10' },
+    { marketplace_id: '2', category_id: '11' },
+
+    { marketplace_id: '3', category_id: '1' },
+    { marketplace_id: '3', category_id: '2' },
+    { marketplace_id: '3', category_id: '3' },
+    { marketplace_id: '3', category_id: '4' },
+    { marketplace_id: '3', category_id: '5' },
+    { marketplace_id: '3', category_id: '6' },
+    { marketplace_id: '3', category_id: '7' },
+    { marketplace_id: '3', category_id: '8' },
+    { marketplace_id: '3', category_id: '9' },
+    { marketplace_id: '3', category_id: '10' },
+    { marketplace_id: '3', category_id: '11' },
+
+    { marketplace_id: '11', category_id: '1' },
+    { marketplace_id: '11', category_id: '2' },
+    { marketplace_id: '11', category_id: '3' },
+    { marketplace_id: '11', category_id: '4' },
+    { marketplace_id: '11', category_id: '5' },
+    { marketplace_id: '11', category_id: '6' },
+    { marketplace_id: '11', category_id: '7' },
+    { marketplace_id: '11', category_id: '8' },
+    { marketplace_id: '11', category_id: '9' },
+    { marketplace_id: '11', category_id: '10' },
+    { marketplace_id: '11', category_id: '11' },
+  ]);
+};
