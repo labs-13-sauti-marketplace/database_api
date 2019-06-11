@@ -1,4 +1,4 @@
-const express  = require('express');
+const express = require('express');
 const helmet = require('helmet');
 
 const server = express();
@@ -10,7 +10,7 @@ server.get('/', (req, res) => {
 });
 
 server.use((req, res, next) => {
-  res.status(404).json({message:'in server route'})
+  res.status(404).json({ message: 'in server route' })
 })
 
 module.exports = server;
