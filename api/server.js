@@ -5,15 +5,20 @@ const db = require('../data/dbConfig')
 
 server.use(bodyParser.json());
 server.use(helmet());
-server.get('*', (req, res) => {
-  res.send('server is up');
+server.get('/', async (req, res) => {
+  db('countries')
+  .then(countries => {
+    res.status(200).json(countries)
+  }).catch(err => {res.status(400).json(err)})
 });
 
 server.post('*', async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
   let response = '';
   switch (text) {
-    case '':
+    // case '':
+    //   response = `CON select country`
+    default :
       let sql = `SELECT name FROM countries`;
       try {
         const names = await db.raw(sql);
@@ -22,9 +27,9 @@ server.post('*', async (req, res) => {
       }catch(err){
         console.log(err)
       }
-      break;
-    default:
-      response = 'bad request';    
+    //   break;
+    // default:
+    //   response = 'bad request';    
   } 
   res.send(response)
 })
