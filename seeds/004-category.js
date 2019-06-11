@@ -13,4 +13,3 @@ exports.seed = function(knex, Promise) {
     { name: "Vegetables" } // 11
   ]);
 };
-

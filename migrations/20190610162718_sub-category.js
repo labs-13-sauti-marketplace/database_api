@@ -1,21 +1,20 @@
-
-exports.up = function (knex, Promise) {
-  return knex.schema.createTable('sub-categories', tbl => {
-    tbl.increments()
+exports.up = function(knex, Promise) {
+  return knex.schema.createTable("sub-categories", tbl => {
+    tbl.increments();
     tbl
-      .string('name', 128)
+      .string("name", 128)
       .notNullable()
-      .unique()
+      .unique();
     tbl
-      .integer('category_id')
+      .integer("category_id")
       .unsigned()
-      .references('id')
-      .inTable('categories')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE')
-  })
+      .references("id")
+      .inTable("categories")
+      .onDelete("CASCADE")
+      .onUpdate("CASCADE");
+  });
 };
 
-exports.down = function (knex, Promise) {
-  return knex.schema.dropTableIfExists('sub-categories')
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTableIfExists("sub-categories");
 };
