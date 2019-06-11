@@ -1,13 +1,14 @@
-const express  = require('express');
+const server  = require('express')();
+const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const db = require('../data/dbConfig')
-const server = express();
 
-server.use(express.json());
+server.use(bodyParser.json());
 server.use(helmet());
-server.get('/', (req, res) => {
+server.get('*', (req, res) => {
   res.send('server is up');
 });
+
 server.post('*', async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
   let response = '';
@@ -16,7 +17,8 @@ server.post('*', async (req, res) => {
       let sql = `SELECT name FROM countries`;
       try {
         const names = await db.raw(sql);
-        response = `END countries ${names[0].name}`
+        console.log(names)
+        response = names[0].name
       }catch(err){
         console.log(err)
       }
@@ -24,6 +26,7 @@ server.post('*', async (req, res) => {
     default:
       response = 'bad request';    
   } 
+  res.send(response)
 })
 server.use((req, res, next) => {
   res.status(404).json({message:'in server route'})
