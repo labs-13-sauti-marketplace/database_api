@@ -14,11 +14,11 @@ server.get('/', async (req, res) => {
 
 server.post('*', async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
-  console.log('text', text);
   let response = '';
   switch (text) {
     case '':
       response = `CON select country`
+      console.log('text', text);
     case '1':
       let sql = `SELECT name FROM countries`;
       try {
