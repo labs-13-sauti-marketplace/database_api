@@ -21,9 +21,11 @@ server.post('*', async (req, res) => {
     default :
       let sql = `SELECT name FROM countries`;
       try {
-        const names = await db.raw(sql);
-        console.log(names)
-        response = names[0].name
+        const countries = await db.raw(sql);
+        console.log(countries)
+        let newArray = [];
+        countries.forEach(country => newArray.push(country.name))
+        response = newArray.toString();
       }catch(err){
         console.log(err)
       }
