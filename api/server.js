@@ -14,24 +14,25 @@ server.get('/', async (req, res) => {
 
 server.post('*', async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
+  console.log(text);
   let response = '';
   switch (text) {
     // case '':
     //   response = `CON select country`
-    case '' :
+    default :
       let sql = `SELECT name FROM countries`;
       try {
         const countries = await db.raw(sql);
-        console.log(countries)
+        // console.log(countries)
         let newArray = [];
         countries.rows.forEach(country => newArray.push(country.name))
         response = newArray.toString();
       }catch(err){
         console.log(err)
       }
-      break;
-    default:
-      response = 'bad request';    
+    //   break;
+    // default:
+    //   response = 'bad request';    
   } 
   res.send(response)
 })
