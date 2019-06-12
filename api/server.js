@@ -24,7 +24,7 @@ server.post('*', async (req, res) => {
         const countries = await db.raw(sql);
         console.log(countries)
         let newArray = [];
-        countries.forEach(country => newArray.push(country.name))
+        countries.rows.forEach(country => newArray.push(country.name))
         response = newArray.toString();
       }catch(err){
         console.log(err)
