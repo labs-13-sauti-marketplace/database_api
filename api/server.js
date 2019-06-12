@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 const server  = require('express')();
 const bodyParser = require('body-parser');
-=======
-const express = require('express');
->>>>>>> dd65685a96db022a71328e4d8d096c3a8f2d18fc
 const helmet = require('helmet');
 const Session = require('modem').Ussd_Session;
 
@@ -18,6 +14,9 @@ server.get('/', async (req, res) => {
   }).catch(err => {res.status(400).json(err)})
 });
 
+server.use(CheckBalance({
+  
+}))
 const CheckBalance = function(c) {
   let session = new Session;
   session.callback = c;
@@ -41,10 +40,6 @@ const CheckBalance = function(c) {
 
   return session;
 }
-
-
-
-
 
 server.post('*', async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
@@ -72,7 +67,7 @@ server.post('*', async (req, res) => {
   res.send(response)
 })
 server.use((req, res, next) => {
-  res.status(404).json({ message: 'in server route' })
+  res.status(404).json({message:'in server route'})
 })
 
 
