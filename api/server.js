@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 const server  = require('express')();
 const bodyParser = require('body-parser');
+=======
+const express = require('express');
+>>>>>>> dd65685a96db022a71328e4d8d096c3a8f2d18fc
 const helmet = require('helmet');
 const Session = require('modem').Ussd_Session;
 
@@ -68,7 +72,7 @@ server.post('*', async (req, res) => {
   res.send(response)
 })
 server.use((req, res, next) => {
-  res.status(404).json({message:'in server route'})
+  res.status(404).json({ message: 'in server route' })
 })
 
 

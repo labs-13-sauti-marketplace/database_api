@@ -1,4 +1,4 @@
-exports.up = function(knex, Promise) {
+exports.up = function (knex, Promise) {
   return knex.schema.createTable("marketplaces", tbl => {
     tbl.increments();
     tbl
@@ -7,6 +7,6 @@ exports.up = function(knex, Promise) {
       .unique();
   });
 };
-exports.down = function(knex, Promise) {
+exports.down = function (knex, Promise) {
   return knex.schema.dropTableIfExists("marketplaces");
 };
