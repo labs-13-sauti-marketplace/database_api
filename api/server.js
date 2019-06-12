@@ -18,7 +18,7 @@ server.post('*', async (req, res) => {
   switch (text) {
     // case '':
     //   response = `CON select country`
-    default :
+    case '' :
       let sql = `SELECT name FROM countries`;
       try {
         const countries = await db.raw(sql);
@@ -29,9 +29,9 @@ server.post('*', async (req, res) => {
       }catch(err){
         console.log(err)
       }
-    //   break;
-    // default:
-    //   response = 'bad request';    
+      break;
+    default:
+      response = 'bad request';    
   } 
   res.send(response)
 })
