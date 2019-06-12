@@ -1,17 +1,18 @@
 const server  = require('express')();
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const Session = require('modem').Ussd_Session;
+const bodyParser = require("body-parser");
 
-const db = require('../data/dbConfig')
+const router = require('../router/router');
 
 server.use(bodyParser.json());
 server.use(helmet());
-server.get('/', async (req, res) => {
-  db('countries')
-  .then(countries => {
-    res.status(200).json(countries)
-  }).catch(err => {res.status(400).json(err)})
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use('*', router);
+
+server.get('/', (req, res) => {
+  res.send('server is up');
 });
 
 server.use(CheckBalance({
