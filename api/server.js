@@ -15,9 +15,7 @@ server.get('/', (req, res) => {
   res.send('server is up');
 });
 
-server.use(CheckBalance({
-  
-}))
+server.use(CheckBalance())
 const CheckBalance = function(c) {
   let session = new Session;
   session.callback = c;
