@@ -19,7 +19,7 @@ server.post('*', async (req, res) => {
   switch (text) {
     case '1':
       response = `CON select country`
-    default :
+    case '2':
       let sql = `SELECT name FROM countries`;
       try {
         const countries = await db.raw(sql);
@@ -28,7 +28,8 @@ server.post('*', async (req, res) => {
         countries.rows.forEach(country => newArray.push(country.name))
         response = newArray.toString();
       }catch(err){
-        console.log(err)
+        console.log(err) 
+        response = res.json(err)
       }
       break;
     default:
