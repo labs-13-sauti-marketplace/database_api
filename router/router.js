@@ -11,11 +11,7 @@ router.post("*",  async (req, res) => {
   switch (text) {
     case "":
       response =
-<<<<<<< HEAD
-      "CON Choose your marketplace \n 1. Busia \n 2. Gitega \n 3. Ngozi";
-=======
         "CON Welcome to Sauti Marketplace. Please choose an option \n 1. Buy \n 2. Sell";
->>>>>>> 5a7a36eae39d8bc164388c9638bb16114da9178f
       break;
     case "1":
       response =
