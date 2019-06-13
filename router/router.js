@@ -28,7 +28,7 @@ router.post("*",  async (req, res) => {
       response = "CON Choose your product...coming soon!";
       break;
     case "1*1*1*1":
-      
+    
       try {
         const results = await models.findPrice("Busia", "white eggs");
         let newPrice = [];
