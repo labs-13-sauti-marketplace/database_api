@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const models = require("./models");
 
+// add some type of middleware, before async, to verify session
 router.post("*", async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
   let response = "";
@@ -24,6 +25,7 @@ router.post("*", async (req, res) => {
         newPrice.toString();
 
         response = `END Current prices for \n White Eggs ${newPrice}`;
+        // need to store/send data 
       } catch (error) {
         console.log(error);
         // do stuff with error
