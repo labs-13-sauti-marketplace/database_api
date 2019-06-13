@@ -1,7 +1,9 @@
 const db = require("../data/dbConfig");
 
 module.exports = {
-  findPrice
+  findPrice,
+  addProduct,
+  
 };
 
 function findPrice(name, product) {
@@ -9,4 +11,9 @@ function findPrice(name, product) {
     .select("price")
     .where({ name: name, product: product });
 
+}
+
+async function addProduct(product) {
+  const [id] = await db('products').insert(product)
+  // return 
 }
