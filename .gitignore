@@ -64,3 +64,6 @@ typings/
 .vscode/
 
 notes.md
+
+yarn.lock
+*.db3
