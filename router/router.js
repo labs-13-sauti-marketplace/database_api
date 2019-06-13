@@ -2,13 +2,14 @@ const router = require("express").Router();
 const middleWare = require('../modem/getSession');
 const models = require("./models");
 
-router.post("*", middleWare, async (req, res) => {
+router.post("*",  async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
+  
   let response = "";
   switch (text) {
     case "":
       response =
-        "CON Choose your marketplace \n 1. Busia \n 2. Gitega \n 3. Ngozi";
+      "CON Choose your marketplace \n 1. Busia \n 2. Gitega \n 3. Ngozi";
       break;
     case "1":
       response =
