@@ -1,8 +1,8 @@
 const router = require("express").Router();
-
+const middleWare = require('../modem/getSession');
 const models = require("./models");
 
-router.post("*", async (req, res) => {
+router.post("*", middleWare, async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
   let response = "";
   switch (text) {
