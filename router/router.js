@@ -22,8 +22,8 @@ router.post("*", async (req, res) => {
           newPrice.push(cake.price);
         });
         newPrice.toString();
-
         response = `END Current prices for \n White Eggs ${newPrice}`;
+        console.log(sessionId)
       } catch (error) {
         console.log(error);
         // do stuff with error
