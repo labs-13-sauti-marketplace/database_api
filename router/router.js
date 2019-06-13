@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const middleWare = require('../modem/getSession');
+
 const models = require("./models");
 
 router.post("*",  async (req, res) => {
@@ -26,12 +26,10 @@ router.post("*",  async (req, res) => {
         });
         newPrice.toString();
         response = `END Current prices for \n White Eggs ${newPrice}`;
-        console.log(sessionId)
       } catch (error) {
         console.log(error);
         // do stuff with error
       }
-
       break;
     default:
       response = "Bad request!";
