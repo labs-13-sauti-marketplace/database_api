@@ -4,6 +4,8 @@ pg.defaults.ssl = true;
 
 const dbConnection = process.env.DATABASE_URL || localPg;
 
+//refactor section of code
+
 module.exports = {
   production: {
     client: "pg",
