@@ -25,10 +25,9 @@ router.post("*", async (req, res) => {
       response = "CON Choose your product...coming soon!";
       break;
     case "1*1*1*1":
-      "END Post here eventually, thank you!";
-      break;
+    
       try {
-        const results = await models.findPrice("Bujumbura", "white eggs");
+        const results = await models.findPrice("Busia", "white eggs");
         let newPrice = [];
         results.forEach(function(cake) {
           newPrice.push(cake.price);
