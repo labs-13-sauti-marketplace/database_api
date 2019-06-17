@@ -1,7 +1,8 @@
 const db = require("../data/dbConfig");
 
 module.exports = {
-  findPrice
+  findPrice,
+  get
 };
 
 function findPrice(name, product) {
@@ -9,4 +10,8 @@ function findPrice(name, product) {
     .select("price")
     .where({ name: name, product: product });
 
+}
+
+function get() {
+  return db('marketplaces')
 }
