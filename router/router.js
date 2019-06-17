@@ -1,6 +1,8 @@
 const router = require("express").Router();
+const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
+const menu = new UssdMenu()
 
 router.post("*", async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
@@ -25,11 +27,11 @@ router.post("*", async (req, res) => {
       response = "CON Choose your product...coming soon!";
       break;
     case "1*1*1*1":
-    
+
       try {
         const results = await models.findPrice("Busia", "white eggs");
         let newPrice = [];
-        results.forEach(function(cake) {
+        results.forEach(function (cake) {
           newPrice.push(cake.price);
         });
         newPrice.toString();
