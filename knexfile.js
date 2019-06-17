@@ -12,11 +12,11 @@ const dbSettings = {
     max: 10
   },
   migrations: {
-    directory: "./migrations",
+    directory: "./data/migrations",
     tableName: "dbmigrations"
   },
   seeds: {
-    directory: "./seeds"
+    directory: "./data/seeds"
   }
 };
 const dbSettings2 = {
@@ -27,11 +27,11 @@ const dbSettings2 = {
     max: 10
   },
   migrations: {
-    directory: "./migrations",
+    directory: "./data/migrations",
     tableName: "dbmigrations"
   },
   seeds: {
-    directory: "./seeds"
+    directory: "./data/seeds"
   }
 };
 
@@ -46,10 +46,10 @@ module.exports = {
     useNullAsDefault: true,
 
     migrations: {
-      directory: "./migrations"
+      directory: "./data/migrations"
     },
     seeds: {
-      directory: "./seeds"
+      directory: "./data/seeds"
     }
   }
 };
