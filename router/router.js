@@ -1,6 +1,8 @@
 const router = require("express").Router();
-
+const markets = require("./markets-model");
 const models = require("./models");
+const db = require("../data/dbConfig");
+
 
 router.post("*", async (req, res) => {
   let { sessionId, serviceCode, phoneNumber, text } = req.body;
