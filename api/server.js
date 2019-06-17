@@ -1,11 +1,11 @@
-const express = require('express');
+const server = require('express')();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");
+const logger= require('morgan');
 
-const server = express();
 const router = require('../router/router');
 
-server.use(express.json());
+server.use(logger('dev'))
 server.use(helmet());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
