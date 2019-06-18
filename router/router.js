@@ -6,17 +6,25 @@ const menu = new UssdMenu()
 
 
 const bodyParser = require('body-parser')
-const UssdMenu = require('ussd-menu-builder');
 // const db = require('../data/dbConfig')
 
-let menu = new UssdMenu();
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended: true}))
 
 async function marketPlaces( ){
-    const result = await models.get()
+    const result = await models.getMarkets()
     return result
+}
+
+async function categories(){
+  const result = await models.getCat()
+  return result
+}
+
+async function products(){
+  const result = await models.getProducts()
+  return result
 }
 
 menu.startState({
@@ -57,16 +65,178 @@ menu.state('buyer', {
     })}` 
   },
   next: {
-    '1':'Bujumbura', 
+    '1':'Busia', 
     '2':'Tororo', 
     '3':'Mbale', 
     '4':'Eldoret', 
     '5':'Kisumu', 
     '6':'Soroti', 
-    '7':'Ownio',
+    '7':'Bungoma',
     '8':'Kampala'
   }
 });
+
+menu.state(`Busia`, {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Tororo', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Soroti', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Bungoma', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Animal Products', {
+  run: ()=> {
+     menu.end(`
+    \n White eggs 110kes
+    \n Exotic eggs 110kes
+    \n Brown eggs 110kes
+    \n Milk 110kes
+    \n Nile perch 110kes
+    \n Tilapia  110kes
+    \n Processed honey 110kes
+    \n Unprocessed honey 110kes
+    \n Beef 110kes
+    \n Goat meat 110kes
+    \n Pork 110kes
+    \n Local chicken 110kes
+    \n Turkey 110kes
+     `)
+  }
+})
+
+menu.state('Beans', {
+  run: () => {
+    menu.end(`Agwedde beans 110kes`)
+  }
+})
+
+menu.state('Cereal', {
+  run: () => {
+    menu.end(
+      `\nMaize 110kes
+       \nMillet 110kes
+       \nWhite Rice 100kes
+    `)
+  }
+})
+
+
+
+menu.state('Fruits', {
+  run: () => {
+    menu.end(`Banana 110kes`)
+  }
+})
+
+menu.state('Other', {
+  run: () => {
+    menu.end(`Coffee 110kes`)
+  }
+})
+
+menu.state('Roots & Tubers', {
+  run: () => {
+    menu.end(`Sweet potato 110kes`)
+  }
+})
+
+menu.state('Seeds & Nuts', {
+  run: () => {
+    menu.end(`Sunflower seeds 110kes`)
+  }
+})
+
+menu.state('Vegetables', {
+  run: () => {
+    menu.end(`Peas 110kes`)
+  }
+})
+
+
 
 
 menu.on('error', err => {
@@ -80,51 +250,7 @@ router.post('*', (req, res) => {
 })
 
 
-// router.post("*",  async (req, res) => {
-//   let { sessionId, serviceCode, phoneNumber, text } = req.body;
-//   let textArray = []
-//   textArray.push(text)
-//   console.log(textArray);
-//   let response = "";
-//   switch (text) {
-//     case "":
-//       response =
-//         "CON Welcome to Sauti Marketplace. Please choose an option \n 1. Buy \n 2. Sell";
-//       break;
-//     case "1":
-//       response =
-//         "CON Choose your marketplace \n 1. Bujumbura \n 2. Tororo \n 3. Mbale \n 4. Eldoret \n 5. Kisumu \n 6. Soroti \n 7. Ownio \n 8. Kampala";
-//       break;
-//     case "2":
-//       response = "END Post here eventually, thank you!";
-//       break;
-//     case "1*1":
-//       response =
-//         "CON Choose your category \n 1. Animal Products \n 2. Beans \n 3. Cereals \n 4. Fruits \n 5. Roots & Tubers \n 6. Seeds & Nuts \n 7. Vegetables \n 8. Other";
-//       break;
-//     case "1*1*1":
-//       response = "CON Choose your product...coming soon!";
-//       break;
-//     case "1*1*1*1":
-    
-//       try {
-//         const results = await models.findPrice("Busia", "white eggs");
-//         let newPrice = [];
-//         results.forEach(function(cake) {
-//           newPrice.push(cake.price);
-//         });
-//         newPrice.toString();
-//         response = `END Current prices for \n White Eggs ${newPrice}`;
-//       } catch (error) {
-//         console.log(error);
-//         // do stuff with error
-//       }
-//       break;
-//     default:
-//       response = "Bad request!";
-//   }
-//   res.send(response);
-// });
+
 
 
 
