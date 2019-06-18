@@ -1,6 +1,9 @@
 const router = require("express").Router();
+const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
+const menu = new UssdMenu()
+
 
 const bodyParser = require('body-parser')
 const UssdMenu = require('ussd-menu-builder');

@@ -5,6 +5,13 @@ exports.up = function (knex, Promise) {
     tbl
       .string('name', 128)
       .notNullable()
+    tbl
+      .integer('marketplace_id')
+      .unsigned()
+      .references('id')
+      .inTable('marketplaces')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE')
   })
 };
 
