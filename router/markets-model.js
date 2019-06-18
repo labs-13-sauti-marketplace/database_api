@@ -35,3 +35,17 @@ function remove(id) {
         .where({ id })
         .del()
 }
+
+function getMarkets() {
+    return db('marketplaces')
+}
+
+async function categories(){
+    const result = await models.getCat()
+    return result
+  }
+  
+  async function products(){
+    const result = await models.getProducts()
+    return result
+  }
