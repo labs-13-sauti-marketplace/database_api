@@ -9,7 +9,7 @@ exports.seed = function (knex, Promise) {
     },
     {
       name: 'Busia',
-      category: 'Busia',
+      category: 'Rice',
       product: 'brown rice',
       price: '112.888kes/kg'
     },
