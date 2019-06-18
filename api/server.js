@@ -12,10 +12,6 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use('*', router);
 
-// setInterval(function () {
-//   https.get('https://sauti-marketplace.herokuapp.com/');
-// }, 300000);
-
 server.get('/', (req, res) => {
   res.send('server is up');
 });
