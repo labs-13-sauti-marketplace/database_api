@@ -6,7 +6,7 @@ exports.seed = function (knex, Promise) {
     { name: "Eldoret" }, // 4
     { name: "Kisumu" }, // 5
     { name: "Soroti" }, // 6
-    { name: "Owino" }, // 7
+    { name: "Bungoma" }, // 7
     { name: "Kampala" } // 8
   ]);
 };

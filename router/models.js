@@ -2,7 +2,9 @@ const db = require("../data/dbConfig");
 
 module.exports = {
   findPrice,
-  get
+  getMarkets,
+  getCat,
+  getProducts
 };
 
 function findPrice(name, product) {
@@ -12,6 +14,14 @@ function findPrice(name, product) {
 
 }
 
-function get() {
+function getMarkets() {
   return db('marketplaces')
+}
+
+function getCat() {
+  return db('categories')
+}
+
+function getProducts() {
+  return db('products')
 }
