@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
 const menu = new UssdMenu()
@@ -68,14 +69,14 @@ menu.state('buyer', {
     })}`
   },
   next: {
-    '1':'Busia', 
-    '2':'Tororo', 
-    '3':'Mbale', 
-    '4':'Eldoret', 
-    '5':'Kisumu', 
-    '6':'Soroti', 
-    '7':'Bungoma',
-    '8':'Kampala'
+    '1': 'Busia',
+    '2': 'Tororo',
+    '3': 'Mbale',
+    '4': 'Eldoret',
+    '5': 'Kisumu',
+    '6': 'Soroti',
+    '7': 'Bungoma',
+    '8': 'Kampala'
   }
 });
 
@@ -83,22 +84,22 @@ menu.state(`Busia`, {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
-  }, 
-  next:{
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -106,22 +107,22 @@ menu.state('Tororo', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
-  }, 
-  next:{
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -129,22 +130,22 @@ menu.state('Soroti', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
-  }, 
-  next:{
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -152,22 +153,118 @@ menu.state('Bungoma', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
-  }, 
-  next:{
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
+  }
+})
+
+// function for when user selects the Eldoret market
+menu.state('Eldoret', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
+  }
+})
+
+// function for when user selects the Kisumu market
+menu.state('Kisumu', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
+  }
+})
+
+//function based on "Kampala" choice
+menu.state('Kampala', {
+  run: () => {
+    `${categories().then(res => {
+      let catArr = []
+      for (let i = 0; i < res.length; i++) {
+        catArr.push(`\n${i + 1}. ${res[i].name}`)
+      }
+      let result = catArr.join()
+      menu.con(result)
+    })}`
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
+  }
+})
+
+//function based on "Mbale" menu choice
+menu.state('Mbale', {
+  run: () => {
+    `${categories().then(res => {
+      let catArr = []
+      for (let i = 0; i < res.length; i++) {
+        catArr.push(`\n${i + 1}. ${res[i].name}`)
+      }
+      let result = catArr.join()
+      menu.con(result)
+    })}`
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -268,8 +365,8 @@ menu.state('Mbale', {
 })
 
 menu.state('Animal Products', {
-  run: ()=> {
-     menu.end(`
+  run: () => {
+    menu.end(`
     \n White eggs 110kes
     \n Exotic eggs 110kes
     \n Brown eggs 110kes
@@ -334,7 +431,6 @@ menu.state('Vegetables', {
     menu.end(`Peas 110kes`)
   }
 })
-
 
 menu.on('error', err => {
   console.log(err);
