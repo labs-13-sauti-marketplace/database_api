@@ -1,6 +1,6 @@
 
 exports.seed = function (knex, Promise) {
-  return knex('animal-products').insert([
+  return knex('animal_products').insert([
     { name: 'White eggs 110kes' },
     { name: 'Exotic eggs 110kes' },
     { name: 'Brown eggs 110kes' },

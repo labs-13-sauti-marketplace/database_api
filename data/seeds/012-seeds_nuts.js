@@ -1,6 +1,6 @@
 
 exports.seed = function (knex, Promise) {
-  return knex('seeds-nuts').insert([
-    { id: 1, colName: 'Sunflower seeds 110kes' },
+  return knex('seeds_nuts').insert([
+    { name: 'Sunflower seeds 110kes' },
   ]);
 };
