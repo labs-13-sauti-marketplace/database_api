@@ -10,9 +10,8 @@ server.get("/", (req, res) => {
   res.send("server is up");
 });
 
-
 server.use((req, res, next) => {
-  res.status(404).json({ message: "in server route" });
-});
+  res.status(404).json({ message: 'in server route' })
+})
 
 module.exports = server;

@@ -1,7 +1,8 @@
 const router = require("express").Router();
-const markets = require("./markets-model");
+const UssdMenu = require('ussd-menu-builder')
+
 const models = require("./models");
-const db = require("../data/dbConfig");
+const menu = new UssdMenu()
 
 
 const bodyParser = require('body-parser')
