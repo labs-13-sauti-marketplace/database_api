@@ -1,4 +1,3 @@
-const https = require('https');
 const server = require('express')();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");

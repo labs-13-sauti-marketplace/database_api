@@ -16,11 +16,23 @@ function findPrice(name, product) {
 }
 
 async function addProduct(product) {
+<<<<<<< HEAD
   const [id] = await db('products').insert(product)}
   // return 
 function get() {
   return db('marketplaces')
 }
+=======
+  const [id] = await db('products').insert(product)
+
+}
+
+
+function get() {
+  return db('marketplaces')
+}
+
+>>>>>>> 3d9bd17ebbda427f5b88e1faf9513ea21460021f
 function getMarkets() {
   return db('marketplaces')
 }
