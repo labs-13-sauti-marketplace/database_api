@@ -6,10 +6,10 @@ const menu = new UssdMenu()
 
 
 const bodyParser = require('body-parser')
-const UssdMenu = require('ussd-menu-builder');
+
 // const db = require('../data/dbConfig')
 
-let menu = new UssdMenu();
+
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({extended: true}))
