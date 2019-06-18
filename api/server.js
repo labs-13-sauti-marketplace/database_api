@@ -1,4 +1,3 @@
-const https = require('https');
 const server = require('express')();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");
@@ -11,10 +10,6 @@ server.use(helmet());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use('*', router);
-
-setInterval(function () {
-  https.get('https://sauti-marketplace.herokuapp.com/');
-}, 300000);
 
 server.get('/', (req, res) => {
   res.send('server is up');
