@@ -1,4 +1,3 @@
-const https = require('https');
 const server = require('express')();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");
@@ -12,6 +11,7 @@ server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use('/api', webRouter);
 server.use('*', router);
+
 server.get('/', (req, res) => {
   res.send('server is up');
 });
