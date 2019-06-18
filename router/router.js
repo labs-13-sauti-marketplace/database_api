@@ -5,10 +5,8 @@ const menu = new UssdMenu()
 
 
 const bodyParser = require('body-parser')
-const UssdMenu = require('ussd-menu-builder');
 // const db = require('../data/dbConfig')
 
-let menu = new UssdMenu();
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -70,16 +68,177 @@ menu.state('buyer', {
     })}`
   },
   next: {
-    '1': 'Busia',
-    '2': 'Tororo',
-    '3': 'Mbale',
-    '4': 'Eldoret',
-    '5': 'Kisumu',
-    '6': 'Soroti',
-    '7': 'Bungoma',
-    '8': 'Kampala'
+    '1':'Busia', 
+    '2':'Tororo', 
+    '3':'Mbale', 
+    '4':'Eldoret', 
+    '5':'Kisumu', 
+    '6':'Soroti', 
+    '7':'Bungoma',
+    '8':'Kampala'
   }
 });
+
+menu.state(`Busia`, {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Tororo', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Soroti', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Bungoma', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  }, 
+  next:{
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+menu.state('Animal Products', {
+  run: ()=> {
+     menu.end(`
+    \n White eggs 110kes
+    \n Exotic eggs 110kes
+    \n Brown eggs 110kes
+    \n Milk 110kes
+    \n Nile perch 110kes
+    \n Tilapia  110kes
+    \n Processed honey 110kes
+    \n Unprocessed honey 110kes
+    \n Beef 110kes
+    \n Goat meat 110kes
+    \n Pork 110kes
+    \n Local chicken 110kes
+    \n Turkey 110kes
+     `)
+  }
+})
+
+menu.state('Beans', {
+  run: () => {
+    menu.end(`Agwedde beans 110kes`)
+  }
+})
+
+menu.state('Cereal', {
+  run: () => {
+    menu.end(
+      `\nMaize 110kes
+       \nMillet 110kes
+       \nWhite Rice 100kes
+    `)
+  }
+})
+
+
+
+menu.state('Fruits', {
+  run: () => {
+    menu.end(`Banana 110kes`)
+  }
+})
+
+menu.state('Other', {
+  run: () => {
+    menu.end(`Coffee 110kes`)
+  }
+})
+
+menu.state('Roots & Tubers', {
+  run: () => {
+    menu.end(`Sweet potato 110kes`)
+  }
+})
+
+menu.state('Seeds & Nuts', {
+  run: () => {
+    menu.end(`Sunflower seeds 110kes`)
+  }
+})
+
+menu.state('Vegetables', {
+  run: () => {
+    menu.end(`Peas 110kes`)
+  }
+})
+
 
 //function based on "Kampala" choice
 menu.state('Kampala', {
@@ -140,5 +299,6 @@ router.post('*', (req, res) => {
     res.send(ussdResult);
   })
 })
+
 
 module.exports = router;
