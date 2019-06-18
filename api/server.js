@@ -2,7 +2,7 @@ const server = require('express')();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");
 const logger= require('morgan');
-const http=require('http');
+const https =require('https');
 const router = require('../router/router');
 
 server.use(logger('dev'))
@@ -12,7 +12,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use('*', router);
 
 setInterval(function(){
-  http.get('https://sauti-marketplace.herokuapp.com/');
+  https.get('https://sauti-marketplace.herokuapp.com/');
 }, 300000);
 
 
