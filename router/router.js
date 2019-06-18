@@ -1,7 +1,7 @@
 const router = require("express").Router();
-
-const models = require("./models");
-const menu = new UssdMenu()
+const models = require('./models');
+const UssdMenu = require('ussd-menu-builder')
+const menu = new UssdMenu();
 
 
 const bodyParser = require('body-parser')
@@ -47,7 +47,7 @@ menu.state('goodbye', {
 
 menu.state('position', {
   run: () => {
-    menu.con(`\n1. Animal Products \n2. Beans `)
+    menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
     '1': 'buyer',
