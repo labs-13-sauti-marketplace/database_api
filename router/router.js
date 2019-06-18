@@ -47,7 +47,7 @@ menu.state('goodbye', {
 
 menu.state('position', {
   run: () => {
-    menu.con(`\n1. buyer \n2. seller`)
+    menu.con(`\n1. Animal Products \n2. Beans `)
   },
   next: {
     '1': 'buyer',
@@ -171,6 +171,102 @@ menu.state('Bungoma', {
   }
 })
 
+// function for when user selects the Eldoret market
+menu.state('Eldoret', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i ++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  },
+  next: {
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+// function for when user selects the Kisumu market
+menu.state('Kisumu', {
+  run: () => {
+    `${categories().then(res => {
+      let newArray = [];
+      for(let i = 0; i < res.length; i ++) {
+        newArray.push(`\n${i+1}. ${res[i].name}`)
+      }
+      let newList = newArray.join();
+      menu.con(newList)
+    })}`
+  },
+  next: {
+    '1':'Animal Products',
+    '2':'Cereals',
+    '3':'Fruits',
+    '4':'Beans',
+    '5':'Other',
+    '6':'Roots & Tubers',
+    '7':'Seeds & Nuts',
+    '8':'Vegetables'
+  }
+})
+
+//function based on "Kampala" choice
+menu.state('Kampala', {
+  run: () => {
+    `${categories().then(res => {
+      let catArr = []
+      for (let i = 0; i < res.length; i++) {
+        catArr.push(`\n${i + 1}. ${res[i].name}`)
+      }
+      let result = catArr.join()
+      menu.con(result)
+    })}`
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
+  }
+})
+
+//function based on "Mbale" menu choice
+menu.state('Mbale', {
+  run: () => {
+    `${categories().then(res => {
+      let catArr = []
+      for (let i = 0; i < res.length; i++) {
+        catArr.push(`\n${i + 1}. ${res[i].name}`)
+      }
+      let result = catArr.join()
+      menu.con(result)
+    })}`
+  },
+  next: {
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
+  }
+})
+
 menu.state('Animal Products', {
   run: ()=> {
      menu.end(`
@@ -238,56 +334,6 @@ menu.state('Vegetables', {
     menu.end(`Peas 110kes`)
   }
 })
-
-
-//function based on "Kampala" choice
-menu.state('Kampala', {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = []
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let result = catArr.join()
-      menu.con(result)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-//function based on "Mbale" menu choice
-menu.state('Mbale', {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = []
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let result = catArr.join()
-      menu.con(result)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
 
 
 menu.on('error', err => {
