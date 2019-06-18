@@ -7,7 +7,9 @@ const menu = new UssdMenu()
 
 
 const bodyParser = require('body-parser')
+
 // const db = require('../data/dbConfig')
+
 
 
 router.use(bodyParser.json())
