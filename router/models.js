@@ -17,8 +17,9 @@ function findPrice(name, product) {
 
 async function addProduct(product) {
   const [id] = await db('products').insert(product)
-  // return 
+
 }
+
 
 function get() {
   return db('marketplaces')

@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
@@ -48,7 +49,7 @@ menu.state('goodbye', {
 
 menu.state('position', {
   run: () => {
-    menu.con(`\n1. Animal Products \n2. Beans `)
+    menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
     '1': 'buyer',
