@@ -4,7 +4,14 @@ exports.up = function (knex, Promise) {
     tbl
       .string("name", 128)
       .notNullable()
-      .unique();
+      .unique()
+    tbl
+      .integer('country_id')
+      .unsigned()
+      .references('id')
+      .inTable('countries')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE')
   });
 };
 exports.down = function (knex, Promise) {
