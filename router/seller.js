@@ -33,3 +33,26 @@ router.get("/markets", async (req, res) => {
     console.log("after");
     return `New Post ID: ${post.name} : Added :)`;
   }
+
+  server.delete("/deletemarket/:id", (rec, rez) => {
+    let deleted = rec.params.id;
+  
+    db("markets")
+      .where({ id: deleted })
+      .del()
+      .then(gone => {
+        if (!gone) {
+          rez.send("market does not exist");
+        } else {
+          rez
+            .status(402)
+            .json({ message: "success" });
+        }
+      })
+      .catch(errorz => {
+        rez
+          .status(501)
+          .json({ message: "Failed" });
+      });
+  });
+  
