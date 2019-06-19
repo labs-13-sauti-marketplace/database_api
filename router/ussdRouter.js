@@ -10,8 +10,6 @@ const bodyParser = require('body-parser')
 
 // const db = require('../data/dbConfig')
 
-
-
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
