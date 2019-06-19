@@ -33,11 +33,10 @@ async function products() {
 //sessions
 let sessions = {};
 menu.sessionConfig({
-  get: function(sessionId, key){
-    return new Promise((resolve, reject) => {
-      let value = sessions[sessionId][key];
-      resolve(value)
-    })
+  start: (sessionId, cb) {
+    if(!(sessionId in sessions)) sessions[sessionId] = {
+      
+    }
   }
 })
 
@@ -58,28 +57,10 @@ menu.startState({
 menu.state('goodbye', {
   
   run: () => {
-    let phoneNum = menu.val;
-    menu.session.set('phoneNum', phoneNum)
-    .then(() => {
-      menu.con(`enter your phone number`)
-    })
-    .catch(err => console.log(err))
-  }, 
-  next: {
-    '3':'next state'
+    menu.end('goodbye')
   }
 })
 
-menu.state('next state', {
-  run: () => {
-    menu.session.get('phoneNum')
-    .then(phoneNum => {
-      console.log(phoneNum);
-      menu.end(phoneNum)
-    })
-    .catch(err => console.log(err))
-  }
-})
 
 
 
