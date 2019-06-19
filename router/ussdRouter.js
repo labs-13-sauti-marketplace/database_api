@@ -1,5 +1,4 @@
 const router = require("express").Router();
-
 const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
@@ -31,6 +30,17 @@ async function products() {
   return result
 }
 
+//sessions
+let sessions = {};
+menu.sessionConfig({
+  get: function(sessionId, key){
+    return new Promise((resolve, reject) => {
+      let value = sessions[sessionId][key];
+      resolve(value)
+    })
+  }
+})
+
 // setting initial state of menu
 menu.startState({
   run: () => {
@@ -43,11 +53,33 @@ menu.startState({
 })
 
 // functions based on user's menu choice
+
+// testing session 
 menu.state('goodbye', {
+  
   run: () => {
-    menu.end(`goodbye`)
+    let phoneNum = menu.val;
+    menu.session.set('phoneNum', phoneNum)
+    .then(() => {
+      menu.con(`enter your phone number`)
+    })
+  }, 
+  next: {
+    '3':'next state'
   }
 })
+
+menu.state('next state', {
+  run: () => {
+    menu.session.get('phoneNum')
+    .then(phoneNum => {
+      console.log(phoneNum);
+      menu.end(phoneNum)
+    })
+  }
+})
+
+
 
 menu.state('position', {
   run: () => {
