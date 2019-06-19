@@ -1,10 +1,16 @@
 const router = require("express").Router();
+
 const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
 const menu = new UssdMenu()
 
+
 const bodyParser = require('body-parser')
+
+// const db = require('../data/dbConfig')
+
+
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -25,6 +31,7 @@ async function products() {
   return result
 }
 
+// setting initial state of menu
 menu.startState({
   run: () => {
     menu.con(`\n1. Go To Market \n2. goodbye`)
@@ -35,15 +42,12 @@ menu.startState({
   }
 })
 
+// functions based on user's menu choice
 menu.state('goodbye', {
-  
   run: () => {
-    menu.end('goodbye')
+    menu.end(`goodbye`)
   }
 })
-
-
-
 
 menu.state('position', {
   run: () => {
@@ -56,18 +60,17 @@ menu.state('position', {
 })
 
 // function base on "buyer" choice
-
 menu.state('buyer', {
   run: () => {
     `${marketPlaces().then(res => {
-      let loop = []
-      for (let i=0; i<res.length; i++){
-        loop.push(`\n${i+1}. ${res[i].name}`)
+      let lol = []
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n${i + 1}. ${res[i].name}`)
       }
-      let stringy = loop.join()
-      menu.on(stringy)
-    }).catch(err => console.log(err))}`
-  }, 
+      let stringy = lol.join()
+      menu.con(stringy)
+    })}`
+  },
   next: {
     '1': 'Busia',
     '2': 'Tororo',
@@ -78,30 +81,7 @@ menu.state('buyer', {
     '7': 'Bungoma',
     '8': 'Kampala'
   }
-})
-
-// menu.state('buyer', {
-//   run: () => {
-//     `${marketPlaces().then(res => {
-//       let lol = []
-//       for (let i = 0; i < res.length; i++) {
-//         lol.push(`\n${i + 1}. ${res[i].name}`)
-//       }
-//       let stringy = lol.join()
-//       menu.con(stringy)
-//     })}`
-//   },
-//   next: {
-//     '1': 'Busia',
-//     '2': 'Tororo',
-//     '3': 'Mbale',
-//     '4': 'Eldoret',
-//     '5': 'Kisumu',
-//     '6': 'Soroti',
-//     '7': 'Bungoma',
-//     '8': 'Kampala'
-//   }
-// });
+});
 
 menu.state(`Busia`, {
   run: () => {
