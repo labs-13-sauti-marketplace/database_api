@@ -63,6 +63,7 @@ menu.state('goodbye', {
     .then(() => {
       menu.con(`enter your phone number`)
     })
+    .catch(err => console.log(err))
   }, 
   next: {
     '3':'next state'
@@ -76,6 +77,7 @@ menu.state('next state', {
       console.log(phoneNum);
       menu.end(phoneNum)
     })
+    .catch(err => console.log(err))
   }
 })
 
