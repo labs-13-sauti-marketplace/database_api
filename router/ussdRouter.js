@@ -31,14 +31,14 @@ async function products() {
 }
 
 //sessions
-let sessions = {};
-menu.sessionConfig({
-  start: (sessionId, cb) {
-    if(!(sessionId in sessions)) sessions[sessionId] = {
+// let sessions = {};
+// menu.sessionConfig({
+//   start: (sessionId, cb) {
+//     if(!(sessionId in sessions)) sessions[sessionId] = {
       
-    }
-  }
-})
+//     }
+//   }
+// })
 
 // setting initial state of menu
 menu.startState({
