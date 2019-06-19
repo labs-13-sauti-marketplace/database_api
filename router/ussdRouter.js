@@ -1,4 +1,8 @@
 const router = require("express").Router();
+<<<<<<< HEAD:router/router.js
+=======
+
+>>>>>>> cee0a43cac4af1fa8399aabb96af4a491163db20:router/ussdRouter.js
 const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
@@ -6,7 +10,9 @@ const menu = new UssdMenu()
 
 
 const bodyParser = require('body-parser')
+
 // const db = require('../data/dbConfig')
+
 
 
 router.use(bodyParser.json())

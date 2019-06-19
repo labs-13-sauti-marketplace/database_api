@@ -1,19 +1,21 @@
 const db = require("../data/dbConfig");
-const router = require("express").Router();
+const webRouter = require("express").Router();
 const markets = require("./markets-model");
 const models = require("./models");
-const db = require("../data/dbConfig");
 
-router.get("/markets", async (req, res) => {
+
+
+webRouter.get("/markets", async (req, res) => {
     try {
-      let result = await markets.get();
+      let result = await db.get();
       res.status(200).json(result);
     } catch (err) {
       res.status(500).json(err);
     }
   });
+      
   
-  router.post("/addmarket", (req, res) => {
+  webRouter.post("/addmarket", (req, res) => {
     console.log("we are trying to add a market");
     let post = req.body;
   
@@ -29,12 +31,12 @@ router.get("/markets", async (req, res) => {
   async function addPost(post) {
     console.log("before");
     const func = await db("markets").insert(post)
-    .where({ market: market });
+    .where({ market: markets });
     console.log("after");
     return `New Post ID: ${post.name} : Added :)`;
   }
 
-  server.delete("/deletemarket/:id", (rec, rez) => {
+  webRouter.delete("/deletemarket/:id", (rec, rez) => {
     let deleted = rec.params.id;
   
     db("markets")
@@ -55,4 +57,30 @@ router.get("/markets", async (req, res) => {
           .json({ message: "Failed" });
       });
   });
+
+  webRouter.put("/updatemarket/:id", (reck, rez) => {
+    let updoot = reck.params.id;
   
+    db("markets")
+      .where({ id: updoot })
+      .update(reck.body)
+      .then(newlook => {
+        if (newlook > 0) {
+          db("markets")
+            .where({ id: reck.params.id })
+            .then(things => {
+              rez.status(201).json({ message: "you have successfully uploaded" });
+            });
+        } else {
+          rez.status(403).json({ message: "failed to" });
+        }
+      })
+      .catch(error => {
+        rez.status(501).json(error);
+      });
+  });
+  module.exports = webRouter;
+
+
+
+
