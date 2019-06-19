@@ -1,8 +1,4 @@
 const router = require("express").Router();
-<<<<<<< HEAD:router/router.js
-=======
-
->>>>>>> cee0a43cac4af1fa8399aabb96af4a491163db20:router/ussdRouter.js
 const UssdMenu = require('ussd-menu-builder')
 
 const models = require("./models");
