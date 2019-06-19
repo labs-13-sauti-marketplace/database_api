@@ -66,7 +66,7 @@ menu.state('buyer', {
       }
       let stringy = loop.join()
       menu.on(stringy)
-    })}`
+    }).catch(err => console.log(err))}`
   }, 
   next: {
     '1': 'Busia',
