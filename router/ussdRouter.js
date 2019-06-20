@@ -448,12 +448,13 @@ router.post('*', (req, res) => {
     res.send(resMsg);
     let sessionId = args.sessionId;
     let phoneNumber = args.phoneNumber;
-    let text = args.text;
+    let text = req.body.text;
         let session = {
           sessionId: sessionId,
           phoneNumber: phoneNumber,
           text: text,
         };
+
         db("sessions")
           .insert(session)
           .then(res => {
