@@ -33,19 +33,26 @@ NodeJs / Express / USSD / Postgres - for more specifications please check our `p
 There is a Front-End but it is mostly just for testing our API 
 
 
+
+
+| Method | Endpoint                                    | Access Control | Description                                  |
+| ------ | --------------------------------------------| -------------- | -------------------------------------------- |
+| GET    | `//sauti-marketplace.herokuapp.com/markets` | all markets      | Returns the information for markets. |
+
+
 ## Authors 
 
-* Cameron MacDonald * 
+*Cameron MacDonald* 
 
-* Jen Dority * 
+*Jen Dority* 
 
-* Steven Jefferson * 
+*Steven Jefferson* 
 
-* Sarah Riley * 
+*Sarah Riley* 
 
-* Brad Cantrell * 
+*Brad Cantrell* 
 
-* Oscar Ortiz * 
+*Oscar Ortiz* 
 
 
 
