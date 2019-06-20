@@ -96,7 +96,7 @@ app.post("*", function(req, res) {
           sessionId: sessionData
         };
         db("sessions")
-          .insert(sessionId)
+          .insert(session)
           .then(res => {
             menu.end("session added successfully!");
           })
