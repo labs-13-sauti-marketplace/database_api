@@ -455,8 +455,8 @@ router.post('*', (req, res) => {
           phoneNumber: phoneNumber,
           text: text,
         };
-        let newArray = [];
-
+        // let newArray = [];
+        console.log('sessions', session);
         db("sessions")
           .insert(session)
           .then(res => {
