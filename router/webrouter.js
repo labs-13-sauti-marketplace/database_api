@@ -7,7 +7,7 @@ const models = require("./models");
 
 webRouter.get("/markets", async (req, res) => {
     try {
-      let result = await db.get();
+      let result = await db("markets");
       res.status(200).json(result);
     } catch (err) {
       res.status(500).json(err);
@@ -79,14 +79,14 @@ webRouter.get("/markets", async (req, res) => {
         rez.status(501).json(error);
       });
   });
-//  webRouter.get("/sessions", async (req, res) => {
-//     try {
-//       let result = await db.("sessions");
-//       res.status(200).json(result);
-//     } catch (err) {
-//       res.status(500).json(err);
-//     }
-//   });
+ webRouter.get("/sessions", async (req, res) => {
+    try {
+      let result = await db("sessions");
+      res.status(200).json(result);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
       
  
  webRouter.post("/addsessions", (req, res) => {
@@ -105,7 +105,7 @@ webRouter.get("/markets", async (req, res) => {
   async function addPost(post) {
     console.log("before");
     const func = await db("sessions").insert(post)
-    .where({ session: sessions });
+    .where({ session: session });
     console.log("after");
     return `New Post ID: ${post.name} : Added :)`;
   }
