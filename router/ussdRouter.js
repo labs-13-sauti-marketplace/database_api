@@ -30,6 +30,7 @@ async function products() {
   return result
 }
 
+
 // setting initial state of menu
 menu.startState({
   run: () => {
@@ -283,6 +284,13 @@ menu.state('Eldoret', {
     })}`
   },
   next: {
+    // 'input': async function(){
+      
+    //   return new Promise((resolve, reject) => {
+    //       resolve('nextState');
+    //   });
+    // }
+    
     '1':'Animal Products',
     '2':'Cereals',
     '3':'Fruits',
@@ -439,7 +447,16 @@ menu.on('error', err => {
 })
 
 router.post('*', (req, res) => {
+  let args = {
+    phoneNumber: req.body.phoneNumber,
+    sessionId: req.body.sessionId,
+    serviceCode: req.body.serviceCode,
+    text: req.body.text
+  }
+  console.log('args', args)
   menu.run(req.body, ussdResult => {
+    console.log('post response', ussdResult)
+
     res.send(ussdResult);
   })
 })
