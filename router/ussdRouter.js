@@ -448,9 +448,9 @@ router.post('*', (req, res) => {
    
     res.send(resMsg);
         const session = {
-          sessionId,
-          phoneNumber,
-          text,
+          sessionId: sessionId,
+          phoneNumber: phoneNumber,
+          text: text,
         };
         db("sessions")
           .insert(session)
