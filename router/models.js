@@ -20,7 +20,6 @@ async function addProduct(product) {
 
 }
 
-
 function get() {
   return db('marketplaces')
 }
