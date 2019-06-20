@@ -81,15 +81,28 @@ menu.state("addCountry", {
 // Registering USSD handler with Express
 
 app.post("*", function(req, res) {
-  menu.run(req.body, ussdResult => {
-    res.send(ussdResult);
+  let args = {
+    phoneNumber: req.body.phoneNumber,
+    sessionId: req.body.sessionId,
+    serviceCode: req.body.serviceCode,
+    text: req.body.text
+  }
+
+  menu.run(args, resMsg => {
+   
+    res.send(resMsg);
+    let sessionData = JSON.stringify(args);
+        const session = {
+          sessionId: sessionData
+        };
+        db("sessions")
+          .insert(sessionId)
+          .then(res => {
+            menu.end("session added successfully!");
+          })
+          .catch(err => {
+            menu.end("Fail");
+          });
   });
-  //   let post = req.body;
-  //   addPost(post)
-  //     .then(saved => {
-  //       res.status(201).json(saved);
-  //     })
-  //     .catch(({ message }) => {
-  //       res.status(503).json({ message });
-  //     });
+  
 });
