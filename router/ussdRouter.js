@@ -445,6 +445,7 @@ router.post('*', (req, res) => {
   }
 
   menu.run(args, resMsg => {
+    const {sessionId, phoneNumber, text} = args
    console.log('in menu.run', args)
     res.send(resMsg);
         let session = {
