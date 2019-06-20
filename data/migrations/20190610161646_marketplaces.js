@@ -1,8 +1,9 @@
+
 exports.up = function (knex, Promise) {
-  return knex.schema.createTable("marketplaces", tbl => {
-    tbl.increments();
+  return knex.schema.createTable('marketplaces', tbl => {
+    tbl.increments()
     tbl
-      .string("name", 128)
+      .string('name', 128)
       .notNullable()
       .unique()
     tbl
@@ -10,10 +11,11 @@ exports.up = function (knex, Promise) {
       .unsigned()
       .references('id')
       .inTable('countries')
-      .onDelete('CASCADE')
+      .onDelete("CASCADE")
       .onUpdate('CASCADE')
-  });
+  })
 };
+
 exports.down = function (knex, Promise) {
-  return knex.schema.dropTableIfExists("marketplaces");
+  return knex.schema.dropTableIfExists('marketplaces')
 };
