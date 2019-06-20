@@ -131,8 +131,6 @@ webRouter.delete("/deletesession/:id",  (rec, rez) => {
     });
 });
 
-//-----------------------------------------------
-
 webRouter.put("/updatesession/:id",  (reck, rez) => {
   let updoot = reck.params.id;
 
