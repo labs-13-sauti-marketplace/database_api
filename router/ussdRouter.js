@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const UssdMenu = require('ussd-menu-builder')
 const models = require("./models");
+const sessionModel = require('./sessions-model')
 const menu = new UssdMenu()
-
 
 const bodyParser = require('body-parser')
 
@@ -444,9 +444,11 @@ router.post('*', (req, res) => {
   }
 
   menu.run(args, resMsg => {
-    const {sessionId, phoneNumber, text} = args
-   console.log('in menu.run', args)
+    console.log('in menu.run', args)
     res.send(resMsg);
+    let sessionId = args.sessionId;
+    let phoneNumber = args.phoneNumber;
+    let text = args.text;
         let session = {
           sessionId: sessionId,
           phoneNumber: phoneNumber,
