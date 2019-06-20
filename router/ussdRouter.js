@@ -1,15 +1,12 @@
 const router = require("express").Router();
 const UssdMenu = require('ussd-menu-builder')
-
 const models = require("./models");
+const sessionModel = require('./sessions-model')
 const menu = new UssdMenu()
-
 
 const bodyParser = require('body-parser')
 
-// const db = require('../data/dbConfig')
-
-
+const db = require('../data/dbConfig')
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -439,9 +436,33 @@ menu.on('error', err => {
 })
 
 router.post('*', (req, res) => {
-  menu.run(req.body, ussdResult => {
-    res.send(ussdResult);
-  })
+  let args = {
+    phoneNumber: req.body.phoneNumber,
+    sessionId: req.body.sessionId,
+    serviceCode: req.body.serviceCode,
+    text: req.body.text
+  }
+
+  menu.run(args, resMsg => {
+    console.log('in menu.run', args)
+    res.send(resMsg);
+    let sessionId = args.sessionId;
+    let phoneNumber = args.phoneNumber;
+    let text = args.text;
+        let session = {
+          sessionId: sessionId,
+          phoneNumber: phoneNumber,
+          text: text,
+        };
+        db("sessions")
+          .insert(session)
+          .then(res => {
+            menu.end("session added successfully!");
+          })
+          .catch(err => {
+            menu.end("Fail");
+          });
+  });
 })
 
 
