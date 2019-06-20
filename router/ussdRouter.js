@@ -38,6 +38,15 @@ menu.startState({
   }
 })
 
+const fetchProducts = (phoneNumber, sessionId, text) => {
+  const market = "Busia"
+  console.log('FETCH P#: ', phoneNumber)
+  console.log('FETCH SESH: ', sessionId)
+  console.log('FETCH TEXT: ', text)
+  return db('products')
+    .where({ market: market })
+}
+
 // functions based on user's menu choice
 menu.state('goodbye', {
   run: () => {
@@ -272,22 +281,22 @@ menu.state('Eldoret', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i ++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
   },
   next: {
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -296,22 +305,22 @@ menu.state('Kisumu', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i ++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
   },
   next: {
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 

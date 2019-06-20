@@ -4,7 +4,6 @@ exports.up = function (knex, Promise) {
     tbl
       .string("sessionId", 128)
       .notNullable()
-      .unique();
     tbl
       .string("phoneNumber", 15)
       .notNullable()
