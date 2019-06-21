@@ -12,6 +12,7 @@ function get() {
     return db("markets")
 }
 
+
 function findById(id) {
     return db("markets")
         .where({ id })

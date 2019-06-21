@@ -1,15 +1,12 @@
 const router = require("express").Router();
 const UssdMenu = require('ussd-menu-builder')
-
 const models = require("./models");
+const sessionModel = require('./sessions-model')
 const menu = new UssdMenu()
-
 
 const bodyParser = require('body-parser')
 
-// const db = require('../data/dbConfig')
-
-
+const db = require('../data/dbConfig')
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -41,6 +38,15 @@ menu.startState({
     '2': 'goodbye'
   }
 })
+
+const fetchProducts = (phoneNumber, sessionId, text) => {
+  const market = "Busia"
+  console.log('FETCH P#: ', phoneNumber)
+  console.log('FETCH SESH: ', sessionId)
+  console.log('FETCH TEXT: ', text)
+  return db('products')
+    .where({ market: market })
+}
 
 // functions based on user's menu choice
 menu.state('goodbye', {
@@ -276,29 +282,22 @@ menu.state('Eldoret', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i ++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
   },
   next: {
-    // 'input': async function(){
-      
-    //   return new Promise((resolve, reject) => {
-    //       resolve('nextState');
-    //   });
-    // }
-    
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -307,22 +306,22 @@ menu.state('Kisumu', {
   run: () => {
     `${categories().then(res => {
       let newArray = [];
-      for(let i = 0; i < res.length; i ++) {
-        newArray.push(`\n${i+1}. ${res[i].name}`)
+      for (let i = 0; i < res.length; i++) {
+        newArray.push(`\n${i + 1}. ${res[i].name}`)
       }
       let newList = newArray.join();
       menu.con(newList)
     })}`
   },
   next: {
-    '1':'Animal Products',
-    '2':'Cereals',
-    '3':'Fruits',
-    '4':'Beans',
-    '5':'Other',
-    '6':'Roots & Tubers',
-    '7':'Seeds & Nuts',
-    '8':'Vegetables'
+    '1': 'Animal Products',
+    '2': 'Cereals',
+    '3': 'Fruits',
+    '4': 'Beans',
+    '5': 'Other',
+    '6': 'Roots & Tubers',
+    '7': 'Seeds & Nuts',
+    '8': 'Vegetables'
   }
 })
 
@@ -453,12 +452,30 @@ router.post('*', (req, res) => {
     serviceCode: req.body.serviceCode,
     text: req.body.text
   }
-  console.log('args', args)
-  menu.run(req.body, ussdResult => {
-    console.log('post response', ussdResult)
 
-    res.send(ussdResult);
-  })
+  menu.run(args, resMsg => {
+    console.log('in menu.run', args)
+    res.send(resMsg);
+    let sessionId = menu.args.sessionId;
+    let phoneNumber = menu.args.phoneNumber;
+    let text = menu.args.text;
+    // let text = req.body.text.toString();
+        let session = {
+          sessionId: sessionId,
+          phoneNumber: phoneNumber,
+          text: text,
+        };
+        // let newArray = [];
+        console.log('sessions', session);
+        db("sessions")
+          .insert(session)
+          .then(res => {
+            menu.end("session added successfully!");
+          })
+          .catch(err => {
+            menu.end("Fail");
+          });
+  });
 })
 
 

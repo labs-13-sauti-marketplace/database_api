@@ -2,7 +2,7 @@ const db = require("../data/dbConfig");
 const webRouter = require("express").Router();
 const markets = require("./markets-model");
 const models = require("./models");
-
+const sessions = require("./sessions-model");
 
 
 webRouter.get("/markets", async (req, res) => {
@@ -93,7 +93,7 @@ webRouter.get("/markets", async (req, res) => {
     console.log("we are trying to add a sessions");
     let post = req.body;
  
-    addPost(post)
+    addPostses(post)
       .then(saved => {
         res.status(201).json(saved);
       })
@@ -102,10 +102,10 @@ webRouter.get("/markets", async (req, res) => {
       });
   });
  
-  async function addPost(post) {
+  async function addPostses(post) {
     console.log("before");
     const func = await db("sessions").insert(post)
-    .where({ session: session });
+    .where({ sessions: sessions });
     console.log("after");
     return `New Post ID: ${post.name} : Added :)`;
   }
@@ -130,8 +130,6 @@ webRouter.delete("/deletesession/:id",  (rec, rez) => {
         .json({ message: "Failed." });
     });
 });
-
-//-----------------------------------------------
 
 webRouter.put("/updatesession/:id",  (reck, rez) => {
   let updoot = reck.params.id;
