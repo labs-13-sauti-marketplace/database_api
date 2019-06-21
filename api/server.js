@@ -10,7 +10,7 @@ server.use(helmet());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use('/api', webRouter);
-server.use('*', router);
+// server.use('*', router);
 
 server.get('/', (req, res) => {
   res.send('server is up');
