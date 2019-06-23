@@ -134,7 +134,7 @@ webRouter.put("/updatesession/:id", (req, res) => {
     .then(newlook => {
       if (newlook > 0) {
         db("sessions")
-          .where({ id: reck.params.id })
+          .where({ id: req.params.id })
           .then(things => {
             res.status(201).json({ message: "you have successfully uploaded" });
           });
