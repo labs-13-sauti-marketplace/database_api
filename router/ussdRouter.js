@@ -18,7 +18,7 @@ async function marketPlaces() {
 }
 
 async function categories() {
-  const result = await models.getCat();
+  const result = await models.getMarketplaceCategories();
   return result;
 }
 
@@ -97,7 +97,7 @@ menu.state("category", {
   run: () => {
     // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
     
-    `${categories().then(res => {
+    `${models.getMarketplaceCategories(parseInput(menu.args.text)).then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
