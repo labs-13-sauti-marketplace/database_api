@@ -459,21 +459,21 @@ router.post('*', (req, res) => {
     let phoneNumber = menu.args.phoneNumber;
     let text = menu.args.text;
     // let text = req.body.text.toString();
-        let session = {
-          sessionId: sessionId,
-          phoneNumber: phoneNumber,
-          text: text,
-        };
-        // let newArray = [];
-        console.log('sessions', session);
-        db("sessions")
-          .insert(session)
-          .then(res => {
-            menu.end("session added successfully!");
-          })
-          .catch(err => {
-            menu.end("Fail");
-          });
+    let session = {
+      sessionId: sessionId,
+      phoneNumber: phoneNumber,
+      text: text,
+    };
+    // let newArray = [];
+    console.log('sessions', session);
+    db("sessions")
+      .insert(session)
+      .then(res => {
+        menu.end("session added successfully!");
+      })
+      .catch(err => {
+        menu.end("Fail");
+      });
   });
 })
 
