@@ -3,10 +3,10 @@ exports.up = function (knex, Promise) {
     tbl.increments();
     tbl.string("name", 128).notNullable();
     tbl.string('country', 128)
-    tbl.string("price", 128).notNullable();
-    tbl.string('marketplace', 128).notNullable()
-    tbl.string('category', 128).notNullable()
-    tbl.string('seller', 128).notNullable()
+    tbl.string("price", 128)
+    tbl.string('marketplace', 128)
+    tbl.string('category', 128)
+    tbl.string('seller', 128)
     tbl
       .integer('category_id')
       .unsigned()
