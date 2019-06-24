@@ -59,20 +59,31 @@ menu.state("position", {
     menu.con(`\n1. buyer \n2. seller `);
   },
   next: {
-    "1": "buyer",
+    "1": "market",
     "2": "seller"
   }
 });
 
+const parseInput = str => {
+  let array;
+  array = string.split("*")
+  return array[array.length - 1]
+}
+
+const handleError = err => {
+  console.log("ERR", err)
+  menu.end("Error occurred, please try again")
+}
 // function base on "buyer" choice
-menu.state("buyer", {
+menu.state("market", {
   run: () => {
     `${marketPlaces().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n${res[i].id}. ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join();
+      
       menu.con(stringy);
     })}`;
   },
@@ -84,12 +95,12 @@ menu.state("buyer", {
 
 menu.state("category", {
   run: () => {
-    menu.session.set({ marketplace_id: menu.args.text.split("*") });
-    menu.session.get("marketplace_id");
+    menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
+    
     `${categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n${res[i].id}. ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join();
       menu.con(stringy);
@@ -97,15 +108,9 @@ menu.state("category", {
 
   },
   next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
+    "0": "start"
+  },
+  defaultNext: "product"
 });
 
 menu.state("Tororo", {
