@@ -95,7 +95,7 @@ menu.state("market", {
 
 menu.state("category", {
   run: () => {
-    menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
+    // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
     
     `${categories().then(res => {
       let lol = [];

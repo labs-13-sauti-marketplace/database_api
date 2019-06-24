@@ -30,6 +30,7 @@ function getMarkets() {
 
 function getCat() {
   return db('categories')
+
 }
 
 function getProducts() {
