@@ -2,10 +2,7 @@ exports.up = function (knex, Promise) {
   return knex.schema.createTable("products", tbl => {
     tbl.increments();
     tbl.string("name", 128).notNullable();
-    tbl.string('country', 128)
     tbl.string("price", 128)
-    tbl.string('marketplace', 128)
-    tbl.string('category', 128)
     tbl.string('seller', 128)
     tbl
       .integer('category_id')
