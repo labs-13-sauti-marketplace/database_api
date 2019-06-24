@@ -66,7 +66,7 @@ menu.state("position", {
 
 const parseInput = str => {
   let array;
-  array = string.split("*")
+  array = str.split("*")
   return array[array.length - 1]
 }
 
