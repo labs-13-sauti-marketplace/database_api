@@ -2,6 +2,7 @@ const db = require("../data/dbConfig");
 const webRouter = require("express").Router();
 const markets = require("./markets-model");
 const models = require("./models");
+const sessions = require("./sessions-model");
 
 webRouter.get("/markets", async (req, res) => {
   try {
