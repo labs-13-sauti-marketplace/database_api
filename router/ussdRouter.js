@@ -540,19 +540,23 @@ router.post('*', (req, res) => {
   }
 
   menu.run(args, resMsg => {
-    console.log('in menu.run', args)
+    // console.log('in menu.run', args)
     res.send(resMsg);
     let sessionId = menu.args.sessionId;
     let phoneNumber = menu.args.phoneNumber;
     let text = menu.args.text;
     // let text = req.body.text.toString();
     let session = {
-      sessionId: sessionId,
-      phoneNumber: phoneNumber,
-      text: text,
+      [sessionId]: {
+        phoneNumber: phoneNumber,
+        text: text
+      }
+      // sessionId: sessionId,
+      // phoneNumber: phoneNumber,
+      // text: text,
     };
     // let newArray = [];
-    console.log('sessions', session);
+    // console.log('sessions', session);
     db("sessions")
       .insert(session)
       .then(res => {
