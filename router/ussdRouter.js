@@ -150,9 +150,10 @@ menu.state('category', {
     console.log("CATEGORY()")
     console.log("CATEGORY TEXT", menu.args.text)
     console.log("SESSION", menu.session)
-    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    menu.session.set(menu.args.sessionId,'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
     // menu.session.get("marketplace_id")
     // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
+    console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'))
   
     menu.end("stop")
   },
