@@ -27,39 +27,7 @@ async function products() {
   return result
 }
 
-let sessions = {};
-menu.sessionConfig({
-  start: (sessionId, callback) => {
-    // initialize current session if it doesn't exist
-    // this is called by menu.run()
-    if (!(sessionId in sessions)) sessions[sessionId] = {};
-    callback();
-  },
-  end: (sessionId, callback) => {
-    // clear current session
-    // this is called by menu.end()
-    delete sessions[sessionId];
-    callback();
-  },
-  set: (sessionId, key, value) => {
-    // store key-value pair in current session
-    // sessions[sessionId][key] = value;
-    // callback();
-    return new Promise((resolve, reject) => {
-      sessions[sessionId][key] = value
-      resolve(value)
-    })
-  },
-  get: (sessionId, key) => {
-    // retrieve value by key in current session
-    // let value = sessions[sessionId][key];
-    // callback(null, value);
-    return new Promise((resolve, reject) => {
-      let value = sessions[sessionId][key];
-      resolve(value)
-    })
-  }
-});
+
 
 // setting initial state of menu
 menu.startState({
@@ -547,15 +515,14 @@ router.post('*', (req, res) => {
     let phoneNumber = menu.args.phoneNumber;
     let text = menu.args.text;
     // let text = req.body.text.toString();
-    let session = {
-      [sessionId]: {
-        phoneNumber: phoneNumber,
-        text: text
-      }
-      // sessionId: sessionId,
-      // phoneNumber: phoneNumber,
-      // text: text,
-    };
+
+    menu.session.start(() => {
+      console.log('menu.session.start()')
+      return
+    })
+      .then(res => console.log('menu.session.start ok'))
+      .catch(err => console.log('menu.session.start failed'))
+
     // let newArray = [];
     // console.log('sessions', session);
     db("sessions")
