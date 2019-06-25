@@ -6,12 +6,8 @@ exports.up = function (knex, Promise) {
       .string('name', 128)
       .notNullable()
     tbl
-      .integer('country_id')
-      .unsigned()
-      .references('id')
-      .inTable('countries')
-      .onDelete("CASCADE")
-      .onUpdate('CASCADE')
+      .foreign('country_id')
+      .references('countries.id')
   })
 };
 
