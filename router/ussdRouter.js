@@ -27,7 +27,7 @@ async function products() {
   return result
 }
 
-// let sessions = {};
+let sessions = {};
 menu.sessionConfig({
   start: (sessionId, callback) => {
     // initialize current session if it doesn't exist
