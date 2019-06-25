@@ -48,7 +48,7 @@ menu.state('goodbye', {
 
 menu.state('position', {
   run: () => {
-    console.log('START STATE()')
+    console.log('POSITION()')
     menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
@@ -102,7 +102,7 @@ const handleError = err => {
 
 menu.state('market', {
   run: () => {
-    console.log('START STATE()')
+    console.log('MARKET()')
     marketPlaces().then(res => {
       let lol = []
       for (let i = 0; i < res.length; i++) {
@@ -120,9 +120,10 @@ menu.state('market', {
 
 menu.state('category', {
   run: () => {
-    console.log('START STATE()')
+    console.log('CATEGORY()')
     console.log('CATEGORY TEXT', menu.args.text)
-    menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    // menu.sessIon.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    menu.session.set({ 'marketplace_id': parseInput(menu.args.text) })
     // menu.session.get("marketplace_id")
     console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
     // 
