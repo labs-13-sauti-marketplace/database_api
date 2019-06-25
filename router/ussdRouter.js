@@ -38,15 +38,6 @@ menu.startState({
   }
 });
 
-const fetchProducts = (phoneNumber, sessionId, text) => {
-  const market = "Busia"
-  console.log('FETCH P#: ', phoneNumber)
-  console.log('FETCH SESH: ', sessionId)
-  console.log('FETCH TEXT: ', text)
-  return db('products')
-    .where({ market: market })
-}
-
 // functions based on user's menu choice
 menu.state("goodbye", {
   run: () => {
@@ -70,12 +61,44 @@ const parseInput = str => {
   return array[array.length - 1]
 }
 
-const handleError = err => {
-  console.log("ERR", err)
-  menu.end("Error occurred, please try again")
+const fetchProducts = (phoneNumber, sessionId, text) => {
+  const market = "Busia"
+  console.log('FETCH P#: ', phoneNumber)
+  console.log('FETCH SESH: ', sessionId)
+  console.log('FETCH TEXT: ', text)
+  return db('products')
+    .where({ market: market })
 }
-// function base on "buyer" choice
-menu.state("market", {
+
+// fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
+//   .then(res => {
+//     console.log("DB RES: ", res)
+//     if (res.length > 0) {
+//       let options = ''
+//       for (let i = 0; i < res.length; i++) {
+//         options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
+//       }
+//       menu.con(`Fetched ${res.length} items from db${options}`)
+//     } else {
+//       menu.con('Found no products in that market that match your selection')
+//     }
+//   })
+//   .catch(err => {
+//     menu.con(err)
+//   })
+
+const parseInput = str => {
+  let array
+  array = str.split('*')
+  return array[array.length - 1]
+}
+
+const handleError = err => {
+  console.log('ERROR', err)
+  menu.end('An error occurred. Check the logs.')
+}
+
+menu.state('market', {
   run: () => {
     `${marketPlaces().then(res => {
       let lol = [];
@@ -88,10 +111,31 @@ menu.state("market", {
     })}`;
   },
   next: {
-    "0": "start"
+    '0': 'start'
   },
-  defaultNext: "category"
-});
+  defaultNext: 'category'
+})
+
+menu.state('category', {
+  run: () => {
+    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    // menu.session.get("marketplace_id")
+    `${categories().then(res => {
+      let lol = []
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`)
+      }
+      let stringy = lol.join()
+      menu.con(stringy)
+    })}`
+  },
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'product'
+})
+
+
 
 menu.state("category", {
   run: () => {
