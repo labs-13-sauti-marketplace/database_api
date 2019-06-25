@@ -158,7 +158,7 @@ menu.state('category', {
     console.log('CATEGORY TEXT', menu.args.text)
     console.log("SESSION", menu.session)
     console.log('CATEGORY VAL', menu.val)
-    console.log('GLOBAL SESSIONS', session)
+    console.log('GLOBAL SESSIONS', sessions)
     menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
       .then(res => console.log('SET MARKET ID TO ', res))
       .catch(err => console.log('ERROR SETTING ', err))
