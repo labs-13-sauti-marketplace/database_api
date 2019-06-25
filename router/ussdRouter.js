@@ -30,6 +30,7 @@ async function products() {
 // setting initial state of menu
 menu.startState({
   run: () => {
+    console.log("START STATE()")
     menu.con(`\n1. Go To Market \n2. goodbye`);
   },
   next: {
@@ -47,6 +48,7 @@ menu.state("goodbye", {
 
 menu.state("position", {
   run: () => {
+    console.log("POSITION()")
     menu.con(`\n1. buyer \n2. seller `);
   },
   next: {
@@ -100,7 +102,8 @@ const handleError = err => {
 
 menu.state('market', {
   run: () => {
-    `${marketPlaces().then(res => {
+    console.log("MARKET()")
+    marketPlaces().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -108,7 +111,7 @@ menu.state('market', {
       let stringy = lol.join("");
       
       menu.con(stringy);
-    })}`;
+    });
   },
   next: {
     '0': 'start'
@@ -118,18 +121,12 @@ menu.state('market', {
 
 menu.state('category', {
   run: () => {
+    console.log("CATEGORY()")
     console.log("CATEGORY TEXT", menu.args.text)
     menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
     // menu.session.get("marketplace_id")
     console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
-    // `${categories().then(res => {
-    //   let lol = []
-    //   for (let i = 0; i < res.length; i++) {
-    //     lol.push(`\n#${res[i].id}: ${res[i].name}`)
-    //   }
-    //   let stringy = lol.join()
-    //   menu.con(stringy)
-    // })}`
+  
     menu.end("stop")
   },
   next: {
@@ -140,25 +137,25 @@ menu.state('category', {
 
 
 
-menu.state("category", {
-  run: () => {
-    // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
+// menu.state("category", {
+//   run: () => {
+//     // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
     
-    `${models.getMarketplaceCategories(parseInput(menu.args.text)).then(res => {
-      let lol = [];
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
-      }
-      let stringy = lol.join();
-      menu.con(stringy);
-    })}`;
+//     `${models.getMarketplaceCategories(parseInput(menu.args.text)).then(res => {
+//       let lol = [];
+//       for (let i = 0; i < res.length; i++) {
+//         lol.push(`\n#${res[i].id}: ${res[i].name}`);
+//       }
+//       let stringy = lol.join();
+//       menu.con(stringy);
+//     })}`;
 
-  },
-  next: {
-    "0": "start"
-  },
-  defaultNext: "product"
-});
+//   },
+//   next: {
+//     "0": "start"
+//   },
+//   defaultNext: "product"
+// });
 
 menu.state("Tororo", {
   run: () => {
