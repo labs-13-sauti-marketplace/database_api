@@ -27,7 +27,77 @@ async function products() {
   return result
 }
 
+menu.sessionConfig(config) {
+  /*
+  the following 2 functions are used to make session
+  method cross-compatible between callbacks and promises
+  */
 
+  /**
+   * creates a callback function that calls
+   * the promise resolve and reject functions as well as
+   * the provided callback
+   * 
+   */
+  let makeCb = (resolve, reject, cb) => {
+    return (err, res) => {
+      if (err) {
+        if (cb) cb(err);
+        reject(err);
+        this.emit('error', err);
+      }
+      else {
+        if (cb) cb(null, res);
+        resolve(res);
+      }
+    };
+  };
+
+  /**
+   * if p is a promise, handle its resolve and reject
+   * chains and invoke the provided callback
+   */
+  let resolveIfPromise = (p, resolve, reject, cb) => {
+    if (p && p.then) {
+      p.then(res => {
+        if (cb) cb(null, res);
+        resolve(res);
+      }).catch(err => {
+        if (cb) cb(err);
+        reject(err);
+        this.emit('error', err);
+      });
+    }
+  };
+
+  // implement session methods based on user-defined handlers
+  this.session = {
+    start: (cb) => {
+      return new Promise((resolve, reject) => {
+        let res = config.start(this.args.sessionId, makeCb(resolve, reject, cb));
+        resolveIfPromise(res, resolve, reject, cb);
+      });
+    },
+    get: (key, cb) => {
+      return new Promise((resolve, reject) => {
+        let res = config.get(this.args.sessionId, key, makeCb(resolve, reject, cb));
+        resolveIfPromise(res, resolve, reject, cb);
+      });
+    },
+    set: (key, val, cb) => {
+      return new Promise((resolve, reject) => {
+        let res = config.set(this.args.sessionId, key, val, makeCb(resolve, reject, cb));
+        resolveIfPromise(res, resolve, reject, cb);
+      });
+    },
+    end: (cb) => {
+      return new Promise((resolve, reject) => {
+        let res = config.end(this.args.sessionId, makeCb(resolve, reject, cb));
+        resolveIfPromise(res, resolve, reject, cb);
+      });
+    }
+  };
+}
 
 // setting initial state of menu
 menu.startState({
