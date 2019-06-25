@@ -146,17 +146,25 @@ menu.state('market', {
 })
 
 menu.state('category', {
-  run: () => {
-    console.log("CATEGORY()")
-    console.log("CATEGORY TEXT", menu.args.text)
-    console.log("SESSION", menu.session)
-    console.log("CATEGORY VAL", menu.val)
-    // menu.session.set(menu.args.sessionId,'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
-    // menu.session.get("marketplace_id")
-    // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
-    // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+  // run: () => {
+  //   // console.log("CATEGORY()")
+  //   // console.log("CATEGORY TEXT", menu.args.text)
+  //   // console.log("SESSION", menu.session)
+  //   // console.log("CATEGORY VAL", menu.val)
+  //   // // menu.session.set(menu.args.sessionId,'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+  //   // // menu.session.get("marketplace_id")
+  //   // // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
+  //   // // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
   
-    menu.end("stop")
+  //   // menu.end("stop")
+
+  // },
+  run: () => {
+      let value = menu.val;
+      let session = getSession(menu.args.sessionId);
+      session.set("marketplace_id", value)
+      console.log("CATEGORY SESSION", session)
+      menu.end("stop")
   },
   next: {
     '0': 'start'
