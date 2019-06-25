@@ -40,7 +40,7 @@ exports.seed = function (knex, Promise) {
       price: "110kes",
       seller: "Tomba Manu",
       marketplace_id: '3',
-      category_id: '81'
+      category_id: '1'
     },
     {
       name: "processed honey",

@@ -1,17 +1,18 @@
 
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('marketplaces', tbl => {
-    tbl.increments()
+    tbl.increments('id').primary()
     tbl
       .string('name', 128)
       .notNullable()
       .unique()
     tbl
+    tbl
       .integer('country_id')
       .unsigned()
       .references('id')
       .inTable('countries')
-      .onDelete("CASCADE")
+      .onDelete('CASCADE')
       .onUpdate('CASCADE')
   })
 };
