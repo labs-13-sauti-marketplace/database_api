@@ -13,6 +13,16 @@ webRouter.get("/markets", async (req, res) => {
   }
 });
 
+webRouter.get('/markets/:id', async (req, res) => {
+  try {
+    let id = req.params.id;
+    let result = await db.getMarketByCountryId(id);
+    res.status(200).json(result)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+})
+
 webRouter.post("/addmarket", (req, res) => {
   console.log("we are trying to add a market");
   let post = req.body;
