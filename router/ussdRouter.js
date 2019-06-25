@@ -152,7 +152,7 @@ menu.state('category', {
     menu.session.set(menu.args.sessionId, 'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
     // menu.session.get("marketplace_id")
     // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
-    console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'))
+    console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
     menu.end("stop")
   },
   next: {
