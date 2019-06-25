@@ -149,10 +149,11 @@ menu.state('category', {
     console.log('CATEGORY()')
     console.log('CATEGORY TEXT', menu.args.text)
     console.log("SESSION", menu.session)
-    menu.session.set(menu.args.sessionId, 'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    console.log('CATEGORY VAL', menu.val)
+    // menu.session.set(menu.args.sessionId, 'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
     // menu.session.get("marketplace_id")
     // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
-    console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+    // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
     menu.end("stop")
   },
   next: {
