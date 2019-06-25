@@ -135,7 +135,6 @@ async function buildMenu () {
   const buyerMarketsState = (invalidMessage) => {
     return {
       run: async () => {
-        console.log(menu)
         let menuStr = await generateMenuStringFromDbRows(marketsDbRows)
         // show any invalid error messages
         if (invalidMessage) {
@@ -148,7 +147,7 @@ async function buildMenu () {
       next: {
         '*': async () => {
           // check for navigation state
-          const navState = checkForNavigationState(menu)
+          const navState = await checkForNavigationState(menu)
           if (navState) {
             return navState
           }
@@ -704,7 +703,6 @@ router.post('*', async (req, res) => {
       text: text,
     };
     // let newArray = [];
-    console.log('sessions', session);
     db("sessions")
       .insert(session)
       .then(res => {
