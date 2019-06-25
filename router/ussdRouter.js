@@ -52,7 +52,7 @@ menu.state('position', {
     menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
-    '1': 'buyer',
+    '1': 'market',
     '2': 'seller'
   }
 })
