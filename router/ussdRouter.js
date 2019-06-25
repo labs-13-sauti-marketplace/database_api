@@ -55,11 +55,11 @@ menu.state("position", {
   }
 });
 
-const parseInput = str => {
-  let array;
-  array = str.split("*")
-  return array[array.length - 1]
-}
+// const parseInput = str => {
+//   let array;
+//   array = str.split("*")
+//   return array[array.length - 1]
+// }
 
 const fetchProducts = (phoneNumber, sessionId, text) => {
   const market = "Busia"
