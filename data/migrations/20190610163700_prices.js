@@ -5,13 +5,6 @@ exports.up = function (knex, Promise) {
     tbl
       .string('price', 128)
       .notNullable()
-    tbl
-      .integer('product_id')
-      .unsigned()
-      .references('id')
-      .inTable('products')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE')
   })
 };
 
