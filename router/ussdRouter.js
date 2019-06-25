@@ -18,7 +18,7 @@ async function marketPlaces() {
 }
 
 async function categories() {
-  const result = await models.getCat()
+  const result = await models.getMarketplaceCategories()
   return result
 }
 
@@ -30,6 +30,7 @@ async function products() {
 // setting initial state of menu
 menu.startState({
   run: () => {
+    console.log('START STATE()')
     menu.con(`\n1. Go To Market \n2. goodbye`)
   },
   next: {
@@ -47,6 +48,7 @@ menu.state('goodbye', {
 
 menu.state('position', {
   run: () => {
+    console.log('START STATE()')
     menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
@@ -54,6 +56,12 @@ menu.state('position', {
     '2': 'seller'
   }
 })
+
+// const parseInput = str => {
+//   let array
+//   array = str.split('*')
+//   return array[array.length - 1]
+// }
 
 const fetchProducts = (phoneNumber, sessionId, text) => {
   const market = "Busia"
@@ -94,14 +102,15 @@ const handleError = err => {
 
 menu.state('market', {
   run: () => {
-    `${marketPlaces().then(res => {
+    console.log('START STATE()')
+    marketPlaces().then(res => {
       let lol = []
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n${i + 1}. ${res[i].name}`)
       }
-      let stringy = lol.join()
+      let stringy = lol.join("")
       menu.con(stringy)
-    })}`
+    })
   },
   next: {
     '0': 'start'
@@ -111,16 +120,13 @@ menu.state('market', {
 
 menu.state('category', {
   run: () => {
-    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    console.log('START STATE()')
+    console.log('CATEGORY TEXT', menu.args.text)
+    menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
     // menu.session.get("marketplace_id")
-    `${categories().then(res => {
-      let lol = []
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`)
-      }
-      let stringy = lol.join()
-      menu.con(stringy)
-    })}`
+    console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
+    // 
+    menu.end("stop")
   },
   next: {
     '0': 'start'
