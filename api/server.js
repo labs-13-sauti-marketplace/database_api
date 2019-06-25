@@ -1,7 +1,7 @@
 const server = require('express')();
 const helmet = require('helmet');
 const bodyParser = require("body-parser");
-const logger= require('morgan');
+const logger = require('morgan');
 const router = require('../router/ussdRouter');
 const webRouter = require('../router/webrouter');
 
