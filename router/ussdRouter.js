@@ -41,15 +41,23 @@ menu.sessionConfig({
     delete sessions[sessionId];
     callback();
   },
-  set: (sessionId, key, value, callback) => {
+  set: (sessionId, key, value) => {
     // store key-value pair in current session
-    sessions[sessionId][key] = value;
-    callback();
+    // sessions[sessionId][key] = value;
+    // callback();
+    return new Promise((resolve, reject) => {
+      sessions[sessionId][key] = value
+      resolve(value)
+    })
   },
-  get: (sessionId, key, callback) => {
+  get: (sessionId, key) => {
     // retrieve value by key in current session
-    let value = sessions[sessionId][key];
-    callback(null, value);
+    // let value = sessions[sessionId][key];
+    // callback(null, value);
+    return new Promise((resolve, reject) => {
+      let value = sessions[sessionId][key];
+      resolve(value)
+    })
   }
 });
 
@@ -145,24 +153,20 @@ menu.state('market', {
 })
 
 menu.state('category', {
-  // run: () => {
-  //   console.log('CATEGORY()')
-  //   console.log('CATEGORY TEXT', menu.args.text)
-  //   console.log("SESSION", menu.session)
-  //   console.log('CATEGORY VAL', menu.val)
-  //   // menu.session.set(menu.args.sessionId, 'marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
-  //   // menu.session.get("marketplace_id")
-  //   // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
-  //   // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
-  //   menu.end("stop")
-  // },
   run: () => {
-    let value = menu.val;
-    let session = getSession(menu.args.sessionId);
-    session.set('marketplace_id', value)
-    console.log('CATEGORY SESSION', session)
-    menu.end('stop')
+    console.log('CATEGORY()')
+    console.log('CATEGORY TEXT', menu.args.text)
+    console.log("SESSION", menu.session)
+    console.log('CATEGORY VAL', menu.val)
+    menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
+      .then(res => console.log('SET MARKET ID TO ', res))
+      .catch(err => console.log('ERROR SETTING ', err))
+    // menu.session.get("marketplace_id")
+    // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
+    // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+    menu.end("stop")
   },
+
   next: {
     '0': 'start'
   },
