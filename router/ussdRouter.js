@@ -18,7 +18,7 @@ async function marketPlaces() {
 }
 
 async function categories() {
-  const result = await models.getCat()
+  const result = await models.getMarketplaceCategories()
   return result
 }
 
@@ -27,9 +27,12 @@ async function products() {
   return result
 }
 
+
+
 // setting initial state of menu
 menu.startState({
   run: () => {
+    console.log('START STATE()')
     menu.con(`\n1. Go To Market \n2. goodbye`)
   },
   next: {
@@ -47,13 +50,20 @@ menu.state('goodbye', {
 
 menu.state('position', {
   run: () => {
+    console.log('POSITION()')
     menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
-    '1': 'buyer',
+    '1': 'market',
     '2': 'seller'
   }
 })
+
+// const parseInput = str => {
+//   let array
+//   array = str.split('*')
+//   return array[array.length - 1]
+// }
 
 const fetchProducts = (phoneNumber, sessionId, text) => {
   const market = "Busia"
@@ -94,14 +104,15 @@ const handleError = err => {
 
 menu.state('market', {
   run: () => {
-    `${marketPlaces().then(res => {
+    console.log('MARKET()')
+    marketPlaces().then(res => {
       let lol = []
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n${i + 1}. ${res[i].name}`)
       }
-      let stringy = lol.join()
+      let stringy = lol.join("")
       menu.con(stringy)
-    })}`
+    })
   },
   next: {
     '0': 'start'
@@ -111,17 +122,20 @@ menu.state('market', {
 
 menu.state('category', {
   run: () => {
-    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    console.log('CATEGORY()')
+    console.log('CATEGORY TEXT', menu.args.text)
+    console.log("SESSION", menu.session)
+    console.log('CATEGORY VAL', menu.val)
+    console.log('GLOBAL SESSIONS', sessions)
+    menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
+      .then(res => console.log('SET MARKET ID TO ', res))
+      .catch(err => console.log('ERROR SETTING ', err))
     // menu.session.get("marketplace_id")
-    `${categories().then(res => {
-      let lol = []
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`)
-      }
-      let stringy = lol.join()
-      menu.con(stringy)
-    })}`
+    // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
+    // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+    menu.end("stop")
   },
+
   next: {
     '0': 'start'
   },
@@ -495,19 +509,22 @@ router.post('*', (req, res) => {
   }
 
   menu.run(args, resMsg => {
-    console.log('in menu.run', args)
+    // console.log('in menu.run', args)
     res.send(resMsg);
     let sessionId = menu.args.sessionId;
     let phoneNumber = menu.args.phoneNumber;
     let text = menu.args.text;
     // let text = req.body.text.toString();
-    let session = {
-      sessionId: sessionId,
-      phoneNumber: phoneNumber,
-      text: text,
-    };
+
+    menu.session.start(() => {
+      console.log('menu.session.start()')
+      return
+    })
+      .then(res => console.log('menu.session.start ok'))
+      .catch(err => console.log('menu.session.start failed'))
+
     // let newArray = [];
-    console.log('sessions', session);
+    // console.log('sessions', session);
     db("sessions")
       .insert(session)
       .then(res => {

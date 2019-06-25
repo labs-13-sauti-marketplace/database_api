@@ -6,7 +6,8 @@ module.exports = {
   get,
   getMarkets,
   getCat,
-  getProducts
+  getProducts,
+  getMarketByCountryId
 };
 
 function findPrice(name, product) {
@@ -24,11 +25,20 @@ function get() {
   return db('marketplaces')
 }
 
+function getMarketByCountryId(id) {
+  return db('marketplaces')
+    .where({ 'country_id': id })
+}
+
 function getMarkets() {
   return db('marketplaces')
 }
 
 function getCat() {
+  return db('categories')
+}
+
+function getMarketplaceCategories(input) {
   return db('categories')
 }
 
