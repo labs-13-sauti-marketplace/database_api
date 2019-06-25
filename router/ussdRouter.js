@@ -105,7 +105,7 @@ menu.state('market', {
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
-      let stringy = lol.join();
+      let stringy = lol.join("");
       
       menu.con(stringy);
     })}`;
@@ -118,16 +118,19 @@ menu.state('market', {
 
 menu.state('category', {
   run: () => {
-    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    console.log("CATEGORY TEXT", menu.args.text)
+    menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
     // menu.session.get("marketplace_id")
-    `${categories().then(res => {
-      let lol = []
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`)
-      }
-      let stringy = lol.join()
-      menu.con(stringy)
-    })}`
+    console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
+    // `${categories().then(res => {
+    //   let lol = []
+    //   for (let i = 0; i < res.length; i++) {
+    //     lol.push(`\n#${res[i].id}: ${res[i].name}`)
+    //   }
+    //   let stringy = lol.join()
+    //   menu.con(stringy)
+    // })}`
+    menu.end("stop")
   },
   next: {
     '0': 'start'
