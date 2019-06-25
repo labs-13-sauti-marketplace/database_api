@@ -5,17 +5,17 @@ exports.up = function (knex, Promise) {
     tbl.string("price", 128)
     tbl.string('seller', 128)
     tbl
-      .integer('category_id')
-      .unsigned()
-      .references('id')
-      .inTable('categories')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE')
-    tbl
       .integer('marketplace_id')
       .unsigned()
       .references('id')
       .inTable('marketplaces')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE')
+    tbl
+      .integer('category_id')
+      .unsigned()
+      .references('id')
+      .inTable('categories')
       .onDelete('CASCADE')
       .onUpdate('CASCADE')
   });
@@ -24,5 +24,3 @@ exports.up = function (knex, Promise) {
 exports.down = function (knex, Promise) {
   return knex.schema.dropTableIfExists("products");
 };
-
-
