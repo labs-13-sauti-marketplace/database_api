@@ -1,4 +1,4 @@
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
   return knex("countries").insert([
     { name: "Kenya" }, // 1
     { name: "Uganda" }, // 2
