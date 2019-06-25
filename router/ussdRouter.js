@@ -123,7 +123,8 @@ menu.state('category', {
   run: () => {
     console.log("CATEGORY()")
     console.log("CATEGORY TEXT", menu.args.text)
-    menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
+    menu.session.set({'marketplace_id': parseInput(menu.args.text) })
     // menu.session.get("marketplace_id")
     console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
   
