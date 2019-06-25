@@ -1,7 +1,7 @@
 
 exports.up = function (knex, Promise) {
   return knex.schema.createTable('marketplaces', tbl => {
-    tbl.increments()
+    tbl.increments().primary()
     tbl
       .string('name', 128)
       .notNullable()
