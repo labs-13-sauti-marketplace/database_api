@@ -5,9 +5,15 @@ exports.up = function (knex, Promise) {
     tbl
       .string('name', 128)
       .notNullable()
+      .unique()
     tbl
-      .foreign('country_id')
-      .references('countries.id')
+    tbl
+      .integer('country_id')
+      .unsigned()
+      .references('id')
+      .inTable('countries')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE')
   })
 };
 
