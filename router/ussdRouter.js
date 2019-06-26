@@ -86,6 +86,7 @@ menu.state("goodbye", {
 menu.state("position", {
   run: () => {
     console.log("POSITION()")
+    console.log("SESSION STORAGE", sessionStore)
     menu.con(`\n1. buyer \n2. seller `);
   },
   next: {
@@ -158,6 +159,7 @@ menu.state('category', {
     console.log("SESSION", menu.session)
     console.log("CATEGORY VAL", menu.val)
     console.log("GLOBAL SESSIONS", sessions)
+    console.log("SESSION STORAGE", sessionStore)
     menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
       .then(res => console.log("set market id to ", res))
       .catch(err => console.log("error setting ", err))
