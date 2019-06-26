@@ -42,3 +42,12 @@ function getMarketplaceCategories(input) {
 function getProducts() {
   return db('products')
 }
+
+async function getCountries() {
+  return db('countries')
+}
+
+async function getMarketByCountryId(id) {
+  return db('marketplaces')
+    .where({ 'country_id': id })
+}

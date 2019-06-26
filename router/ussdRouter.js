@@ -28,6 +28,11 @@ async function products() {
   return result;
 }
 
+async function countries() {
+  const result = await models.getCountries();
+  return result;
+}
+
 let sessions = {};
 menu.sessionConfig({
   start: (sessionId, callback) => {
@@ -84,14 +89,14 @@ menu.state("goodbye", {
 });
 
 
-const fetchProducts = (phoneNumber, sessionId, text) => {
-  // const market = "Busia"
-  console.log('FETCH P#: ', phoneNumber)
-  console.log('FETCH SESH: ', sessionId)
-  console.log('FETCH TEXT: ', text)
-  return db('products')
-    .where({ market: market })
-}
+// const fetchProducts = (phoneNumber, sessionId, text) => {
+//   // const market = "Busia"
+//   console.log('FETCH P#: ', phoneNumber)
+//   console.log('FETCH SESH: ', sessionId)
+//   console.log('FETCH TEXT: ', text)
+//   return db('products')
+//     .where({ market: market })
+// }
 
 // fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
 //   .then(res => {
@@ -121,10 +126,10 @@ const handleError = err => {
   menu.end('An error occurred. Check the logs.')
 }
 
-menu.state('market', {
+menu.state('country', {
   run: () => {
     console.log("MARKET()")
-    marketPlaces().then(res => {
+    .countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
