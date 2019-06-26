@@ -150,6 +150,7 @@ menu.state("product", {
     console.log("PRODUCT()")
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId)
       .then(res => {
+        console.log('PRODUCT RES ', res)
         let lol = [];
         for (let i = 0; i < res.length; i++) {
           lol.push(`\n#${res[i].id}: ${res[i].name}`);
