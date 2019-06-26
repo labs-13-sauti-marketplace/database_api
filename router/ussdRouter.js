@@ -142,17 +142,17 @@ menu.state('country', {
   next: {
     '0': 'start'
   },
-  defaultNext: 'category'
+  defaultNext: 'market'
 })
 
-menu.state('category', {
+menu.state('market', {
   run: () => {
 
-    sessionStore[menu.args.sessionId].categoryId = menu.val;
-    console.log("CATEGORY()")
-    console.log("CATEGORY TEXT", menu.args.text)
+    sessionStore[menu.args.sessionId].marketId = menu.val;
+    console.log("MARKET()")
+    console.log("MARKET TEXT", menu.args.text)
     console.log("SESSION", menu.session)
-    console.log("CATEGORY VAL", menu.val)
+    console.log("MARKET VAL", menu.val)
     console.log("GLOBAL SESSIONS", sessions)
     console.log("SESSION STORAGE", sessionStore)
     
@@ -170,12 +170,12 @@ menu.state('category', {
   next: {
     '0': 'start'
   },
-  defaultNext: 'product'
+  defaultNext: 'category'
 })
 
 
 
-menu.state("product", {
+menu.state("category", {
   run: () => {
     // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
     
