@@ -12,58 +12,63 @@ router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
 // pulling in helper functions
-async function marketPlaces() {
-  const result = await models.getMarkets()
-  return result
-}
+// async function marketPlaces() {
+//   const result = await models.getMarkets()
+//   return result
+// }
 
-async function categories() {
-  const result = await models.getMarketplaceCategories()
-  return result
-}
+// async function categories() {
+//   const result = await models.getMarketplaceCategories()
+//   return result
+// }
 
-async function products() {
-  const result = await models.getProducts()
-  return result
-}
+// async function products() {
+//   const result = await models.getProducts()
+//   return result
+// }
 
-
+const sessionStore = {};
 
 // setting initial state of menu
 menu.startState({
   run: () => {
-    console.log('START STATE()')
-    menu.con(`\n1. Go To Market \n2. goodbye`)
+    sessionStore[menu.args.sessionId] = {}
+    console.log('NEW SESSION ', sessionStore)
+    menu.con(`\n1. buyer \n2. seller `)
   },
   next: {
-    '1': 'position',
-    '2': 'goodbye'
+    '1': 'country',
+    '2': 'postForSale'
   }
 })
 
 // functions based on user's menu choice
-menu.state('goodbye', {
-  run: () => {
-    menu.end(`goodbye`)
-  }
-})
+const fetchMarketplaces = () => {
+  const country = "Kenya"
+  return db('marketplaces')
+}
 
-menu.state('position', {
+menu.state('country', {
   run: () => {
-    console.log('POSITION()')
-    menu.con(`\n1. buyer \n2. seller `)
+    fetchMarketplaces()
+      .then(res => {
+        console.log('MARKETPLACE RES', res)
+        if (res.length > 0) {
+          let options = ''
+          for (let i = 0; i < res.length; i++) {
+            options += `\n#${res[i].id}: ${res[i].name}`
+          }
+          menu.con(`You chose ${menu.val}`)
+        }
+      })
+      .catch()
+    menu.con(`\n1. market \n2. I'm done `)
   },
   next: {
-    '1': 'market',
-    '2': 'seller'
+    '1': 'markets',
+    '2': 'done'
   }
 })
-
-// const parseInput = str => {
-//   let array
-//   array = str.split('*')
-//   return array[array.length - 1]
-// }
 
 const fetchProducts = (phoneNumber, sessionId, text) => {
   const market = "Busia"
@@ -74,73 +79,96 @@ const fetchProducts = (phoneNumber, sessionId, text) => {
     .where({ market: market })
 }
 
-// fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
-//   .then(res => {
-//     console.log("DB RES: ", res)
-//     if (res.length > 0) {
-//       let options = ''
-//       for (let i = 0; i < res.length; i++) {
-//         options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
-//       }
-//       menu.con(`Fetched ${res.length} items from db${options}`)
-//     } else {
-//       menu.con('Found no products in that market that match your selection')
-//     }
-//   })
-//   .catch(err => {
-//     menu.con(err)
-//   })
-
-const parseInput = str => {
-  let array
-  array = str.split('*')
-  return array[array.length - 1]
-}
-
-const handleError = err => {
-  console.log('ERROR', err)
-  menu.end('An error occurred. Check the logs.')
-}
-
-menu.state('market', {
+menu.state('markets', {
   run: () => {
-    console.log('MARKET()')
-    marketPlaces().then(res => {
-      let lol = []
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let stringy = lol.join("")
-      menu.con(stringy)
-    })
+    fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
+      .then(res => {
+        console.log("DB RES: ", res)
+        if (res.length > 0) {
+          let options = ''
+          for (let i = 0; i < res.length; i++) {
+            options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
+          }
+          menu.con(`Fetched ${res.length} items from db${options}`)
+        } else {
+          menu.con('Found no products in that market that match your selection')
+        }
+      })
+      .catch(err => {
+        menu.con(err)
+      })
   },
-  next: {
-    '0': 'start'
-  },
-  defaultNext: 'category'
-})
+  next: { '0': 'start' },
 
-menu.state('category', {
-  run: () => {
-    console.log('CATEGORY()')
-    console.log('CATEGORY TEXT', menu.args.text)
-    console.log("SESSION", menu.session)
-    console.log('CATEGORY VAL', menu.val)
-    console.log('GLOBAL SESSIONS', sessions)
-    menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
-      .then(res => console.log('SET MARKET ID TO ', res))
-      .catch(err => console.log('ERROR SETTING ', err))
-    // menu.session.get("marketplace_id")
-    // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
-    // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
-    menu.end("stop")
-  },
-
-  next: {
-    '0': 'start'
-  },
   defaultNext: 'product'
+
 })
+
+menu.state('product', {
+  run: () => {
+    sessionStore[menu.args.sessionId].productId = menu.val;
+    console.log('SESSION STROGAE ', sessionStore)
+    menu.end(`You chose the item with the id ${sessionStore[menu.args.sessionId].productId}`)
+  }
+})
+
+menu.state('done', {
+  run: () => {
+    menu.end(`Goodbye`)
+  }
+})
+
+
+// const parseInput = str => {
+//   let array
+//   array = str.split('*')
+//   return array[array.length - 1]
+// }
+
+// const handleError = err => {
+//   console.log('ERROR', err)
+//   menu.end('An error occurred. Check the logs.')
+// }
+
+// menu.state('market', {
+//   run: () => {
+//     console.log('MARKET()')
+//     marketPlaces().then(res => {
+//       let lol = []
+//       for (let i = 0; i < res.length; i++) {
+//         lol.push(`\n${i + 1}. ${res[i].name}`)
+//       }
+//       let stringy = lol.join("")
+//       menu.con(stringy)
+//     })
+//   },
+//   next: {
+//     '0': 'start'
+//   },
+//   defaultNext: 'category'
+// })
+
+// menu.state('category', {
+//   run: () => {
+//     console.log('CATEGORY()')
+//     console.log('CATEGORY TEXT', menu.args.text)
+//     console.log("SESSION", menu.session)
+//     console.log('CATEGORY VAL', menu.val)
+//     console.log('GLOBAL SESSIONS', sessions)
+//     menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
+//       .then(res => console.log('SET MARKET ID TO ', res))
+//       .catch(err => console.log('ERROR SETTING ', err))
+//     // menu.session.get("marketplace_id")
+//     // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
+//     // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+//     menu.end("stop")
+//   },
+
+//   next: {
+//     '0': 'start'
+//   },
+//   defaultNext: 'product'
+// })
 
 
 
