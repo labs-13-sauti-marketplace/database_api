@@ -1,523 +1,202 @@
 const router = require("express").Router();
-const UssdMenu = require('ussd-menu-builder')
-const models = require("./models");
-const sessionModel = require('./sessions-model')
-const menu = new UssdMenu()
-
-const bodyParser = require('body-parser')
-
+const bodyParser = require("body-parser");
+const models = require('./models')
+const UssdMenu = require("ussd-menu-builder");
+const bodyParser = require('body-parser');
 const db = require('../data/dbConfig')
 
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
 
-// pulling in helper functions
-async function marketPlaces() {
-  const result = await models.getMarkets()
-  return result
-}
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
-async function categories() {
-  const result = await models.getCat()
-  return result
-}
+app.get("/", (req, res) => {
+  res.send("It's alive!");
+});
 
-async function products() {
-  const result = await models.getProducts()
-  return result
-}
+app.get("/products", (req, res) => {
+  db("products")
+    .then(products => {
+      res.status(200).json(products);
+    })
+    .catch(err => {
+      res.status(400).json({ message: "Fail" });
+    });
+});
 
-// setting initial state of menu
+let menu = new UssdMenu();
+const sessionStore = {};
+
+// Define menu states
 menu.startState({
   run: () => {
-    menu.con(`\n1. Go To Market \n2. goodbye`)
+    sessionStore[menu.args.sessionId] = {}
+    console.log('NEW SESSION ', sessionStore)
+    // use menu.con() to send response without terminating session
+    menu.con("Welcome. Choose option:" + "\n1. Buyer" + "\n2. Seller");
   },
+  // next object links to next state based on user input
   next: {
-    '1': 'position',
-    '2': 'goodbye'
+    "1": "markets",
+    "2": "postForSale"
   }
-})
+});
 
-// functions based on user's menu choice
-menu.state('goodbye', {
-  run: () => {
-    menu.end(`goodbye`)
-  }
-})
-
-menu.state('position', {
-  run: () => {
-    menu.con(`\n1. buyer \n2. seller `)
-  },
-  next: {
-    '1': 'buyer',
-    '2': 'seller'
-  }
-})
-
-const fetchProducts = (phoneNumber, sessionId, text) => {
-  const market = "Busia"
-  console.log('FETCH P#: ', phoneNumber)
-  console.log('FETCH SESH: ', sessionId)
-  console.log('FETCH TEXT: ', text)
-  return db('products')
+const fetchMarkets = (phoneNumber, session, text) => {
+  const market = "Bujumbaru";
+  console.log("FETCH P#: ", phoneNumber);
+  console.log("FETCH SESH: ", session);
+  console.log("FETCH TEXT: ", text);
+  return db("products")
     .where({ market: market })
 }
 
-// fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
-//   .then(res => {
-//     console.log("DB RES: ", res)
-//     if (res.length > 0) {
-//       let options = ''
-//       for (let i = 0; i < res.length; i++) {
-//         options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
-//       }
-//       menu.con(`Fetched ${res.length} items from db${options}`)
-//     } else {
-//       menu.con('Found no products in that market that match your selection')
-//     }
-//   })
-//   .catch(err => {
-//     menu.con(err)
-//   })
+menu.state("markets", {
 
-const parseInput = str => {
-  let array
-  array = str.split('*')
-  return array[array.length - 1]
-}
-
-const handleError = err => {
-  console.log('ERROR', err)
-  menu.end('An error occurred. Check the logs.')
-}
-
-menu.state('market', {
   run: () => {
-    `${marketPlaces().then(res => {
-      let lol = []
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let stringy = lol.join()
-      menu.con(stringy)
-    })}`
-  },
-  next: {
-    '0': 'start'
-  },
-  defaultNext: 'category'
-})
-
-menu.state('category', {
-  run: () => {
-    // menu.session.set('marketplace_id', parseInput(menu.args.text), (err) => handleError(err))
-    // menu.session.get("marketplace_id")
-    `${categories().then(res => {
-      let lol = []
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`)
-      }
-      let stringy = lol.join()
-      menu.con(stringy)
-    })}`
-  },
-  next: {
-    '0': 'start'
-  },
-  defaultNext: 'product'
-})
-
-
-
-menu.state(`Busia`, {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-menu.state('Tororo', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-menu.state('Soroti', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-menu.state('Bungoma', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-// function for when user selects the Eldoret market
-menu.state('Eldoret', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-// function for when user selects the Kisumu market
-menu.state('Kisumu', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-//function based on "Kampala" choice
-menu.state('Kampala', {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = []
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let result = catArr.join()
-      menu.con(result)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-//function based on "Mbale" menu choice
-menu.state('Mbale', {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = []
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let result = catArr.join()
-      menu.con(result)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-// function for when user selects the Eldoret market
-menu.state('Eldoret', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-// function for when user selects the Kisumu market
-menu.state('Kisumu', {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-//function based on "Kampala" choice
-menu.state('Kampala', {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = []
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let result = catArr.join()
-      menu.con(result)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-//function based on "Mbale" menu choice
-menu.state('Mbale', {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = []
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let result = catArr.join()
-      menu.con(result)
-    })}`
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-})
-
-menu.state('Animal Products', {
-  run: () => {
-    menu.end(`
-    \n White eggs 110kes
-    \n Exotic eggs 110kes
-    \n Brown eggs 110kes
-    \n Milk 110kes
-    \n Nile perch 110kes
-    \n Tilapia  110kes
-    \n Processed honey 110kes
-    \n Unprocessed honey 110kes
-    \n Beef 110kes
-    \n Goat meat 110kes
-    \n Pork 110kes
-    \n Local chicken 110kes
-    \n Turkey 110kes
-     `)
-  }
-})
-
-menu.state('Beans', {
-  run: () => {
-    menu.end(`Agwedde beans 110kes`)
-  }
-})
-
-menu.state('Cereal', {
-  run: () => {
-    menu.end(
-      `\nMaize 110kes
-       \nMillet 110kes
-       \nWhite Rice 100kes
-    `)
-  }
-})
-
-
-
-menu.state('Fruits', {
-  run: () => {
-    menu.end(`Banana 110kes`)
-  }
-})
-
-menu.state('Other', {
-  run: () => {
-    menu.end(`Coffee 110kes`)
-  }
-})
-
-menu.state('Roots & Tubers', {
-  run: () => {
-    menu.end(`Sweet potato 110kes`)
-  }
-})
-
-menu.state('Seeds & Nuts', {
-  run: () => {
-    menu.end(`Sunflower seeds 110kes`)
-  }
-})
-
-menu.state('Vegetables', {
-  run: () => {
-    menu.end(`Peas 110kes`)
-  }
-})
-
-menu.on('error', err => {
-  console.log(err);
-})
-
-router.post('*', (req, res) => {
-  let args = {
-    phoneNumber: req.body.phoneNumber,
-    sessionId: req.body.sessionId,
-    serviceCode: req.body.serviceCode,
-    text: req.body.text
-  }
-
-  menu.run(args, resMsg => {
-    console.log('in menu.run', args)
-    res.send(resMsg);
-    let sessionId = menu.args.sessionId;
-    let phoneNumber = menu.args.phoneNumber;
-    let text = menu.args.text;
-    // let text = req.body.text.toString();
-    let session = {
-      sessionId: sessionId,
-      phoneNumber: phoneNumber,
-      text: text,
-    };
-    // let newArray = [];
-    console.log('sessions', session);
-    db("sessions")
-      .insert(session)
+    fetchMarkets(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
       .then(res => {
-        menu.end("session added successfully!");
+        console.log("DB RES: ", res);
+        if(res.length > 0) {
+          let options = "";
+          for(let i = 0; i < res.length; i++){
+            options += `\n#${res[i].id}: ${res[i].product} $${res[i].price}`
+          }
+          menu.con(`Fetched ${res.length} items from db${options}`)
+        } else {
+          menu.con("Found no products in that market that match your selection")
+        }
+      })
+      .catch(err => {
+        menu.con(err);
+      })
+  },
+
+  next: {"0": "start"},
+
+  defaultNext: "product"
+})
+
+menu.state("product", {
+  run: () => {
+    // gives you an array of all the decisions
+    // the user has made. 
+    // the last item in that array is the most recent
+    // menu.args.text.split("*")
+
+    // sets a key/value that can be used anywhere else in the application
+    // menu.session.set({"product_id": menu.args.text.split("*")})
+    // retreives the value for the key stored for the session
+    // menu.session.get("product_id")
+    sessionStore[menu.args.sessionId].productId = menu.val;
+    console.log("SESSION STORAGE", sessionStore)
+    menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].productId}`);
+  }
+})
+
+menu.state("done", {
+  run: () => {
+    menu.end('Goodbye');
+  }
+})
+
+
+// STATE FROM IN DEMO STUCK
+// menu.state("markets", {
+//   run: () => {
+//     const market = "Bujumbaru";
+
+//     // const markets = await db.find("products")
+//     // .where({menu.val});
+//     menu.con(`The products available at ${market}`);
+//     // return markets;
+//   },
+  
+//   next: () => {
+//     const market = "Bujumbaru";
+    
+    // db("products")
+    //   .where({ market: market })
+//       .then(products => {
+//         const options = {};
+//         // console.log("DBPRODUCTS", products)
+//         for (let i = 0; i < products.length; i++) {
+//           options[i + 1] = `${products[i].product} ${products[i].price} `;
+
+//         }
+//         console.log("OPTIONS", options)
+//         return options;
+//       });
+
+//   }
+// });
+
+menu.state("Test", {
+  run: () => {
+    menu.end("You made it!");
+  }
+});
+
+menu.state("postForSale", {
+  run: () => {
+    menu.con("Enter a country:");
+  },
+  next: {
+    "*[a-zA-Z]+": "addCountry"
+  }
+});
+
+// nesting states
+menu.state("addCountry", {
+  run: () => {
+    // use menu.val to access user input value
+    let country = menu.val;
+    const product = {
+      country: country,
+      market: "market",
+      product: "product",
+      price: "price"
+    };
+    db("products")
+      .insert(product)
+      .then(res => {
+        menu.end("Country added successfully!");
       })
       .catch(err => {
         menu.end("Fail");
       });
+  }
+});
+
+// Registering USSD handler with Express
+
+// app.post("*", function(req, res) {
+//   menu.run(req.body, ussdResult => {
+//     res.send(ussdResult);
+//   });
+//   //   let post = req.body;
+//   //   addPost(post)
+//   //     .then(saved => {
+//   //       res.status(201).json(saved);
+//   //     })
+//   //     .catch(({ message }) => {
+//   //       res.status(503).json({ message });
+//   //     });
+// });
+
+router.post('*', (req, res) => {
+  let args = {
+      phoneNumber: req.body.phoneNumber,
+      sessionId: req.body.sessionId,
+      serviceCode: req.body.serviceCode,
+      text: req.body.text
+  };
+  menu.run(args, resMsg => {
+      console.log("PHONE: ", args.phoneNumber);
+      console.log("SESSION: ", args.sessionId);
+      console.log("SERVICE CODE: ", args.serviceCode);
+      console.log("TEXT: ", args.text);
+      res.send(resMsg);
   });
 })
-
 
 module.exports = router;
