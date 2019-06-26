@@ -19,7 +19,6 @@ async function marketPlaces(countryId) {
 }
 
 async function categories() {
-
   const result = await models.getMarketplaceCategories();
   return result;
 }
@@ -35,18 +34,20 @@ async function countries() {
 }
 
 
+async function countries() {
+  const result = await models.getCountries();
+  return result;
+}
 
 
 
 // setting initial state of menu
 menu.startState({
   run: () => {
-
     console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
     console.log('NEW SESSION ', sessionStore)
     menu.con(`Go to market as \n1. Buyer \n2. Seller`);
-
   },
   next: {
     "1": "country",
@@ -62,7 +63,6 @@ menu.state("goodbye", {
 });
 
 
-
 menu.state('country', {
   run: () => {
     console.log("COUNTRY()")
@@ -73,7 +73,6 @@ menu.state('country', {
       }
 
       let stringy = lol.join("");
-      
       menu.con(stringy);
     });
   },
@@ -90,10 +89,11 @@ menu.state('market', {
   run: () => {
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
-    console.log("SESSION STORAGE", sessionStore)
+
+    console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      if(res.length < 1) {
+      if (res.length < 1) {
         menu.end("No marketplaces in that country.")
       }
       let lol = [];
@@ -101,16 +101,16 @@ menu.state('market', {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
-      
+
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
-   
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
+
   },
- 
+
   next: {
     '0': 'start'
   },
@@ -121,6 +121,7 @@ menu.state('market', {
 menu.state("category", {
   run: () => {
     sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+
     console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
@@ -128,7 +129,7 @@ menu.state("category", {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
-      
+
       menu.con(stringy);
     })
     .catch(err => {
@@ -146,9 +147,8 @@ menu.state("category", {
 
 menu.state("product", {
   run: () => {
-    console.log("PRODUCT()")
-   
     sessionStore[menu.args.sessionId].categoryId = menu.val;
+    console.log("PRODUCT()")
 
     console.log("SESSION STORAGE", sessionStore)
 
@@ -178,21 +178,19 @@ menu.state("product", {
 });
 
 
-
-
 router.post('*', (req, res) => {
   let args = {
-      phoneNumber: req.body.phoneNumber,
-      sessionId: req.body.sessionId,
-      serviceCode: req.body.serviceCode,
-      text: req.body.text
+    phoneNumber: req.body.phoneNumber,
+    sessionId: req.body.sessionId,
+    serviceCode: req.body.serviceCode,
+    text: req.body.text
   };
   menu.run(args, resMsg => {
-      console.log("PHONE: ", args.phoneNumber);
-      console.log("SESSION: ", args.sessionId);
-      console.log("SERVICE CODE: ", args.serviceCode);
-      console.log("TEXT: ", args.text);
-      res.send(resMsg);
+    console.log("PHONE: ", args.phoneNumber);
+    console.log("SESSION: ", args.sessionId);
+    console.log("SERVICE CODE: ", args.serviceCode);
+    console.log("TEXT: ", args.text);
+    res.send(resMsg);
 
   });
 })
