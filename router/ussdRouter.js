@@ -99,7 +99,7 @@ menu.state('country', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
