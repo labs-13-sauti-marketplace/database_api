@@ -41,12 +41,12 @@ menu.startState({
 });
 
 const fetchMarkets = (phoneNumber, session, text) => {
-  const market = "Bujumbaru";
+  // const market = "Bujumbaru";
   console.log("FETCH P#: ", phoneNumber);
   console.log("FETCH SESH: ", session);
   console.log("FETCH TEXT: ", text);
   return db("countries")
-    .where({ name:name })
+    .where({ id })
 }
 
 menu.state("markets", {
