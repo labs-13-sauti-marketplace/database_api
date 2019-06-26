@@ -29,6 +29,11 @@ async function products(marketplaceId, categoryId) {
   return result;
 }
 
+async function addProducts(marketplaceId, categoryId) {
+  const result = await models.addProductInfo(marketplaceId, categoryId);
+  return result;
+}
+
 async function countries() {
   const result = await models.getCountries();
   return result;
@@ -257,36 +262,41 @@ menu.state("sellerCategory", {
   next: {
     "0": "start"
   },
-  defaultNext: "buyerProduct"
+  defaultNext: "sellerAddName"
 });
 
 
-menu.state("sellerProduct", {
+menu.state("sellerAddName", {
   run: () => {
    
    
     sessionStore[menu.args.sessionId].categoryId = menu.val;
 
-    console.log("SESSION STORAGE", sessionStore)
+    // console.log("SESSION STORAGE", sessionStore)
 
-    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
-      console.log("MARKET RES", res)
-      if(res.length < 1) {
-        menu.end("No products available.")
-      }
-      let lol = [];
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} 
-        \n${res[i].seller}`);
-      }
-      let stringy = lol.join("");
-      
-      menu.con(stringy);
+    addProductInfo().then(res => {
+      menu.con("Enter product name:");
     })
     .catch(err => {
       console.log(err)
       menu.end('error')
     })
+
+  },
+  next: {
+    "*[a-zA-Z]+": "sellerPostInfo"
+  }
+});
+
+menu.state("sellerPostInfo", {
+  run: () => {
+   
+   
+    sessionStore[menu.args.sessionId].productName = menu.val;
+
+      
+      menu.end("post success");
+  
 
   }
 });
