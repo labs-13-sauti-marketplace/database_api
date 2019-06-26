@@ -23,8 +23,8 @@ async function categories() {
   return result;
 }
 
-async function products() {
-  const result = await models.getProducts();
+async function products(marketplaceId, categoryId) {
+  const result = await models.getProductByMarketAndCatId(marketplaceId, categoryId);
   return result;
 }
 
@@ -88,6 +88,7 @@ menu.state('market', {
   run: () => {
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
+
     console.log("SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
@@ -119,6 +120,9 @@ menu.state('market', {
 
 menu.state("category", {
   run: () => {
+    let marketplaceId = menu.val;
+    console.log("CAT STORAGE ", menu.val)
+    console.log("CAT STORAGE 2 ", marketplaceId)
     console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
@@ -140,16 +144,17 @@ menu.state("category", {
 
 menu.state("product", {
   run: () => {
+    sessionStore[menu.args.sessionId].categoryId = menu.val;
+
     console.log("PRODUCT()")
-    // products().then(res => {
-    //   let lol = [];
-    //   for (let i = 0; i < res.length; i++) {
-    //     lol.push(`\n#${res[i].id}: ${res[i].name}`);
-    //   }
-    //   let stringy = lol.join("");
-    menu.end("you made it to products")
-    // menu.con(stringy);
-    // });
+    products().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
+      menu.con(stringy);
+    });
 
   },
   next: {
