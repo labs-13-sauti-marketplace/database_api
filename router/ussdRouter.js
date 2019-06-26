@@ -182,25 +182,25 @@ menu.state('category', {
 
 
 
-// menu.state("category", {
-//   run: () => {
-//     // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
+menu.state("product", {
+  run: () => {
+    // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
     
-//     `${models.getMarketplaceCategories(parseInput(menu.args.text)).then(res => {
-//       let lol = [];
-//       for (let i = 0; i < res.length; i++) {
-//         lol.push(`\n#${res[i].id}: ${res[i].name}`);
-//       }
-//       let stringy = lol.join();
-//       menu.con(stringy);
-//     })}`;
+    `${products(sessionStore[menu.args.sessionId].categoryId).then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join();
+      menu.con(stringy);
+    })}`;
 
-//   },
-//   next: {
-//     "0": "start"
-//   },
-//   defaultNext: "product"
-// });
+  },
+  next: {
+    "0": "start"
+  },
+  defaultNext: "product"
+});
 
 menu.on("error", err => {
   console.log(err);
