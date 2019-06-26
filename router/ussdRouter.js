@@ -34,6 +34,12 @@ async function countries() {
   return result;
 }
 
+
+async function countries() {
+  const result = await models.getCountries();
+  return result;
+}
+
 // setting initial state of menu
 menu.startState({
   run: () => {
@@ -66,7 +72,6 @@ menu.state('country', {
       }
 
       let stringy = lol.join("");
-
       menu.con(stringy);
     });
   },
@@ -76,6 +81,8 @@ menu.state('country', {
   defaultNext: 'market'
 
 })
+
+
 
 menu.state('market', {
   run: () => {
@@ -99,12 +106,16 @@ menu.state('market', {
         console.log(err)
         menu.end('error')
       })
+
   },
+
   next: {
     '0': 'start'
   },
   defaultNext: 'category'
 })
+
+
 
 menu.state("category", {
   run: () => {
@@ -125,6 +136,7 @@ menu.state("category", {
   },
   defaultNext: "product"
 });
+
 
 menu.state("product", {
   run: () => {
