@@ -7,6 +7,7 @@ const menu = new UssdMenu()
 const bodyParser = require('body-parser')
 
 const db = require('../data/dbConfig')
+const sessionStore = {};
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
@@ -65,6 +66,8 @@ menu.sessionConfig({
 menu.startState({
   run: () => {
     console.log("START STATE()")
+    sessionStore[menu.args.sessionId] = {}
+    console.log('NEW SESSION ', sessionStore)
     menu.con(`\n1. Go To Market \n2. goodbye`);
   },
   next: {
@@ -91,11 +94,6 @@ menu.state("position", {
   }
 });
 
-// const parseInput = str => {
-//   let array;
-//   array = str.split("*")
-//   return array[array.length - 1]
-// }
 
 const fetchProducts = (phoneNumber, sessionId, text) => {
   const market = "Busia"
@@ -199,372 +197,23 @@ menu.state('category', {
 //   defaultNext: "product"
 // });
 
-menu.state("Tororo", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-menu.state("Soroti", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-menu.state("Bungoma", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-// function for when user selects the Eldoret market
-menu.state("Eldoret", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-// function for when user selects the Kisumu market
-menu.state("Kisumu", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-//function based on "Kampala" choice
-menu.state("Kampala", {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = [];
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let result = catArr.join();
-      menu.con(result);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-//function based on "Mbale" menu choice
-menu.state("Mbale", {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = [];
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let result = catArr.join();
-      menu.con(result);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-// function for when user selects the Eldoret market
-menu.state("Eldoret", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-});
-
-// function for when user selects the Kisumu market
-menu.state("Kisumu", {
-  run: () => {
-    `${categories().then(res => {
-      let newArray = [];
-      for (let i = 0; i < res.length; i++) {
-        newArray.push(`\n${i + 1}. ${res[i].name}`)
-      }
-      let newList = newArray.join();
-      menu.con(newList);
-    })}`;
-  },
-  next: {
-    '1': 'Animal Products',
-    '2': 'Cereals',
-    '3': 'Fruits',
-    '4': 'Beans',
-    '5': 'Other',
-    '6': 'Roots & Tubers',
-    '7': 'Seeds & Nuts',
-    '8': 'Vegetables'
-  }
-});
-
-//function based on "Kampala" choice
-menu.state("Kampala", {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = [];
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let result = catArr.join();
-      menu.con(result);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-//function based on "Mbale" menu choice
-menu.state("Mbale", {
-  run: () => {
-    `${categories().then(res => {
-      let catArr = [];
-      for (let i = 0; i < res.length; i++) {
-        catArr.push(`\n${i + 1}. ${res[i].name}`);
-      }
-      let result = catArr.join();
-      menu.con(result);
-    })}`;
-  },
-  next: {
-    "1": "Animal Products",
-    "2": "Cereals",
-    "3": "Fruits",
-    "4": "Beans",
-    "5": "Other",
-    "6": "Roots & Tubers",
-    "7": "Seeds & Nuts",
-    "8": "Vegetables"
-  }
-});
-
-menu.state("Animal Products", {
-  run: () => {
-    menu.end(`
-    \n White eggs 110kes
-    \n Exotic eggs 110kes
-    \n Brown eggs 110kes
-    \n Milk 110kes
-    \n Nile perch 110kes
-    \n Tilapia  110kes
-    \n Processed honey 110kes
-    \n Unprocessed honey 110kes
-    \n Beef 110kes
-    \n Goat meat 110kes
-    \n Pork 110kes
-    \n Local chicken 110kes
-    \n Turkey 110kes
-     `);
-  }
-});
-
-menu.state("Beans", {
-  run: () => {
-    menu.end(`Agwedde beans 110kes`);
-  }
-});
-
-menu.state("Cereal", {
-  run: () => {
-    menu.end(
-      `\nMaize 110kes
-       \nMillet 110kes
-       \nWhite Rice 100kes
-    `
-    );
-  }
-});
-
-menu.state("Fruits", {
-  run: () => {
-    menu.end(`Banana 110kes`);
-  }
-});
-
-menu.state("Other", {
-  run: () => {
-    menu.end(`Coffee 110kes`);
-  }
-});
-
-menu.state("Roots & Tubers", {
-  run: () => {
-    menu.end(`Sweet potato 110kes`);
-  }
-});
-
-menu.state("Seeds & Nuts", {
-  run: () => {
-    menu.end(`Sunflower seeds 110kes`);
-  }
-});
-
-menu.state("Vegetables", {
-  run: () => {
-    menu.end(`Peas 110kes`);
-  }
-});
-
 menu.on("error", err => {
   console.log(err);
 });
 
 router.post('*', (req, res) => {
   let args = {
-    phoneNumber: req.body.phoneNumber,
-    sessionId: req.body.sessionId,
-    serviceCode: req.body.serviceCode,
-    text: req.body.text
-  }
-
+      phoneNumber: req.body.phoneNumber,
+      sessionId: req.body.sessionId,
+      serviceCode: req.body.serviceCode,
+      text: req.body.text
+  };
   menu.run(args, resMsg => {
-    // console.log('in menu.run', args)
-    res.send(resMsg);
-    let sessionId = menu.args.sessionId;
-    let phoneNumber = menu.args.phoneNumber;
-    let text = menu.args.text;
-    // let text = req.body.text.toString();
-    let session = {
-      [sessionId]: {
-        phoneNumber: phoneNumber,
-        text: text
-      }
-      // sessionId: sessionId,
-      // phoneNumber: phoneNumber,
-      // text: text,
-    };
-    // let newArray = [];
-    // console.log('sessions', session);
-    db("sessions")
-      .insert(session)
-      .then(res => {
-        menu.end("session added successfully!");
-      })
-      .catch(err => {
-        menu.end("Fail");
-      });
+      console.log("PHONE: ", args.phoneNumber);
+      console.log("SESSION: ", args.sessionId);
+      console.log("SERVICE CODE: ", args.serviceCode);
+      console.log("TEXT: ", args.text);
+      res.send(resMsg);
   });
 })
 
