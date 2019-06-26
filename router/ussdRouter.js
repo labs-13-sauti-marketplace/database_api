@@ -35,39 +35,6 @@ async function countries() {
   return result;
 }
 
-// let sessions = {};
-// menu.sessionConfig({
-//   start: (sessionId, callback) => {
-//       // initialize current session if it doesn't exist
-//       // this is called by menu.run()
-//       if(!(sessionId in sessions)) sessions[sessionId] = {};
-//       callback();
-//   },
-//   end: (sessionId, callback) => {
-//       // clear current session
-//       // this is called by menu.end()
-//       delete sessions[sessionId];
-//       callback();
-//   },
-//   set: (sessionId, key, value) => {
-//       // store key-value pair in current session
-//       // sessions[sessionId][key] = value;
-//       // callback();
-//       return new Promise((resolve, reject) => {
-//         sessions[sessionId][key] = value;
-//         resolve(value)
-//       })
-//   },
-//   get: (sessionId, key) => {
-//       // retrieve value by key in current session
-//       // let value = sessions[sessionId][key];
-//       // callback(null, value);
-//       return new Promise((resolve, reject) => {
-//         let value = sessions[sessionId][key];
-//         resolve(value)
-//       })
-//   }
-// });
 
 
 // setting initial state of menu
@@ -95,44 +62,6 @@ menu.state("goodbye", {
 
 
 
-// const fetchProducts = (phoneNumber, sessionId, text) => {
-//   // const market = "Busia"
-//   console.log('FETCH P#: ', phoneNumber)
-//   console.log('FETCH SESH: ', sessionId)
-//   console.log('FETCH TEXT: ', text)
-//   return db('products')
-//     .where({ market: market })
-// }
-
-
-// fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
-//   .then(res => {
-//     console.log("DB RES: ", res)
-//     if (res.length > 0) {
-//       let options = ''
-//       for (let i = 0; i < res.length; i++) {
-//         options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
-//       }
-//       menu.con(`Fetched ${res.length} items from db${options}`)
-//     } else {
-//       menu.con('Found no products in that market that match your selection')
-//     }
-//   })
-//   .catch(err => {
-//     menu.con(err)
-//   })
-
-const parseInput = str => {
-  let array
-  array = str.split('*')
-  return array[array.length - 1]
-}
-
-const handleError = err => {
-  console.log('ERROR', err)
-  menu.end('An error occurred. Check the logs.')
-}
-
 menu.state('country', {
   run: () => {
     console.log("COUNTRY()")
@@ -154,27 +83,7 @@ menu.state('country', {
 
 })
 
-menu.state('category', {
-  run: () => {
-    console.log('CATEGORY()')
-    console.log('CATEGORY TEXT', menu.args.text)
-    console.log("SESSION", menu.session)
-    console.log('CATEGORY VAL', menu.val)
-    console.log('GLOBAL SESSIONS', sessions)
-    menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
-      .then(res => console.log('SET MARKET ID TO ', res))
-      .catch(err => console.log('ERROR SETTING ', err))
-    // menu.session.get("marketplace_id")
-    // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
-    // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
-    menu.end("stop")
-  },
 
-  next: {
-    '0': 'start'
-  },
-  defaultNext: 'product'
-})
 
 menu.state('market', {
   run: () => {
