@@ -7,116 +7,187 @@ const menu = new UssdMenu()
 const bodyParser = require('body-parser')
 
 const db = require('../data/dbConfig')
+const sessionStore = {};
 
 router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
 // pulling in helper functions
-// async function marketPlaces() {
-//   const result = await models.getMarkets()
-//   return result
-// }
+async function marketPlaces(countryId) {
+  const result = await models.getMarketByCountryId(countryId)
+  return result
+}
 
-// async function categories() {
-//   const result = await models.getMarketplaceCategories()
-//   return result
-// }
+async function categories() {
+  const result = await models.getMarketplaceCategories()
+  return result
+}
 
-// async function products() {
-//   const result = await models.getProducts()
-//   return result
-// }
+async function products() {
+  const result = await models.getProducts()
+  return result
+}
 
-const sessionStore = {};
+async function countries() {
+  const result = await models.getCountries()
+  return result
+}
+
+let sessions = {};
+menu.sessionConfig({
+  start: (sessionId, callback) => {
+    // initialize current session if it doesn't exist
+    // this is called by menu.run()
+    if (!(sessionId in sessions)) sessions[sessionId] = {};
+    callback();
+  },
+  end: (sessionId, callback) => {
+    // clear current session
+    // this is called by menu.end()
+    delete sessions[sessionId];
+    callback();
+  },
+  set: (sessionId, key, value) => {
+    // store key-value pair in current session
+    // sessions[sessionId][key] = value;
+    // callback();
+    return new Promise((resolve, reject) => {
+      sessions[sessionId][key] = value;
+      resolve(value)
+    })
+  },
+  get: (sessionId, key) => {
+    // retrieve value by key in current session
+    // let value = sessions[sessionId][key];
+    // callback(null, value);
+    return new Promise((resolve, reject) => {
+      let value = sessions[sessionId][key];
+      resolve(value)
+    })
+  }
+});
 
 // setting initial state of menu
 menu.startState({
   run: () => {
+    console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
     console.log('NEW SESSION ', sessionStore)
-    menu.con(`\n1. buyer \n2. seller `)
+    menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
-    '1': 'country',
-    '2': 'postForSale'
+    "1": "country",
+    "2": "goodbye"
   }
-})
+});
 
-// functions based on user's menu choice
-const fetchMarketplaces = () => {
-  const country = "Kenya"
-  return db('marketplaces')
-}
-
-menu.state('country', {
-  run: () => {
-    fetchMarketplaces()
-      .then(res => {
-        console.log('MARKETPLACE RES', res)
-        if (res.length > 0) {
-          let options = ''
-          for (let i = 0; i < res.length; i++) {
-            options += `\n#${res[i].id}: ${res[i].name}`
-          }
-          menu.con(`You chose ${menu.val}`)
-        }
-      })
-      .catch()
-    menu.con(`\n1. market \n2. I'm done `)
-  },
-  next: {
-    '1': 'markets',
-    '2': 'done'
-  }
-})
-
-const fetchProducts = (phoneNumber, sessionId, text) => {
-  const market = "Busia"
-  console.log('FETCH P#: ', phoneNumber)
-  console.log('FETCH SESH: ', sessionId)
-  console.log('FETCH TEXT: ', text)
-  return db('products')
-    .where({ market: market })
-}
-
-menu.state('markets', {
-  run: () => {
-    fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
-      .then(res => {
-        console.log("DB RES: ", res)
-        if (res.length > 0) {
-          let options = ''
-          for (let i = 0; i < res.length; i++) {
-            options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
-          }
-          menu.con(`Fetched ${res.length} items from db${options}`)
-        } else {
-          menu.con('Found no products in that market that match your selection')
-        }
-      })
-      .catch(err => {
-        menu.con(err)
-      })
-  },
-  next: { '0': 'start' },
-
-  defaultNext: 'product'
-
-})
-
-menu.state('product', {
-  run: () => {
-    sessionStore[menu.args.sessionId].productId = menu.val;
-    console.log('SESSION STROGAE ', sessionStore)
-    menu.end(`You chose the item with the id ${sessionStore[menu.args.sessionId].productId}`)
-  }
-})
-
-menu.state('done', {
+menu.state('goodbye', {
   run: () => {
     menu.end(`Goodbye`)
   }
 })
+
+// functions based on user's menu choice
+// const fetchMarketplaces = () => {
+//   const country = "Kenya"
+//   return db('marketplaces')
+// }
+
+menu.state('country', {
+  run: () => {
+    console.log("COUNTRY()")
+    countries().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
+
+      menu.con(stringy);
+    });
+  },
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'market'
+})
+
+// const fetchProducts = (phoneNumber, sessionId, text) => {
+//   const market = "Busia"
+//   console.log('FETCH P#: ', phoneNumber)
+//   console.log('FETCH SESH: ', sessionId)
+//   console.log('FETCH TEXT: ', text)
+//   return db('products')
+//     .where({ market: market })
+// }
+
+menu.state('market', {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].countryId = menu.val;
+    console.log('SESSION STORE', sessionStore)
+    marketPlaces(sessionStore[menu.args.sessionId].countryId)
+      .then(res => {
+        console.log('MARKET RES', res)
+        let lol = [];
+        for (let i = 0; i < res.length; i++) {
+          lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        }
+        let stringy = lol.join("");
+
+        menu.con(stringy);
+      })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
+
+    // menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
+    //   .then(res => console.log("set market id to ", res))
+    //   .catch(err => console.log("error setting ", err))
+    // menu.session.get("marketplace_id")
+    // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
+    // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+
+    menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].marketId}`)
+
+  },
+
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'category'
+})
+
+menu.state("category", {
+  run: () => {
+    // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
+    menu.end('stop')
+    // `${products(sessionStore[menu.args.sessionId].marketId).then(res => {
+    //   let lol = [];
+    //   for (let i = 0; i < res.length; i++) {
+    //     lol.push(`\n#${res[i].id}: ${res[i].name}`);
+    //   }
+    //   let stringy = lol.join();
+    //   menu.con(stringy);
+    // })}`;
+
+  },
+  next: {
+    "0": "start"
+  },
+  defaultNext: "product"
+});
+
+menu.state('product', {
+  run: () => {
+    sessionStore[menu.args.sessionId].productId = menu.val;
+    console.log('SESSION STORAGE ', sessionStore)
+    menu.end(`You chose the item with the id ${sessionStore[menu.args.sessionId].productId}`)
+  }
+})
+
+
 
 
 // const parseInput = str => {

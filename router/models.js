@@ -7,6 +7,7 @@ module.exports = {
   getMarkets,
   getCat,
   getProducts,
+  getCountries,
   getMarketByCountryId
 };
 
@@ -28,6 +29,10 @@ function get() {
 function getMarketByCountryId(id) {
   return db('marketplaces')
     .where({ 'country_id': id })
+}
+
+function getCountries() {
+  return db('countries')
 }
 
 function getMarkets() {
