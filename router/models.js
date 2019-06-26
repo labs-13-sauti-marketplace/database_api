@@ -28,8 +28,7 @@ function get() {
 }
 
 function getProductByMarketAndCatId(categoryId) {
-  return db("products")
-    .where({ 'category_id': categoryId });
+  return db("products").where({ 'category_id': categoryId });
 }
 
 function getMarkets() {
