@@ -7,10 +7,7 @@ module.exports = {
   getMarkets,
   getCat,
   getProducts,
-<<<<<<< HEAD
-=======
-  getMarketplaceCategories, 
->>>>>>> 5e38da6cb5f5f48ddf9ad906ce69061f7da85076
+  getMarketplaceCategories,
   getCountries,
   getMarketByCountryId
 };
@@ -30,16 +27,8 @@ function get() {
 }
 
 function getProductByMarketAndCatId(id) {
-  return db("products").where({ marketplaces_id: id } || {categories_id: id});
+  return db("products").where({ marketplaces_id: id } || { categories_id: id });
 }
-<<<<<<< HEAD
-
-function getCountries() {
-  return db('countries')
-}
-
-=======
->>>>>>> 5e38da6cb5f5f48ddf9ad906ce69061f7da85076
 function getMarkets() {
   return db("marketplaces");
 }
