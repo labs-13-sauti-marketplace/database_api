@@ -89,7 +89,7 @@ menu.state('market', {
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
-    console.log("SESSION STORAGE", sessionStore)
+    console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
@@ -120,9 +120,9 @@ menu.state('market', {
 
 menu.state("category", {
   run: () => {
-    let marketplaceId = menu.val;
-    console.log("CAT STORAGE ", menu.val)
-    console.log("CAT STORAGE 2 ", marketplaceId)
+    // let marketplaceId = menu.val;
+    console.log("CATEGORY SESSION STORAGE", sessionStore)
+    console.log("CAT STORAGE ", marketplaceId)
     console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
@@ -145,7 +145,7 @@ menu.state("category", {
 menu.state("product", {
   run: () => {
     sessionStore[menu.args.sessionId].categoryId = menu.val;
-    console.log("PROD STORAGE ", marketplaceId)
+    console.log("PRODUCT SESSION STORAGE", sessionStore)
     console.log("PRODUCT()")
     products().then(res => {
       let lol = [];
