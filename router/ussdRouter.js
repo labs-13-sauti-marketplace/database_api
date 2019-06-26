@@ -68,10 +68,10 @@ menu.startState({
     console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
     console.log('NEW SESSION ', sessionStore)
-    menu.con(`\n1. Go To Market \n2. goodbye`);
+    menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
-    "1": "position",
+    "1": "market",
     "2": "goodbye"
   }
 });
@@ -80,18 +80,6 @@ menu.startState({
 menu.state("goodbye", {
   run: () => {
     menu.end(`goodbye`);
-  }
-});
-
-menu.state("position", {
-  run: () => {
-    console.log("POSITION()")
-    console.log("SESSION STORAGE", sessionStore)
-    menu.con(`\n1. buyer \n2. seller `);
-  },
-  next: {
-    "1": "market",
-    "2": "seller"
   }
 });
 
