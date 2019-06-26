@@ -151,6 +151,9 @@ menu.state("product", {
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId)
       .then(res => {
         console.log('PRODUCT RES ', res)
+        if (res.length < 1) {
+          menu.end("No products available.")
+        }
         let lol = [];
         for (let i = 0; i < res.length; i++) {
           lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller}`);
