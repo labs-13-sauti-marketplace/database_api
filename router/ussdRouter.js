@@ -71,7 +71,11 @@ menu.state('buyerCountry', {
       let stringy = lol.join("");
       
       menu.con(stringy);
-    });
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
   },
   next: {
     '0': 'start'
@@ -185,7 +189,11 @@ menu.state('sellerCountry', {
       let stringy = lol.join("");
       
       menu.con(stringy);
-    });
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
   },
   next: {
     '0': 'start'
