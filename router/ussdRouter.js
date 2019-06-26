@@ -2,7 +2,6 @@ const router = require("express").Router();
 const bodyParser = require("body-parser");
 const models = require('./models')
 const UssdMenu = require("ussd-menu-builder");
-const bodyParser = require('body-parser');
 const db = require('../data/dbConfig')
 
 
@@ -84,7 +83,7 @@ menu.state("product", {
 
     // sets a key/value that can be used anywhere else in the application
     // menu.session.set({"product_id": menu.args.text.split("*")})
-    // retreives the value for the key stored for the session
+    // retrieves the value for the key stored for the session
     // menu.session.get("product_id")
     sessionStore[menu.args.sessionId].productId = menu.val;
     console.log("SESSION STORAGE", sessionStore)
