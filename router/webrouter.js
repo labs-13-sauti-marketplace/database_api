@@ -1,9 +1,10 @@
 const db = require("../data/dbConfig");
 const webRouter = require("express").Router();
-const countries = require("./countries-model");
+// const countries = require("./countries-model");
 const models = require("./models");
 const sessions = require("./sessions-model");
 const markets =require("./markets-model")
+
 webRouter.get("/countries", async (req, res) => {
   try {
     let result = await db("countries");
@@ -46,14 +47,35 @@ webRouter.post("/addcountry", (req, res) => {
 async function addPost(post) {
   console.log("before");
   const func = await db("countries").insert(post)
-    .where({ market: countries });
+    .where({ country: countries });
   console.log("after");
   return `New Post ID: ${post.name} : Added :)`;
 }
 
+webRouter.post("/addmarket", (req, res) => {
+  console.log("we are trying to add a market");
+  let post = req.body;
+  addPosts(post)
+    .then(saved => {
+      res.status(201).json(saved);
+    })
+    .catch(({ message }) => {
+      res.status(503).json({ message });
+    });
+});
+
+async function addPosts(post) {
+  console.log("before");
+  const func = await db("marketplaces").insert(post)
+    .where({ market: markets});
+  console.log("after");
+  return `New Post ID: ${post.name} : Added :)`;
+}
+
+
 webRouter.delete("/deletemarket/:id", (req, res) => {
   let deleted = req.params.id;
-  db("countries")
+  db("marketplaces")
     .where({ id: deleted })
     .del()
     .then(gone => {
@@ -72,26 +94,26 @@ webRouter.delete("/deletemarket/:id", (req, res) => {
     });
 });
 
-webRouter.put("/updatemarket/:id", (req, res) => {
-  let updatedId = req.params.id;
-  db("countries")
-    .where({ id: updatedId })
-    .update(req.body)
-    .then(newlook => {
-      if (newlook > 0) {
-        db("countries")
-          .where({ id: req.params.id })
-          .then(things => {
-            res.status(201).json({ message: "you have successfully uploaded" });
-          });
-      } else {
-        res.status(403).json({ message: "failed to" });
-      }
-    })
-    .catch(error => {
-      res.status(501).json(error);
-    });
-});
+// webRouter.put("/updatemarket/:id", (req, res) => {
+//   let updatedId = req.params.id;
+//   db("countries")
+//     .where({ id: updatedId })
+//     .update(req.body)
+//     .then(newlook => {
+//       if (newlook > 0) {
+//         db("countries")
+//           .where({ id: req.params.id })
+//           .then(things => {
+//             res.status(201).json({ message: "you have successfully uploaded" });
+//           });
+//       } else {
+//         res.status(403).json({ message: "failed to" });
+//       }
+//     })
+//     .catch(error => {
+//       res.status(501).json(error);
+//     });
+// });
 
 webRouter.get("/sessions", async (req, res) => {
   try {
