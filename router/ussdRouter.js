@@ -129,7 +129,7 @@ const handleError = err => {
 menu.state('country', {
   run: () => {
     console.log("COUNTRY()")
-    .countries().then(res => {
+    countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -163,7 +163,7 @@ menu.state('market', {
     // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
     // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
   
-    menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].categoryId}`)
+    menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].marketId}`)
 
   },
  
@@ -179,7 +179,7 @@ menu.state("category", {
   run: () => {
     // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
     
-    `${products(sessionStore[menu.args.sessionId].categoryId).then(res => {
+    `${products(sessionStore[menu.args.sessionId].marketId).then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
