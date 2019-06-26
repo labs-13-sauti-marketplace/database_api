@@ -176,8 +176,6 @@ menu.state('category', {
   defaultNext: 'product'
 })
 
-})
-
 menu.state('market', {
   run: () => {
 
