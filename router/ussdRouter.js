@@ -76,7 +76,7 @@ menu.startState({
     menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
-    "1": "market",
+    "1": "country",
     "2": "goodbye"
   }
 });
