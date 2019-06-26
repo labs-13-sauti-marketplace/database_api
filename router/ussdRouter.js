@@ -155,7 +155,7 @@ menu.state('market', {
 menu.state('category', {
   run: () => {
 
-    sessionStore[menu.args.sessionId].productId = menu.val;
+    sessionStore[menu.args.sessionId].categoryId = menu.val;
     console.log("CATEGORY()")
     console.log("CATEGORY TEXT", menu.args.text)
     console.log("SESSION", menu.session)
@@ -170,7 +170,7 @@ menu.state('category', {
     // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
     // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
   
-    menu.end("stop")
+    menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].categoryId}`)
 
   },
  
