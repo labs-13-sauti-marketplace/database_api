@@ -8,7 +8,8 @@ module.exports = {
   getCat,
   getProducts,
   getMarketplaceCategories, 
-  getCountries
+  getCountries,
+  getMarketByCountryId
 };
 
 function findPrice(name, product) {
@@ -48,7 +49,7 @@ async function getCountries() {
   return db('countries')
 }
 
-async function getMarketByCountryId(id) {
+function getMarketByCountryId(id) {
   return db('marketplaces')
     .where({ 'country_id': id })
 }
