@@ -129,6 +129,9 @@ menu.state('market', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId)
       .then(res => {
         console.log('MARKET RES', res)
+        if (res.length < 1) {
+          menu.end('No marketplaces in that country')
+        }
         let lol = [];
         for (let i = 0; i < res.length; i++) {
           lol.push(`\n#${res[i].id}: ${res[i].name}`);
