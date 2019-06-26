@@ -13,8 +13,8 @@ router.use(bodyParser.json())
 router.use(bodyParser.urlencoded({ extended: true }))
 
 // pulling in helper functions
-async function marketPlaces() {
-  const result = await models.getMarkets();
+async function marketPlaces(countryId) {
+  const result = await models.getMarketByCountryId(countryId);
   return result;
 }
 
@@ -149,12 +149,27 @@ menu.state('market', {
   run: () => {
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
-    console.log("MARKET()")
-    console.log("MARKET TEXT", menu.args.text)
-    console.log("SESSION", menu.session)
-    console.log("MARKET VAL", menu.val)
-    console.log("GLOBAL SESSIONS", sessions)
     console.log("SESSION STORAGE", sessionStore)
+    marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
+      console.log("MARKET RES", res)
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
+    // console.log("MARKET()")
+    // console.log("MARKET TEXT", menu.args.text)
+    // console.log("SESSION", menu.session)
+    // console.log("MARKET VAL", menu.val)
+    // console.log("GLOBAL SESSIONS", sessions)
+    // console.log("SESSION STORAGE", sessionStore)
     
     // menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
     //   .then(res => console.log("set market id to ", res))
@@ -163,7 +178,7 @@ menu.state('market', {
     // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
     // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
   
-    menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].countryId}`)
+    // menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].countryId}`)
 
   },
  
@@ -175,25 +190,25 @@ menu.state('market', {
 
 
 
-// menu.state("category", {
-//   run: () => {
-//     // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
-    
-//     `${products(sessionStore[menu.args.sessionId].marketId).then(res => {
-//       let lol = [];
-//       for (let i = 0; i < res.length; i++) {
-//         lol.push(`\n#${res[i].id}: ${res[i].name}`);
-//       }
-//       let stringy = lol.join();
-//       menu.con(stringy);
-//     })}`;
+menu.state("category", {
+  run: () => {
+    // menu.session.set( "marketplace_id", parseInput(menu.args.text), (err) => handleError(err) );
+    menu.end('stop')
+    // `${products(sessionStore[menu.args.sessionId].marketId).then(res => {
+    //   let lol = [];
+    //   for (let i = 0; i < res.length; i++) {
+    //     lol.push(`\n#${res[i].id}: ${res[i].name}`);
+    //   }
+    //   let stringy = lol.join();
+    //   menu.con(stringy);
+    // })}`;
 
-//   },
-//   next: {
-//     "0": "start"
-//   },
-//   defaultNext: "product"
-// });
+  },
+  next: {
+    "0": "start"
+  },
+  defaultNext: "product"
+});
 
 menu.on("error", err => {
   console.log(err);
