@@ -23,8 +23,8 @@ async function categories() {
   return result;
 }
 
-async function products(categoryId) {
-  const result = await models.getProductByMarketAndCatId(categoryId);
+async function products(marketplaceId) {
+  const result = await models.getProductByMarketAndCatId(marketplaceId);
   return result;
 }
 
