@@ -148,7 +148,7 @@ menu.state("product", {
     sessionStore[menu.args.sessionId].categoryId = menu.val;
     console.log("PRODUCT SESSION STORAGE", sessionStore)
     console.log("PRODUCT()")
-    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId)
+    products(sessionStore[menu.args.sessionId].categoryId, sessionStore[menu.args.sessionId].marketplaceId)
       .then(res => {
         let lol = [];
         for (let i = 0; i < res.length; i++) {
