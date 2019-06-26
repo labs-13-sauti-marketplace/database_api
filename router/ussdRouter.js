@@ -23,8 +23,8 @@ async function categories() {
   return result;
 }
 
-async function products(categoryId) {
-  const result = await models.getProductByMarketAndCatId(categoryId);
+async function products(marketplaceId) {
+  const result = await models.getProductByMarketAndCatId(marketplaceId);
   return result;
 }
 
@@ -148,14 +148,15 @@ menu.state("product", {
     sessionStore[menu.args.sessionId].categoryId = menu.val;
     console.log("PRODUCT SESSION STORAGE", sessionStore)
     console.log("PRODUCT()")
-    products().then(res => {
-      let lol = [];
-      for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
-      }
-      let stringy = lol.join("");
-      menu.con(stringy);
-    })
+    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId)
+      .then(res => {
+        let lol = [];
+        for (let i = 0; i < res.length; i++) {
+          lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        }
+        let stringy = lol.join("");
+        menu.con(stringy);
+      })
       .catch(err => {
         console.log(err)
         menu.end('error')
