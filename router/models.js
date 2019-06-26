@@ -10,7 +10,6 @@ module.exports = {
   getMarketplaceCategories, 
   getCountries,
   getMarketByCountryId
-  
 };
 
 function findPrice(name, product) {
