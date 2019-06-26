@@ -7,7 +7,8 @@ module.exports = {
   getMarkets,
   getCat,
   getProducts,
-  getMarketplaceCategories
+  getMarketplaceCategories, 
+  getCountries
 };
 
 function findPrice(name, product) {
