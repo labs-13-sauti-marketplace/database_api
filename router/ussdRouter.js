@@ -28,7 +28,6 @@ async function products(marketplaceId, categoryId) {
   return result;
 }
 
-
 async function countries() {
   const result = await models.getCountries();
   return result;
@@ -39,6 +38,8 @@ async function countries() {
   const result = await models.getCountries();
   return result;
 }
+
+
 
 // setting initial state of menu
 menu.startState({
@@ -117,13 +118,10 @@ menu.state('market', {
 })
 
 
-
 menu.state("category", {
   run: () => {
     sessionStore[menu.args.sessionId].marketplaceId = menu.val;
 
-    console.log("CATEGORY SESSION STORAGE", sessionStore)
-    // console.log("CAT STORAGE ", marketplaceId)
     console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
@@ -133,7 +131,11 @@ menu.state("category", {
       let stringy = lol.join("");
 
       menu.con(stringy);
-    });
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
 
   },
   next: {
@@ -146,25 +148,27 @@ menu.state("category", {
 menu.state("product", {
   run: () => {
     sessionStore[menu.args.sessionId].categoryId = menu.val;
-    console.log("PRODUCT SESSION STORAGE", sessionStore)
     console.log("PRODUCT()")
-    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId)
-      .then(res => {
-        console.log('PRODUCT RES ', res)
-        if (res.length < 1) {
-          menu.end("No products available.")
-        }
-        let lol = [];
-        for (let i = 0; i < res.length; i++) {
-          lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller}`);
-        }
-        let stringy = lol.join("");
-        menu.con(stringy);
-      })
-      .catch(err => {
-        console.log(err)
-        menu.end('error')
-      })
+
+    console.log("SESSION STORAGE", sessionStore)
+
+    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+      console.log("MARKET RES", res)
+      if(res.length < 1) {
+        menu.end("No products available.")
+      }
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller}`);
+      }
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
 
   },
   next: {
@@ -173,9 +177,6 @@ menu.state("product", {
   defaultNext: "product"
 });
 
-menu.on("error", err => {
-  console.log(err);
-});
 
 router.post('*', (req, res) => {
   let args = {
