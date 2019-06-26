@@ -145,7 +145,7 @@ menu.state("category", {
 menu.state("product", {
   run: () => {
     sessionStore[menu.args.sessionId].categoryId = menu.val;
-
+    console.log("PROD STORAGE ", marketplaceId)
     console.log("PRODUCT()")
     products().then(res => {
       let lol = [];
