@@ -32,25 +32,25 @@ webRouter.get('/markets/:id', async (req, res) => {
   }
 })
 
-webRouter.post("/addcountry", (req, res) => {
-  console.log("we are trying to add a market");
-  let post = req.body;
-  addPost(post)
-    .then(saved => {
-      res.status(201).json(saved);
-    })
-    .catch(({ message }) => {
-      res.status(503).json({ message });
-    });
-});
+// webRouter.post("/addcountry", (req, res) => {
+//   console.log("we are trying to add a market");
+//   let post = req.body;
+//   addPost(post)
+//     .then(saved => {
+//       res.status(201).json(saved);
+//     })
+//     .catch(({ message }) => {
+//       res.status(503).json({ message });
+//     });
+// });
 
-async function addPost(post) {
-  console.log("before");
-  const func = await db("countries").insert(post)
-    .where({ country: countries });
-  console.log("after");
-  return `New Post ID: ${post.name} : Added :)`;
-}
+// async function addPost(post) {
+//   console.log("before");
+//   const func = await db("countries").insert(post)
+//     .where({ country: countries });
+//   console.log("after");
+//   return `New Post ID: ${post.name} : Added :)`;
+// }
 
 webRouter.post("/addmarket", (req, res) => {
   console.log("we are trying to add a market");
