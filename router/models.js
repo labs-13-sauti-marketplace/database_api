@@ -27,10 +27,10 @@ function get() {
   return db("marketplaces");
 }
 
-function getProductByMarketAndCatId(marketplaceId) {
+function getProductByMarketAndCatId(categoryId) {
   return db("products")
-    .select('category_id')
-    .where({ 'marketplace_id': marketplaceId });
+    .select('marketplace_id')
+    .where({ 'category_id': categoryId });
 }
 
 function getMarkets() {
