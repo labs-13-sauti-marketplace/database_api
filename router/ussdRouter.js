@@ -108,26 +108,6 @@ menu.state('market', {
 
 menu.state("category", {
   run: () => {
-    sessionStore[menu.args.sessionId].marketplaceId = menu.val;
-
-    menu.end('stop')
-    // `${products(sessionStore[menu.args.sessionId].marketId).then(res => {
-    //   let lol = [];
-    //   for (let i = 0; i < res.length; i++) {
-    //     lol.push(`\n#${res[i].id}: ${res[i].name}`);
-    //   }
-    //   let stringy = lol.join();
-    //   menu.con(stringy);
-    // })}`;
-  },
-  next: {
-    "0": "start"
-  },
-  defaultNext: "product"
-});
-
-menu.state("category", {
-  run: () => {
     console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
@@ -145,7 +125,6 @@ menu.state("category", {
   },
   defaultNext: "product"
 });
-
 
 menu.state("product", {
   run: () => {
