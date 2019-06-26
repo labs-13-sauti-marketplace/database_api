@@ -553,14 +553,14 @@ router.post('*', (req, res) => {
 
     // let newArray = [];
     // console.log('sessions', session);
-    db("sessions")
-      .insert(session)
-      .then(res => {
-        menu.end("session added successfully!");
-      })
-      .catch(err => {
-        menu.end("Fail");
-      });
+    // db("sessions")
+    //   .insert(session)
+    //   .then(res => {
+    //     menu.end("session added successfully!");
+    //   })
+    //   .catch(err => {
+    //     menu.end("Fail");
+    //   });
   });
 })
 
