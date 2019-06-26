@@ -1,12 +1,20 @@
 const db = require("../data/dbConfig");
 const webRouter = require("express").Router();
-const markets = require("./markets-model");
+const countries = require("./countries-model");
 const models = require("./models");
 const sessions = require("./sessions-model");
-
-webRouter.get("/markets", async (req, res) => {
+const markets =require("./markets-model")
+webRouter.get("/countries", async (req, res) => {
   try {
-    let result = await db.get();
+    let result = await db("countries");
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+webRouter.get("/categories", async (req, res) => {
+  try {
+    let result = await db("categories");
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
@@ -23,7 +31,7 @@ webRouter.get('/markets/:id', async (req, res) => {
   }
 })
 
-webRouter.post("/addmarket", (req, res) => {
+webRouter.post("/addcountry", (req, res) => {
   console.log("we are trying to add a market");
   let post = req.body;
   addPost(post)
@@ -37,15 +45,15 @@ webRouter.post("/addmarket", (req, res) => {
 
 async function addPost(post) {
   console.log("before");
-  const func = await db("markets").insert(post)
-    .where({ market: markets });
+  const func = await db("countries").insert(post)
+    .where({ market: countries });
   console.log("after");
   return `New Post ID: ${post.name} : Added :)`;
 }
 
 webRouter.delete("/deletemarket/:id", (req, res) => {
   let deleted = req.params.id;
-  db("markets")
+  db("countries")
     .where({ id: deleted })
     .del()
     .then(gone => {
@@ -66,12 +74,12 @@ webRouter.delete("/deletemarket/:id", (req, res) => {
 
 webRouter.put("/updatemarket/:id", (req, res) => {
   let updatedId = req.params.id;
-  db("markets")
+  db("countries")
     .where({ id: updatedId })
     .update(req.body)
     .then(newlook => {
       if (newlook > 0) {
-        db("markets")
+        db("countries")
           .where({ id: req.params.id })
           .then(things => {
             res.status(201).json({ message: "you have successfully uploaded" });
