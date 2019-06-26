@@ -128,7 +128,7 @@ const handleError = err => {
 
 menu.state('country', {
   run: () => {
-    console.log("MARKET()")
+    console.log("COUNTRY()")
     .countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
