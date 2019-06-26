@@ -9,6 +9,7 @@ module.exports = {
   getProducts,
   getMarketplaceCategories, 
   getCountries,
+  getMarketByCountryId
   
 };
 
