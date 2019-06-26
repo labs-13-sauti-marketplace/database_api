@@ -88,33 +88,6 @@ menu.state("goodbye", {
   }
 });
 
-
-// const fetchProducts = (phoneNumber, sessionId, text) => {
-//   // const market = "Busia"
-//   console.log('FETCH P#: ', phoneNumber)
-//   console.log('FETCH SESH: ', sessionId)
-//   console.log('FETCH TEXT: ', text)
-//   return db('products')
-//     .where({ market: market })
-// }
-
-// fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
-//   .then(res => {
-//     console.log("DB RES: ", res)
-//     if (res.length > 0) {
-//       let options = ''
-//       for (let i = 0; i < res.length; i++) {
-//         options += `\n#${res[i].id}: ${res[i].name} ${res[i].price}`
-//       }
-//       menu.con(`Fetched ${res.length} items from db${options}`)
-//     } else {
-//       menu.con('Found no products in that market that match your selection')
-//     }
-//   })
-//   .catch(err => {
-//     menu.con(err)
-//   })
-
 const parseInput = str => {
   let array
   array = str.split('*')
@@ -155,14 +128,7 @@ menu.state('market', {
     console.log("MARKET VAL", menu.val)
     console.log("GLOBAL SESSIONS", sessions)
     console.log("SESSION STORAGE", sessionStore)
-    
-    // menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
-    //   .then(res => console.log("set market id to ", res))
-    //   .catch(err => console.log("error setting ", err))
-    // menu.session.get("marketplace_id")
-    // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
-    // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
-  
+     
     menu.end(`You chose item with the id ${sessionStore[menu.args.sessionId].marketId}`)
 
   },
