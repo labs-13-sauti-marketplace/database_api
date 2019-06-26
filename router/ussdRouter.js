@@ -19,6 +19,7 @@ async function marketPlaces(countryId) {
 }
 
 async function categories() {
+
   const result = await models.getMarketplaceCategories();
   return result;
 }
@@ -27,6 +28,7 @@ async function products() {
   const result = await models.getProducts();
   return result;
 }
+
 
 async function countries() {
   const result = await models.getCountries();
@@ -67,13 +69,16 @@ menu.sessionConfig({
   }
 });
 
+
 // setting initial state of menu
 menu.startState({
   run: () => {
+
     console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
     console.log('NEW SESSION ', sessionStore)
     menu.con(`Go to market as \n1. Buyer \n2. Seller`);
+
   },
   next: {
     "1": "country",
@@ -89,6 +94,7 @@ menu.state("goodbye", {
 });
 
 
+
 // const fetchProducts = (phoneNumber, sessionId, text) => {
 //   // const market = "Busia"
 //   console.log('FETCH P#: ', phoneNumber)
@@ -97,6 +103,7 @@ menu.state("goodbye", {
 //   return db('products')
 //     .where({ market: market })
 // }
+
 
 // fetchProducts(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
 //   .then(res => {
@@ -134,6 +141,7 @@ menu.state('country', {
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
+
       let stringy = lol.join("");
       
       menu.con(stringy);
@@ -143,6 +151,31 @@ menu.state('country', {
     '0': 'start'
   },
   defaultNext: 'market'
+
+})
+
+menu.state('category', {
+  run: () => {
+    console.log('CATEGORY()')
+    console.log('CATEGORY TEXT', menu.args.text)
+    console.log("SESSION", menu.session)
+    console.log('CATEGORY VAL', menu.val)
+    console.log('GLOBAL SESSIONS', sessions)
+    menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
+      .then(res => console.log('SET MARKET ID TO ', res))
+      .catch(err => console.log('ERROR SETTING ', err))
+    // menu.session.get("marketplace_id")
+    // console.log('SESSION MARKET ID', menu.session.get('marketplace_id'))
+    // console.log("RETRIEVED", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
+    menu.end("stop")
+  },
+
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'product'
+})
+
 })
 
 menu.state('market', {
@@ -230,8 +263,8 @@ router.post('*', (req, res) => {
       console.log("SERVICE CODE: ", args.serviceCode);
       console.log("TEXT: ", args.text);
       res.send(resMsg);
+
   });
 })
-
 
 module.exports = router;
