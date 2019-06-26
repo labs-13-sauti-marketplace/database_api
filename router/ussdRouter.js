@@ -45,8 +45,8 @@ const fetchMarkets = (phoneNumber, session, text) => {
   console.log("FETCH P#: ", phoneNumber);
   console.log("FETCH SESH: ", session);
   console.log("FETCH TEXT: ", text);
-  return db("products")
-    .where({ market: market })
+  return db("countries")
+    .where({ name:name })
 }
 
 menu.state("markets", {
