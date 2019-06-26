@@ -37,7 +37,9 @@ async function countries() {
 
 
 
-
+/* ----------------------------------------------
+      START MENU
+--------------------------------------------------*/
 // setting initial state of menu
 menu.startState({
   run: () => {
@@ -49,23 +51,17 @@ menu.startState({
 
   },
   next: {
-    "1": "country",
-    "2": "goodbye"
-  }
-});
-
-// functions based on user's menu choice
-menu.state("goodbye", {
-  run: () => {
-    menu.end(`goodbye`);
+    "1": "buyerCountry",
+    "2": "sellerCountry"
   }
 });
 
 
-
-menu.state('country', {
+/* ----------------------------------------------
+      BUYER STATES
+--------------------------------------------------*/
+menu.state('buyerCountry', {
   run: () => {
-    console.log("COUNTRY()")
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -80,13 +76,13 @@ menu.state('country', {
   next: {
     '0': 'start'
   },
-  defaultNext: 'market'
+  defaultNext: 'buyerMarket'
 
 })
 
 
 
-menu.state('market', {
+menu.state('buyerMarket', {
   run: () => {
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
@@ -114,14 +110,13 @@ menu.state('market', {
   next: {
     '0': 'start'
   },
-  defaultNext: 'category'
+  defaultNext: 'buyerCategory'
 })
 
 
-menu.state("category", {
+menu.state("buyerCategory", {
   run: () => {
     sessionStore[menu.args.sessionId].marketplaceId = menu.val;
-    console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -140,13 +135,13 @@ menu.state("category", {
   next: {
     "0": "start"
   },
-  defaultNext: "product"
+  defaultNext: "buyerProduct"
 });
 
 
-menu.state("product", {
+menu.state("buyerProduct", {
   run: () => {
-    console.log("PRODUCT()")
+   
    
     sessionStore[menu.args.sessionId].categoryId = menu.val;
 
@@ -159,7 +154,87 @@ menu.state("product", {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} 
+        \n${res[i].seller}`);
+      }
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
+
+  }
+});
+
+
+/* ----------------------------------------------
+      SELLER STATES
+--------------------------------------------------*/
+
+menu.state('sellerCountry', {
+  run: () => {
+    countries().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    });
+  },
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'sellerMarket'
+
+})
+
+
+
+menu.state('sellerMarket', {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].countryId = menu.val;
+    console.log("SESSION STORAGE", sessionStore)
+    marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
+      console.log("MARKET RES", res)
+      if(res.length < 1) {
+        menu.end("No marketplaces in that country.")
+      }
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
+   
+  },
+ 
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'sellerCategory'
+})
+
+
+menu.state("sellerCategory", {
+  run: () => {
+    sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+    categories().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
       
@@ -174,11 +249,43 @@ menu.state("product", {
   next: {
     "0": "start"
   },
-  defaultNext: "product"
+  defaultNext: "buyerProduct"
 });
 
 
+menu.state("sellerProduct", {
+  run: () => {
+   
+   
+    sessionStore[menu.args.sessionId].categoryId = menu.val;
 
+    console.log("SESSION STORAGE", sessionStore)
+
+    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+      console.log("MARKET RES", res)
+      if(res.length < 1) {
+        menu.end("No products available.")
+      }
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} 
+        \n${res[i].seller}`);
+      }
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
+
+  }
+});
+
+/* ----------------------------------------------
+      POST ENDPOINT
+--------------------------------------------------*/
 
 router.post('*', (req, res) => {
   let args = {
