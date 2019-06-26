@@ -27,8 +27,10 @@ function get() {
   return db("marketplaces");
 }
 
-function getProductByMarketAndCatId(categoryId) {
-  return db("products").where({ 'category_id': categoryId });
+function getProductByMarketAndCatId(marketplaceId) {
+  return db("products")
+    .select('category_id')
+    .where({ 'marketplace_id': marketplaceId });
 }
 
 function getMarkets() {
