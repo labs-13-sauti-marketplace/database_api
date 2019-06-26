@@ -41,4 +41,4 @@ function getMarketplaceCategories(input) {
 
 function getProducts() {
   return db('products')
-  
+}
