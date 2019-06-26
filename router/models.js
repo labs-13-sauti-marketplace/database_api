@@ -7,7 +7,9 @@ module.exports = {
   getMarkets,
   getCat,
   getProducts,
-  getMarketByCountryId
+  getMarketplaceCategories, 
+  getCountries,
+  
 };
 
 function findPrice(name, product) {
@@ -17,21 +19,18 @@ function findPrice(name, product) {
 }
 
 async function addProduct(product) {
-  const [id] = await db('products').insert(product)
-
+  const [id] = await db("products").insert(product);
 }
 
 function get() {
-  return db('marketplaces')
+  return db("marketplaces");
 }
 
-function getMarketByCountryId(id) {
-  return db('marketplaces')
-    .where({ 'country_id': id })
+function getProductByMarketAndCatId(id) {
+  return db("products").where({ marketplaces_id: id } || {categories_id: id});
 }
-
 function getMarkets() {
-  return db('marketplaces')
+  return db("marketplaces");
 }
 
 function getCat() {
@@ -45,7 +44,7 @@ function getMarketplaceCategories(input) {
 }
 
 function getMarketplaceCategories(input) {
-  return db('categories')
+  return db("categories");
 }
 
 function getProducts() {
@@ -56,7 +55,8 @@ async function getCountries() {
   return db('countries')
 }
 
-async function getMarketByCountryId(id) {
+function getMarketByCountryId(id) {
   return db('marketplaces')
     .where({ 'country_id': id })
 }
+
