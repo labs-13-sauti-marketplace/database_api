@@ -153,7 +153,7 @@ menu.state("product", {
         console.log('PRODUCT RES ', res)
         let lol = [];
         for (let i = 0; i < res.length; i++) {
-          lol.push(`\n#${res[i].id}: ${res[i].name}`);
+          lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller}`);
         }
         let stringy = lol.join("");
         menu.con(stringy);
