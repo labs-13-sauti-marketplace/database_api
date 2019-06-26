@@ -51,7 +51,6 @@ const fetchMarkets = (phoneNumber, session, text) => {
 }
 
 menu.state("markets", {
-
   run: () => {
     fetchMarkets(menu.args.phoneNumber, menu.args.sessionId, menu.args.text)
       .then(res => {
@@ -100,36 +99,6 @@ menu.state("done", {
 })
 
 
-// STATE FROM IN DEMO STUCK
-// menu.state("markets", {
-//   run: () => {
-//     const market = "Bujumbaru";
-
-//     // const markets = await db.find("products")
-//     // .where({menu.val});
-//     menu.con(`The products available at ${market}`);
-//     // return markets;
-//   },
-  
-//   next: () => {
-//     const market = "Bujumbaru";
-    
-    // db("products")
-    //   .where({ market: market })
-//       .then(products => {
-//         const options = {};
-//         // console.log("DBPRODUCTS", products)
-//         for (let i = 0; i < products.length; i++) {
-//           options[i + 1] = `${products[i].product} ${products[i].price} `;
-
-//         }
-//         console.log("OPTIONS", options)
-//         return options;
-//       });
-
-//   }
-// });
-
 menu.state("Test", {
   run: () => {
     menu.end("You made it!");
@@ -167,21 +136,6 @@ menu.state("addCountry", {
   }
 });
 
-// Registering USSD handler with Express
-
-// app.post("*", function(req, res) {
-//   menu.run(req.body, ussdResult => {
-//     res.send(ussdResult);
-//   });
-//   //   let post = req.body;
-//   //   addPost(post)
-//   //     .then(saved => {
-//   //       res.status(201).json(saved);
-//   //     })
-//   //     .catch(({ message }) => {
-//   //       res.status(503).json({ message });
-//   //     });
-// });
 
 router.post('*', (req, res) => {
   let args = {
