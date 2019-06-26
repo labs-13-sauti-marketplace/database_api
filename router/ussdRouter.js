@@ -97,7 +97,7 @@ menu.state("position", {
 
 
 const fetchProducts = (phoneNumber, sessionId, text) => {
-  const market = "Busia"
+  // const market = "Busia"
   console.log('FETCH P#: ', phoneNumber)
   console.log('FETCH SESH: ', sessionId)
   console.log('FETCH TEXT: ', text)
@@ -154,15 +154,18 @@ menu.state('market', {
 
 menu.state('category', {
   run: () => {
+
+    sessionStore[menu.args.sessionId].productId = menu.val;
     console.log("CATEGORY()")
     console.log("CATEGORY TEXT", menu.args.text)
     console.log("SESSION", menu.session)
     console.log("CATEGORY VAL", menu.val)
     console.log("GLOBAL SESSIONS", sessions)
     console.log("SESSION STORAGE", sessionStore)
-    menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
-      .then(res => console.log("set market id to ", res))
-      .catch(err => console.log("error setting ", err))
+    
+    // menu.session.set(menu.args.sessionId, 'marketplace_id', menu.val)
+    //   .then(res => console.log("set market id to ", res))
+    //   .catch(err => console.log("error setting ", err))
     // menu.session.get("marketplace_id")
     // console.log("SESSION MARKET ID", menu.session.get("marketplace_id"))
     // console.log("RETRIEVE KEY", menu.session.get(menu.args.sessionId, 'marketplace_id'), (err) => handleError(err))
