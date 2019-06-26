@@ -544,12 +544,12 @@ router.post('*', (req, res) => {
     let text = menu.args.text;
     // let text = req.body.text.toString();
 
-    menu.session.start(() => {
-      console.log('menu.session.start()')
-      return
-    })
-      .then(res => console.log('menu.session.start ok'))
-      .catch(err => console.log('menu.session.start failed'))
+    // menu.session.start(() => {
+    //   console.log('menu.session.start()')
+    //   return
+    // })
+    //   .then(res => console.log('menu.session.start ok'))
+    //   .catch(err => console.log('menu.session.start failed'))
 
     // let newArray = [];
     // console.log('sessions', session);
