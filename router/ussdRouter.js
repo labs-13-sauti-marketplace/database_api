@@ -120,9 +120,9 @@ menu.state('market', {
 
 menu.state("category", {
   run: () => {
-    // let marketplaceId = menu.val;
+    let marketplaceId = menu.val;
     console.log("CATEGORY SESSION STORAGE", sessionStore)
-    console.log("CAT STORAGE ", marketplaceId)
+    // console.log("CAT STORAGE ", marketplaceId)
     console.log("CATEGORY()")
     categories().then(res => {
       let lol = [];
