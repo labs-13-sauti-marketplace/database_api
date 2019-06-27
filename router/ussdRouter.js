@@ -64,9 +64,9 @@ menu.state("goodbye", {
 
 
 menu.state('country', {
-  run: () => {
+  run: async () => {
     console.log("COUNTRY()")
-    countries().then(res => {
+    await countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
