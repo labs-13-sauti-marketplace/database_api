@@ -67,7 +67,7 @@ menu.state('start', {
     menu.goStart()
   }, next: {
     "1": "buyerCountry",
-    "2": "goodbye"
+    "2": "sellerCountry"
   }
 })
 
@@ -110,7 +110,7 @@ menu.state('buyerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -128,7 +128,8 @@ menu.state('buyerMarket', {
   },
 
   next: {
-    '0': 'start'
+    '0': 'start',
+    "99": "buyerCountry"
   },
   defaultNext: 'buyerCategory'
 })
@@ -233,7 +234,7 @@ menu.state('sellerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -251,7 +252,8 @@ menu.state('sellerMarket', {
   },
 
   next: {
-    '0': 'start'
+    '0': 'start',
+    '99': 'sellerCountry'
   },
   defaultNext: 'sellerCategory'
 })
