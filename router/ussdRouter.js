@@ -287,17 +287,9 @@ menu.state("sellerCategory", {
 
 menu.state("sellerAddName", {
   run: () => {
-
-
     sessionStore[menu.args.sessionId].categoryId = menu.val;
-
     // console.log("SESSION STORAGE", sessionStore)
-
-
     menu.con("Enter product name:");
-
-
-
   },
   next: {
     "*[a-zA-Z]+": "sellerPostInfo"
