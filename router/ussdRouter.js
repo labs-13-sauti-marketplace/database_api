@@ -152,7 +152,7 @@ menu.state("product", {
       .then(res => {
         console.log('PRODUCT RES ', res)
         if (res.length < 1) {
-          menu.end("No products available.")
+          menu.end("No products available. \n0: Start over \n99: Choose another category")
         }
         let lol = [];
         for (let i = 0; i < res.length; i++) {
@@ -168,7 +168,8 @@ menu.state("product", {
 
   },
   next: {
-    "0": "start"
+    "0": "start",
+    "99": "category"
   },
   defaultNext: "product"
 });
