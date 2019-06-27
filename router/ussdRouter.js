@@ -172,7 +172,7 @@ menu.state("product", {
 
   },
   next: {
-    "0": "goStart",
+    "0": menu.goStart(),
     "99": "category"
   },
   defaultNext: "product"
