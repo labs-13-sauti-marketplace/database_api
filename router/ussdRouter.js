@@ -274,7 +274,7 @@ menu.state("sellerAddName", {
 
     // console.log("SESSION STORAGE", sessionStore)
 
-    addProductInfo().then(res => {
+    addProducts().then(res => {
       menu.con("Enter product name:");
     })
     .catch(err => {
