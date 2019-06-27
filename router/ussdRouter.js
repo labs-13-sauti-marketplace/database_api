@@ -292,6 +292,7 @@ menu.state("sellerPostInfo", {
     sessionStore[menu.args.sessionId].productName = menu.val;
 
     addProducts(sessionStore[menu.args.sessionId].productName).then(res => {
+      console.log("UNICORN RES", res)
       menu.end("yay");
     })
     .catch(err => {
