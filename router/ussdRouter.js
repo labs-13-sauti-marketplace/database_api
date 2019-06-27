@@ -6,6 +6,7 @@ const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
 const db = require('../data/dbConfig')
+const sessionStore = {};
 
 // async function marketPlaces() {
 //   const result = await models.getMarkets()
@@ -36,274 +37,140 @@ function generateMenuStringFromDbRows (dbRows) {
   return stringy
 }
 
-function findDbRowForMenuSelection (menuSelection, dbRows) {
-  // convert the number of the selection to the index of the appropriate database row.
-  // we subtract 1 because we added 1 when we made the options (because 0 is the first index number, but "1" is the first option)
-  const i = parseInt(menuSelection) - 1
-  // if the menu selection didn't result in a valid index, return null
-  if (Number.isNaN(i)) {
-    return null
+// pulling in helper functions
+async function marketPlaces(countryId) {
+  const result = await models.getMarketByCountryId(countryId);
+  return result;
+}
+
+async function categories() {
+  const result = await models.getMarketplaceCategories();
+  return result;
+}
+
+async function products(marketplaceId, categoryId) {
+  const result = await models.getProductByMarketAndCatId(marketplaceId, categoryId);
+  return result;
+}
+
+async function countries() {
+  const result = await models.getCountries();
+  return result;
+}
+
+
+async function countries() {
+  const result = await models.getCountries();
+  return result;
+}
+
+
+
+// setting initial state of menu
+menu.startState({
+  run: () => {
+    console.log("START STATE()")
+    sessionStore[menu.args.sessionId] = {}
+    console.log('NEW SESSION ', sessionStore)
+    menu.con(`Go to market as \n1. Buyer \n2. Seller`);
+  },
+  next: {
+    "1": "country",
+    "2": "goodbye"
   }
-  // find that row from the rows
-  return dbRows[i] 
-}
+});
 
-function prependInvalidMessageToMenu (menuStr) {
-  return 'Invalid selection. Please try again\n' + (menuStr || '')
-}
-
-function appendNavigationMessage (menuStr) {
-  return menuStr + `\n\n[99] Back [0] Home` 
-}
-
-async function checkForNavigationState (menu) {
-  const selection = menu.val
-  if (parseInt(selection) === 99) {
-    // find the previous state from the session
-    const backState = await getSessionPreviousState()
-    return backState
-  } 
-  if (parseInt(selection) === 0) {
-    return 'position'
+// functions based on user's menu choice
+menu.state("goodbye", {
+  run: () => {
+    menu.end(`goodbye`);
   }
-}
+});
 
-/*
-------------------------------------------------------------------------------------------
-User Sessions
-------------------------------------------------------------------------------------------
-*/
-async function updateSessionPreviousState (route) {
-  // save this route as the user's previous state
-}
 
-async function getSessionPreviousState () {
-  // return the name of the previous state
-}
-
-/*
-------------------------------------------------------------------------------------------
-Buyer - Categories & Products
-------------------------------------------------------------------------------------------
-*/
-
-async function getCategoriesForMarket (marketId) {
-  // ... need to get categories from database
-  // SELECT * FROM categories WHERE market_id = marketId ORDER BY name
-  // ... for now, we'll return these hard-coded
-  return models.getCat()
-}
-
-async function getProductsForCategory (categoryId) {
-  // ... fetch from database
-  // ... need to filter by category id
-  return models.getProducts()
-}
-
-/*
-------------------------------------------------------------------------------------------
-Routes 
-------------------------------------------------------------------------------------------
-*/
-async function buildMenu () {
-  // WELCOME!
-  menu.startState({
-    run: () => {
-      menu.con(`\n1. Go To Market \n2. goodbye`)
-    },
-    next: {
-      '1': 'position',
-      '2': 'goodbye'
-    }
-  })
-
-  // POSITION
-  menu.state('position', {
-    run: () => {
-      menu.con(`\n1. buyer \n2. seller `)
-    },
-    next: {
-      '1': 'buyerMarkets',
-      '2': 'sellerMarkets'
-    }
-  })
-
-  /*
-  BUYER: CHOOSE MARKET
-  */
-  const marketsDbRows = await models.getMarkets()
-  const buyerMarketsState = (invalidMessage) => {
-    return {
-      run: async () => {
-        let menuStr = await generateMenuStringFromDbRows(marketsDbRows)
-        // show any invalid error messages
-        if (invalidMessage) {
-          menuStr = prependInvalidMessageToMenu(menuStr)
-        }
-        // send menu
-        menuStr = appendNavigationMessage(menuStr)
-        menu.con(menuStr)
-      },
-      next: {
-        '*': async () => {
-          // check for navigation state
-          const navState = await checkForNavigationState(menu)
-          if (navState) {
-            return navState
-          }
-          // check if the entry provided was a valid entry
-          const selection = menu.val
-          const market = findDbRowForMenuSelection(selection, marketsDbRows)
-          // if no value matches this selection, send back
-          if (!market) {
-            return 'invalidBuyerMarkets'
-          }
-          // otherwise, send to the appropriate state
-          const nextState = `buyerCategories:${market.id}`
-          await updateSessionPreviousState(nextState)
-          return nextState
-        }
+menu.state('country', {
+  run: () => {
+    console.log("COUNTRY()")
+    countries().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
-    }
-  } 
-  menu.state('buyerMarkets', buyerMarketsState())
-  menu.state('invalidBuyerMarkets', buyerMarketsState(true))
 
-  /*
-  BUYER: CATEGORIES
-  */
-  const buyerCategoriesState = async (marketId, invalidMessage) => {
-    // get the records from the database
-    const categoryDbRows = await getCategoriesForMarket(marketId)
-    // return the state
-    return {
-      run: async () => {
-        let menuStr = generateMenuStringFromDbRows(categoryDbRows)
-        // show any invalid error messages
-        if (invalidMessage) {
-          menuStr = prependInvalidMessageToMenu(menuStr)
-        }
-        // send menu
-        menuStr = appendNavigationMessage(menuStr)
-        menu.con(menuStr)
-      },
-      next: {
-        '*': async () => {
-          // check for navigation state
-          const navState = checkForNavigationState(menu)
-          if (navState) {
-            return navState
-          }
-          // check if the entry provided was a valid entry
-          const selection = menu.val
-          const category = findDbRowForMenuSelection(selection, categoryDbRows)
-          // if no value matches this selection, send back 
-          if (!category) {
-            return `invalidBuyerCategories:${marketId}`
-          }
-          // otherwise, send to the appropriate state
-          const nextState = `buyerProducts:${category.id}`
-          await updateSessionPreviousState(nextState)
-          return nextState
-        }
+      let stringy = lol.join("");
+      menu.con(stringy);
+    });
+  },
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'market'
+
+})
+
+
+
+menu.state('market', {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].countryId = menu.val;
+
+    console.log("MARKET SESSION STORAGE", sessionStore)
+    marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
+      console.log("MARKET RES", res)
+      if (res.length < 1) {
+        menu.end("No marketplaces in that country.")
       }
-    }
-  }
-  // make routes for each market
-  for (let market of marketsDbRows) {
-    const state = await buyerCategoriesState(market.id)
-    const invalidState = await buyerCategoriesState(market.id, true)
-    menu.state(`buyerCategories:${market.id}`, state)
-    menu.state(`invalidBuyerCategories:${market.id}`, invalidState)  
-  }
-
-  /*
-  BUYER: PRODUCTS
-  */
-  const buyerProductsState = async (categoryId, invalidMessage) => {
-    // get the records from the database
-    const productsDbRows = await getProductsForCategory(categoryId)
-    // return the state
-    return {
-      run: async () => {
-        let menuStr = generateMenuStringFromDbRows(productsDbRows)
-        // show any invalid error messages
-        if (invalidMessage) {
-          menuStr = prependInvalidMessageToMenu(menuStr)
-        }
-        // send menu
-        menuStr = appendNavigationMessage(menuStr)
-        menu.con(menuStr)
-      },
-      next: {
-        '*': async () => {
-          // check for navigation state
-          const navState = checkForNavigationState(menu)
-          if (navState) {
-            return navState
-          }
-          // check if the entry provided was a valid entry
-          const selection = menu.val
-          const product = findDbRowForMenuSelection(selection, productsDbRows)
-          // if no value matches this selection, send back
-          if (!product) {
-            return `invalidBuyerProducts:${categoryId}`
-          }
-          // otherwise, send to the appropriate state
-          const nextState = `buyerProductSellerInfo:${product.seller_id}`
-          await updateSessionPreviousState(nextState)
-          return nextState
-        }
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
-    }
-  }
-  // make routes for each category
-  const allCategories = await models.getCat()
-  for (let category of allCategories) {
-    const state = await buyerProductsState(category.id)
-    const invalidState = await buyerProductsState(category.id, true)
-    menu.state(`buyerProducts:${category.id}`, state)
-    menu.state(`invalidBuyerProducts:${category.id}`, invalidState)  
-  }
+      let stringy = lol.join("");
 
-  /*
-  BUYER: PRODUCT SELLER INFO
-  */
-  const allSellers = await models.getSellers()
-  const buyerProductSellerInfoState = async (sellerId) => {
-    // get the records from the database
-    const seller = allSellers.find(seller => seller.id === sellerId)
-    // return the state
-    return {
-      run: async () => {
-        let menuStr
-        if (!seller) {
-          menuStr = '\nWe cannot find contact information for this seller'
-        } else {
-          menuStr = `\nSELLER INFORMATION:\n\n${seller.name}\n${seller.phone}`
-        }
-        menuStr = appendNavigationMessage(menuStr)
-        menu.con(menuStr)
-      },
-      next: {
-        '*': async () => {
-          // check for navigation state
-          const navState = checkForNavigationState(menu)
-          if (navState) {
-            return navState
-          }
-        }
+      menu.con(stringy);
+    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
+
+  },
+
+  next: {
+    '0': 'start'
+  },
+  defaultNext: 'category'
+})
+
+
+menu.state("category", {
+  run: () => {
+    sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+
+    console.log("CATEGORY()")
+    categories().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
-    }
-  }
-  // make routes for each seller
-  for (let seller of allSellers) {
-    menu.state(`buyerProductSellerInfo:${seller.id}`, buyerProductSellerInfoState(seller.id))
-  }
-}
+      let stringy = lol.join("");
+
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
+
+  },
+  next: {
+    "0": "start"
+  },
+  defaultNext: "product"
+});
 
 
-
+<<<<<<< HEAD
 
 // const fetchProducts = (phoneNumber, sessionId, text) => {
 //   const market = "Busia"
@@ -667,10 +534,40 @@ async function buildMenu () {
 //     menu.end(`Peas 110kes`)
 //   }
 // })
+=======
+menu.state("product", {
+  run: () => {
+    sessionStore[menu.args.sessionId].categoryId = menu.val;
+    console.log("PRODUCT()")
 
-menu.on('error', err => {
-  console.log(err);
-})
+    console.log("SESSION STORAGE", sessionStore)
+
+    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+      console.log("MARKET RES", res)
+      if(res.length < 1) {
+        menu.end("No products available.")
+      }
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller}`);
+      }
+      let stringy = lol.join("");
+      
+      menu.con(stringy);
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
+
+  },
+  next: {
+    "0": "start"
+  },
+  defaultNext: "product"
+});
+>>>>>>> e6eafb053b94e7c8d2f9dd8b7f56516501d908ce
+
 
 /*
 ------------------------------------------------------------------------------------------
@@ -685,6 +582,7 @@ router.post('*', async (req, res) => {
     sessionId: req.body.sessionId,
     serviceCode: req.body.serviceCode,
     text: req.body.text
+<<<<<<< HEAD
   }
 
   // build the menu
@@ -715,3 +613,17 @@ router.post('*', async (req, res) => {
 })
 
 module.exports = router;
+=======
+  };
+  menu.run(args, resMsg => {
+    console.log("PHONE: ", args.phoneNumber);
+    console.log("SESSION: ", args.sessionId);
+    console.log("SERVICE CODE: ", args.serviceCode);
+    console.log("TEXT: ", args.text);
+    res.send(resMsg);
+
+  });
+})
+
+module.exports = router;
+>>>>>>> e6eafb053b94e7c8d2f9dd8b7f56516501d908ce

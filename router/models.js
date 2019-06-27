@@ -7,7 +7,10 @@ module.exports = {
   getMarkets,
   getCat,
   getProducts,
-  getSellers
+  getMarketplaceCategories,
+  getCountries,
+  getMarketByCountryId,
+  getProductByMarketAndCatId
 };
 
 function findPrice(name, product) {
@@ -17,39 +20,41 @@ function findPrice(name, product) {
 }
 
 async function addProduct(product) {
-  const [id] = await db('products').insert(product)
-
+  const [id] = await db("products").insert(product);
 }
 
 function get() {
-  return db('marketplaces')
+  return db("marketplaces");
+}
+
+function getProductByMarketAndCatId(mId, cId) {
+  return db("products")
+  .where({ 'marketplace_id': mId })  
+  .andWhere({'category_id': cId});
 }
 
 function getMarkets() {
-  return db('marketplaces')
+  return db("marketplaces");
 }
 
 function getCat() {
   return db('categories')
 }
 
-async function getProducts() {
-  const products = await db('products')
-  // add a temporary "seller_id" -- we need to add this to the actual database
-  return products.map(product => {
-    product.seller_id = product.id
-    return product
-  })
+function getMarketplaceCategories(input) {
+  return db("categories");
 }
 
-function getSellers () {
-  const sellers = []
-  for (let i=0; i<100; i++) {
-    sellers.push({
-      id: i,
-      name: `This Guy ${i}`,
-      phone: '555-555-${i}${i}${i}${i}'
-    })
-  }
-  return sellers
+function getProducts() {
+  return db('products')
 }
+
+async function getCountries() {
+  return db('countries')
+}
+
+function getMarketByCountryId(id) {
+  return db('marketplaces')
+    .where({ 'country_id': id })
+}
+
