@@ -97,7 +97,7 @@ menu.state("start", {
 menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
-      console.log(res)
+      console.log('BUYER_CON_RES', res)
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
