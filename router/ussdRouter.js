@@ -14,8 +14,10 @@ router.use(bodyParser.urlencoded({ extended: true }))
 
 // pulling in helper functions
 async function marketPlaces(countryId) {
-  const result = await models.getMarketByCountryId(countryId);
-  return result;
+  await models.getMarketByCountryId(countryId)
+  .then(res => res)
+  .catch(e => console.log(e))
+  // return result;
 }
 
 async function categories() {
@@ -64,9 +66,9 @@ menu.state("goodbye", {
 
 
 menu.state('country', {
-  run: async () => {
+  run: () => {
     console.log("COUNTRY()")
-    await countries().then(res => {
+    countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
