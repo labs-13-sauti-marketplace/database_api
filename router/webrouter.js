@@ -19,15 +19,15 @@ webRouter.get("/country/:id", (req, res) => {
   const country = [];
   db("countries")
     .where("id", id)
-    .then(country => {
-      country.push(country[0]);
+    .then(count => {
+      country.push(count[0]);
     })
     .then(
       db("marketplaces")
         .where("country_id", id)
-        .then(countries => {
-          country[0].country = countries;
-          console.log(countries);
+        .then(marketplaces => {
+          country[0].marketplaces = marketplaces;
+          
         })
         .then(() => {
           res.json(country);
