@@ -97,17 +97,12 @@ menu.state("start", {
 menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
+      console.log(res)
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
-
-      if(lol.length<1){
-        menu.end('wrong!')
-      }else if(lol[0] = NaN){
-        menu.end('Wrong!')
-      }
-
+      
       let stringy = lol.join("");
       menu.con(stringy);
     })
