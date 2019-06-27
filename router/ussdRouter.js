@@ -70,6 +70,10 @@ async function countries() {
   return result;
 }
 
+async function invalidOptionSelected(menuStr) {
+  menuStr = `Invalid entry.\n` + menuStr;
+  return menuStr;
+}
 
 /* ----------------------------------------------
       START MENU
@@ -115,7 +119,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.go('invalidOptionSelected')
       })
   },
   next: {
@@ -186,8 +190,7 @@ menu.state("buyerCategory", {
 });
 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 // const fetchProducts = (phoneNumber, sessionId, text) => {
 //   const market = "Busia"
@@ -551,11 +554,11 @@ menu.state("buyerCategory", {
 //     menu.end(`Peas 110kes`)
 //   }
 // })
-=======
-menu.state("product", {
-=======
+
+// menu.state("product", {
+
 menu.state("buyerProduct", {
->>>>>>> 2a007cb4573eb0217006dbf8c4ed62261f82064a
+
   run: () => {
 
     sessionStore[menu.args.sessionId].categoryId = menu.val;
@@ -676,19 +679,9 @@ menu.state("sellerCategory", {
   },
   defaultNext: "sellerAddName"
 });
->>>>>>> e6eafb053b94e7c8d2f9dd8b7f56516501d908ce
 
 
-<<<<<<< HEAD
-/*
-------------------------------------------------------------------------------------------
-Express Router
-------------------------------------------------------------------------------------------
-*/
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
-router.post('*', async (req, res) => {  
-=======
+
 menu.state("sellerAddName", {
   run: () => {
 
@@ -732,44 +725,11 @@ menu.state("sellerPostInfo", {
 
 
 router.post('*', (req, res) => {
->>>>>>> 2a007cb4573eb0217006dbf8c4ed62261f82064a
   let args = {
     phoneNumber: req.body.phoneNumber,
     sessionId: req.body.sessionId,
     serviceCode: req.body.serviceCode,
     text: req.body.text
-<<<<<<< HEAD
-  }
-
-  // build the menu
-  await buildMenu()
-
-  // serve the menu
-  menu.run(args, resMsg => {
-    res.send(resMsg);
-    let sessionId = menu.args.sessionId;
-    let phoneNumber = menu.args.phoneNumber;
-    let text = menu.args.text;
-    // let text = req.body.text.toString();
-    let session = {
-      sessionId: sessionId,
-      phoneNumber: phoneNumber,
-      text: text,
-    };
-    // let newArray = [];
-    db("sessions")
-      .insert(session)
-      .then(res => {
-        menu.end("session added successfully!");
-      })
-      .catch(err => {
-        menu.end("Fail");
-      });
-  });
-})
-
-module.exports = router;
-=======
   };
   menu.run(args, resMsg => {
     console.log("PHONE: ", args.phoneNumber);
@@ -782,4 +742,3 @@ module.exports = router;
 })
 
 module.exports = router;
->>>>>>> e6eafb053b94e7c8d2f9dd8b7f56516501d908ce
