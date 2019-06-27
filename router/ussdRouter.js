@@ -42,7 +42,7 @@ async function products(marketplaceId, categoryId) {
 }
 
 async function addProducts(name, marketplaceId, categoryId, contact) {
-  const result = await models.addProductInfo(name, marketplaceId, categoryId, contact);
+  const result = await models.addProductInfo(name, marketplaceId, categoryId, contact_info);
   return result;
 }
 
@@ -332,8 +332,8 @@ menu.state("sellerPostInfo", {
     const name = sessionStore[menu.args.sessionId].productName;
     const market_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
-    const contact = sessionStore[menu.args.sessionId].contact
-    addProducts(name, market_id, category_id, contact)
+    const contactInfo = sessionStore[menu.args.sessionId].sellerInfo;
+    addProducts(name, market_id, category_id, contactInfo)
       .then(res => {
         console.log("UNICORN RES", res)
         menu.end("yay");
