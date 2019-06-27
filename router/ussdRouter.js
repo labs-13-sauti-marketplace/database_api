@@ -154,6 +154,10 @@ menu.state("buyerCategory", {
 
     categories()
       .then(res => {
+        if (res.length < 1) {
+          menu.goStart()
+        }
+
         let lol = [];
         for (let i = 0; i < res.length; i++) {
           lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -163,8 +167,7 @@ menu.state("buyerCategory", {
         menu.con(stringy);
       })
       .catch(err => {
-        console.log(err);
-        menu.end("error");
+        menu.goStart();
       });
   },
   next: {
@@ -182,6 +185,10 @@ menu.state("buyerProduct", {
     console.log("SESSION STORAGE", sessionStore);
 
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+      if (res.length < 1) {
+        menu.goStart()
+      }
+
       console.log("MARKET RES", res)
       if (res.length < 1) {
         menu.con("No products available. \n0: Start over \n99: Choose another category")
@@ -195,8 +202,7 @@ menu.state("buyerProduct", {
       menu.end(stringy);
     })
       .catch(err => {
-        console.log(err)
-        menu.end('error')
+        menu.goStart()
       })
       
   },
