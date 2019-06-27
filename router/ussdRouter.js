@@ -67,7 +67,7 @@ menu.state('start', {
     menu.goStart()
   }, next: {
     "1": "buyerCountry",
-    "2": "sellerCountry"
+    "2": "goodbye"
   }
 })
 
