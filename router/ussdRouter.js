@@ -300,7 +300,7 @@ menu.state("sellerAddPrice", {
     menu.con("Enter product price:");
   },
   next: {
-    "*[\s\S]+": "sellerAddSellerName"
+    "*": "sellerAddSellerName"
   }
 });
 
@@ -320,7 +320,7 @@ menu.state("sellerAddPhoneNumber", {
     menu.con("Enter contact phone number:");
   },
   next: {
-    "*[\s\S]+": "sellerPostInfo"
+    "*[\s\S\d]+": "sellerPostInfo"
   }
 });
 
