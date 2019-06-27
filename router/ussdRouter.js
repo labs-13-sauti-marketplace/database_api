@@ -98,13 +98,7 @@ menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
       console.log('BUYER_CON_RES', res)
-      console.log('TEXT, TEXT, TEXT', menu.args.text)
-      let newText = menu.args.text;
-      if(newText == NaN ){
-        return menu.end('Wrong')
-      }
-
-
+      
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -131,6 +125,14 @@ menu.state("buyerMarket", {
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
+
+      console.log('TEXT, TEXT, TEXT', menu.args.text)
+      let newText = menu.args.text;
+      if(newText == NaN ){
+        return menu.end('Wrong')
+      }
+
+
       if (res.length < 1) {
         menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
