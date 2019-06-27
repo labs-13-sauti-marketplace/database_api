@@ -81,7 +81,7 @@ menu.state('buyerCountry', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`#${res[i].id}: ${res[i].name}`);
       }
 
       let stringy = lol.join("");
@@ -114,7 +114,7 @@ menu.state('buyerMarket', {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -141,7 +141,7 @@ menu.state("buyerCategory", {
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -175,7 +175,7 @@ menu.state("buyerProduct", {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price}
+        lol.push(`#${res[i].id}: ${res[i].name} ${res[i].price}
         \n${res[i].seller} \n${res[i].contact_info} `);
       }
       let stringy = lol.join("");
@@ -204,7 +204,7 @@ menu.state('sellerCountry', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`#${res[i].id}: ${res[i].name}`);
       }
 
       let stringy = lol.join("");
@@ -237,7 +237,7 @@ menu.state('sellerMarket', {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -263,7 +263,7 @@ menu.state("sellerCategory", {
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -340,7 +340,7 @@ menu.state("sellerPostInfo", {
 
     addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
-      menu.end(`Your post of + ${name} + was successful! `);
+      menu.end(`Your post of ${name} was successful! `);
     })
       .catch(err => {
         console.log(err)
