@@ -109,7 +109,7 @@ menu.state("buyerCountry", {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        return menu.end('error')
       })
   },
   next: {
