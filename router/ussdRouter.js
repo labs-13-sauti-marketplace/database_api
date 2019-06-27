@@ -310,10 +310,21 @@ menu.state("sellerAddName", {
     menu.con("Enter product name:");
   },
   next: {
-    "*[a-zA-Z]+": "sellerPostInfo"
+    "*[a-zA-Z]+": "sellerContact"
   }
 });
 
+
+menu.state("sellerContact", {
+  run: () => {
+    sessionStore[menu.args.sessionId].productName = menu.val;
+    console.log("SESSION STORAGE", sessionStore)
+    menu.con("your phone:");
+  },
+  next: {
+    "*[a-zA-Z]+": "sellerPostInfo"
+  }
+});
 
 menu.state("sellerPostInfo", {
   run: () => {
@@ -321,8 +332,8 @@ menu.state("sellerPostInfo", {
     const name = sessionStore[menu.args.sessionId].productName;
     const market_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
-
-    addProducts(name, market_id, category_id)
+    const contact_info = sessionStore[menu.args.sessionId].sellerInfo
+    addProducts(name, market_id, category_id, contact_info)
       .then(res => {
         console.log("UNICORN RES", res)
         menu.end("yay");
