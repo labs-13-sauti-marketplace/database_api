@@ -9,8 +9,21 @@ const bodyParser = require('body-parser')
 // const db = require('../data/dbConfig')
 const sessionStore = {};
 
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
+
+
+/*
+------------------------------------------------------------------------------------------
+Menu & State Generators
+------------------------------------------------------------------------------------------
+*/
+function generateMenuStringFromDbRows (dbRows) {
+  let stringy = ''
+  dbRows.forEach((row, i) => {
+    const digit = i + 1
+    stringy += `\n${digit}. ${row.name}`
+  })
+  return stringy
+}
 
 // pulling in helper functions
 async function marketPlaces(countryId) {
@@ -44,6 +57,10 @@ async function countries() {
   return result;
 }
 
+async function invalidOptionSelected(menuStr) {
+  menuStr = `Invalid entry.\n` + menuStr;
+  return menuStr;
+}
 
 /* ----------------------------------------------
       START MENU
@@ -89,7 +106,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.go('invalidOptionSelected')
       })
   },
   next: {
@@ -110,7 +127,7 @@ menu.state('buyerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -128,7 +145,8 @@ menu.state('buyerMarket', {
   },
 
   next: {
-    '0': 'start'
+    '0': 'start',
+    "99": "buyerCountry"
   },
   defaultNext: 'buyerCategory'
 })
@@ -159,8 +177,8 @@ menu.state("buyerCategory", {
   defaultNext: "buyerProduct"
 });
 
-
 menu.state("buyerProduct", {
+
   run: () => {
 
     sessionStore[menu.args.sessionId].categoryId = menu.val;
@@ -233,7 +251,7 @@ menu.state('sellerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -251,7 +269,8 @@ menu.state('sellerMarket', {
   },
 
   next: {
-    '0': 'start'
+    '0': 'start',
+    '99': 'sellerCountry'
   },
   defaultNext: 'sellerCategory'
 })
@@ -283,19 +302,12 @@ menu.state("sellerCategory", {
 });
 
 
+
 menu.state("sellerAddName", {
   run: () => {
-
-
     sessionStore[menu.args.sessionId].categoryId = menu.val;
-
     // console.log("SESSION STORAGE", sessionStore)
-
-
     menu.con("Enter product name:");
-
-
-
   },
   next: {
     "*[a-zA-Z]+": "sellerPostInfo"
@@ -304,14 +316,16 @@ menu.state("sellerAddName", {
 
 menu.state("sellerPostInfo", {
   run: () => {
-
-
     sessionStore[menu.args.sessionId].productName = menu.val;
+    const name = sessionStore[menu.args.sessionId].productName;
+    const market_id = sessionStore[menu.args.sessionId].marketplaceId;
+    const category_id = sessionStore[menu.args.sessionId].categoryId;
 
-    addProducts(sessionStore[menu.args.sessionId].productName).then(res => {
-      console.log("UNICORN RES", res)
-      menu.end("yay");
-    })
+    addProducts(name, market_id, category_id)
+      .then(res => {
+        console.log("UNICORN RES", res)
+        menu.end("yay");
+      })
       .catch(err => {
         console.log(err)
         menu.end('error')
