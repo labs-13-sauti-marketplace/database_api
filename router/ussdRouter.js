@@ -29,8 +29,8 @@ async function products(marketplaceId, categoryId) {
   return result;
 }
 
-async function addProducts(marketplaceId, categoryId) {
-  const result = await models.addProductInfo(marketplaceId, categoryId);
+async function addProducts(name, marketplaceId, categoryId) {
+  const result = await models.addProductInfo(name, marketplaceId, categoryId);
   return result;
 }
 
@@ -274,7 +274,7 @@ menu.state("sellerAddName", {
 
     // console.log("SESSION STORAGE", sessionStore)
 
-    addProducts().then(res => {
+    addProducts(name).then(res => {
       menu.con("Enter product name:");
     })
     .catch(err => {

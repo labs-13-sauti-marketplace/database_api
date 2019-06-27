@@ -45,7 +45,7 @@ function getMarketByCountryId(id) {
     .where({ 'country_id': id })
 }
 
-function addProductInfo(mId, cId) {
+function addProductInfo(name, mId, cId) {
   return db('products')
   .insert({"name": name})
   .into('products')
