@@ -310,9 +310,21 @@ menu.state("sellerAddName", {
     menu.con("Enter product name:");
   },
   next: {
+    "*[a-zA-Z]+": "sellerContact"
+  }
+});
+
+menu.state("sellerContact", {
+  run: () => {
+    sessionStore[menu.args.sessionId].phoneNumber = menu.val;
+    // console.log("SESSION STORAGE", sessionStore)
+    menu.con("Enter your phone number:");
+  },
+  next: {
     "*[a-zA-Z]+": "sellerPostInfo"
   }
 });
+
 
 menu.state("sellerPostInfo", {
   run: () => {
@@ -320,8 +332,9 @@ menu.state("sellerPostInfo", {
     const name = sessionStore[menu.args.sessionId].productName;
     const market_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
+    const contactInfo = sessionStore[menu.args.sessionId].phoneNumber;
 
-    addProducts(name, market_id, category_id)
+    addProducts(name, market_id, category_id, contactInfo)
       .then(res => {
         console.log("UNICORN RES", res)
         menu.end("yay");
