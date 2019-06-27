@@ -13,8 +13,8 @@ module.exports = {
 
 function getProductByMarketAndCatId(mId, cId) {
   return db("products")
-    .where({ marketplace_id: mId })
-    .andWhere({ category_id: cId });
+    .where({ 'marketplace_id': mId })
+    .andWhere({ 'category_id': cId });
 }
 
 function getMarkets() {
@@ -22,7 +22,8 @@ function getMarkets() {
 }
 
 function getCat() {
-  return db("categories");
+  return db('categories')
+
 }
 
 function getMarketplaceCategories(input) {
@@ -46,9 +47,9 @@ function getMarketByCountryId(id) {
 }
 
 function addProductInfo(name, mId, cId) {
-  return db("products")
-    .insert({"name": name})
-    .into("products")
-    .where({ "marketplace_id": mId })
-    .andWhere({ "category_id": cId });
+  return db('products')
+
+    .insert({ "name": name, 'marketplace_id': mId, 'category_id': cId })
+    .into('products')
+
 }
