@@ -122,7 +122,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.goStart('start')
       })
 
   },
@@ -149,7 +149,7 @@ menu.state("buyerCategory", {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.goStart('start')
       })
 
   },
