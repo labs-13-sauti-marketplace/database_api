@@ -306,14 +306,16 @@ menu.state("sellerAddName", {
 
 menu.state("sellerPostInfo", {
   run: () => {
-
-
     sessionStore[menu.args.sessionId].productName = menu.val;
+    const product = sessionStore[menu.args.sessionId].productName;
+    const market_id = sessionStore[menu.args.sessionId].marketplaceId;
+    const category_id = sessionStore[menu.args.sessionId].categoryId;
 
-    addProducts(sessionStore[menu.args.sessionId].productName).then(res => {
-      console.log("UNICORN RES", res)
-      menu.end("yay");
-    })
+    addProducts(product, market_id, category_id)
+      .then(res => {
+        console.log("UNICORN RES", res)
+        menu.end("yay");
+      })
       .catch(err => {
         console.log(err)
         menu.end('error')
