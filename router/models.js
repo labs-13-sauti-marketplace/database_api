@@ -46,8 +46,9 @@ function getMarketByCountryId(id) {
 }
 
 function addProductInfo(name, mId, cId) {
+  let product = {'name': name, price: "free", seller: "Unicorn" }
   return db('products')
-  .insert({'name': name, price: "free", seller: "Unicorn" }, "id")
+  .insert(product)
   .into('products')
   .where({ 'marketplace_id': mId })  
   .andWhere({'category_id': cId})
