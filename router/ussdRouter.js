@@ -323,26 +323,36 @@ menu.state("sellerAddName", {
   }
 });
 
+// menu.state("sellerAddPrice", {
+//   run: () => {
+//     sessionStore[menu.args.sessionId].productName = menu.val;
+//     // console.log("SESSION STORAGE", sessionStore)
+//     menu.con("Enter product price:");
+//   },
+//   next: {
+//     "*[a-zA-Z]+": "sellerPostInfo"
+//   }
+// });
+
 menu.state("sellerPostInfo", {
   run: () => {
-    sessionStore[menu.args.sessionId].productName = menu.val;
-    const name = sessionStore[menu.args.sessionId].productName;
-    const market_id = sessionStore[menu.args.sessionId].marketplaceId;
-    const category_id = sessionStore[menu.args.sessionId].categoryId;
 
-    addProducts(name, market_id, category_id)
-      .then(res => {
-        console.log("UNICORN RES", res)
-        menu.end("yay");
-      })
-      .catch(err => {
-        console.log(err)
-        menu.end('error')
-      })
-      .catch(err => {
-        console.log(err);
-        menu.end("error");
-      });
+
+  
+      sessionStore[menu.args.sessionId].productName = menu.val;
+      const product = sessionStore[menu.args.sessionId].productName;
+      const market_id = sessionStore[menu.args.sessionId].marketplaceId;
+      const category_id = sessionStore[menu.args.sessionId].categoryId;
+      addProducts(product, market_id, category_id)
+        .then(res => {
+          console.log("UNICORN RES", res);
+          menu.end("yay");
+        })
+        .catch(err => {
+          console.log(err);
+          menu.end("error");
+        });
+  
   }
 });
 
