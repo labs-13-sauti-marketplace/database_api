@@ -55,6 +55,12 @@ menu.startState({
   }
 });
 
+menu.state('start', {
+  run: () => {
+    menu.goStart()
+  }
+})
+
 // functions based on user's menu choice
 menu.state("goodbye", {
   run: () => {
@@ -172,7 +178,7 @@ menu.state("product", {
 
   },
   next: {
-    "0": menu.goStart(),
+    "0": "start",
     "99": "category"
   },
   defaultNext: "product"
