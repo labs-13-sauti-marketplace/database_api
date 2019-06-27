@@ -4,6 +4,7 @@ exports.up = function (knex, Promise) {
     tbl.string("name", 128).notNullable();
     tbl.string("price", 128)
     tbl.string('seller', 128)
+    tbl.string('contact_info', 25)
     tbl
       .integer('marketplace_id')
       .unsigned()
