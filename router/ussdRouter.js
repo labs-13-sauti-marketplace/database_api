@@ -340,7 +340,7 @@ menu.state("sellerPostInfo", {
 
     addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
-      menu.end(`Your post of + ${productName} + was successful! `);
+      menu.end(`Your post of + ${name} + was successful! `);
     })
       .catch(err => {
         console.log(err)
