@@ -16,7 +16,7 @@ const sessionStore = {};
 Menu & State Generators
 ------------------------------------------------------------------------------------------
 */
-function generateMenuStringFromDbRows (dbRows) {
+function generateMenuStringFromDbRows(dbRows) {
   let stringy = ''
   dbRows.forEach((row, i) => {
     const digit = i + 1
@@ -84,7 +84,7 @@ menu.state('start', {
     menu.goStart()
   }, next: {
     "1": "buyerCountry",
-    "2": "goodbye"
+    "2": "sellerCountry"
   }
 })
 
@@ -106,7 +106,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
-        menu.go('invalidOptionSelected')
+        menu.goStart('start')
       })
   },
   next: {
@@ -139,7 +139,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.goStart('start')
       })
 
   },
@@ -193,8 +193,7 @@ menu.state("buyerProduct", {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price}
-        \n${res[i].seller} \n${res[i].contact_info} `);
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller} \n${res[i].contact_info} `);
       }
       let stringy = lol.join("");
 
