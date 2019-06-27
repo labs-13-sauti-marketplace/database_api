@@ -42,7 +42,7 @@ async function countries() {
 
 
 // setting initial state of menu
-menu.state('start', {
+menu.startState({
   run: () => {
     console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
