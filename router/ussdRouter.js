@@ -6,7 +6,7 @@ const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
 
-require('../data/dbConfig')
+// const db = require('../data/dbConfig')
 const sessionStore = {};
 
 router.use(bodyParser.json())
