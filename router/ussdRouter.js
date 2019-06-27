@@ -6,7 +6,7 @@ const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
 
-const db = require('../data/dbConfig')
+require('../data/dbConfig')
 const sessionStore = {};
 
 router.use(bodyParser.json())
@@ -74,7 +74,11 @@ menu.state('country', {
 
       let stringy = lol.join("");
       menu.con(stringy);
-    });
+    })
+    .catch(e => {
+      console.log(e)
+    })
+    ;
   },
   next: {
     '0': 'start'
