@@ -55,8 +55,5 @@ function addProductInfo(name, mId, cId) {
   return db('products')
     .insert({ "name": name, 'marketplace_id': mId, 'category_id': cId })
     .into('products')
-  // .where({ 'marketplace_id': mId })
-  // .andWhere({ 'category_id': cId })
-
 }
 
