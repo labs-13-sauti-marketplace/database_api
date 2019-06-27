@@ -19,14 +19,19 @@ webRouter.get("/country/:id", (req, res) => {
   const country = [];
   db("countries")
     .where("id", id)
-    .then(country => {
-      country.push(country[0]);
+    .then(count => {
+      country.push(count[0]);
     })
     .then(
       db("marketplaces")
         .where("country_id", id)
         .then(marketplaces => {
+<<<<<<< HEAD
           country[0] = marketplaces;
+=======
+          country[0].marketplaces = marketplaces;
+          
+>>>>>>> d3db69af476b98fdd109a47ff15114167b8589c6
         })
         .then(() => {
           res.json(country);
@@ -58,7 +63,7 @@ async function addPosts(post) {
   return `New Post ID: ${post.name} : Added :)`;
 }
 
-webRouter.get("/products/:id/:id", async (req, res) => {
+webRouter.get("/products/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let result = await db.getProductByMarketAndCatId(id);
