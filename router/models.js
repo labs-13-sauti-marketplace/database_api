@@ -7,17 +7,14 @@ module.exports = {
   getMarketplaceCategories,
   getCountries,
   getMarketByCountryId,
-  getProductByMarketAndCatId, 
+  getProductByMarketAndCatId,
   addProductInfo
 };
 
-
-
-
 function getProductByMarketAndCatId(mId, cId) {
   return db("products")
-  .where({ 'marketplace_id': mId })  
-  .andWhere({'category_id': cId});
+    .where({ marketplace_id: mId })
+    .andWhere({ category_id: cId });
 }
 
 function getMarkets() {
@@ -25,13 +22,11 @@ function getMarkets() {
 }
 
 function getCat() {
-  return db('categories')
- 
+  return db("categories");
 }
 
 function getMarketplaceCategories(input) {
-  return db('categories')
-
+  return db("categories");
 }
 
 function getMarketplaceCategories(input) {
@@ -39,25 +34,21 @@ function getMarketplaceCategories(input) {
 }
 
 function getProducts() {
-  return db('products')
+  return db("products");
 }
 
 function getCountries() {
-  return db('countries')
+  return db("countries");
 }
 
 function getMarketByCountryId(id) {
-  return db('marketplaces')
-    .where({ 'country_id': id })
+  return db("marketplaces").where({ country_id: id });
 }
 
 function addProductInfo(name, mId, cId) {
-  let product = {'name': name, price: "free", seller: "Unicorn" }
-  return db('products')
-  .insert(product)
-  .into('products')
-  .where({ 'marketplace_id': mId })  
-  .andWhere({'category_id': cId})
-  
+  return db("products")
+    .insert({"name": name})
+    .into("products")
+    .where({ "marketplace_id": mId })
+    .andWhere({ "category_id": cId });
 }
-
