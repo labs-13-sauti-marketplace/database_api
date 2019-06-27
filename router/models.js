@@ -11,9 +11,6 @@ module.exports = {
   addProductInfo
 };
 
-
-
-
 function getProductByMarketAndCatId(mId, cId) {
   return db("products")
     .where({ 'marketplace_id': mId })
@@ -30,8 +27,7 @@ function getCat() {
 }
 
 function getMarketplaceCategories(input) {
-  return db('categories')
-
+  return db("categories");
 }
 
 function getMarketplaceCategories(input) {
@@ -39,16 +35,15 @@ function getMarketplaceCategories(input) {
 }
 
 function getProducts() {
-  return db('products')
+  return db("products");
 }
 
 function getCountries() {
-  return db('countries')
+  return db("countries");
 }
 
 function getMarketByCountryId(id) {
-  return db('marketplaces')
-    .where({ 'country_id': id })
+  return db("marketplaces").where({ country_id: id });
 }
 
 function addProductInfo(name, mId, cId) {
@@ -58,4 +53,3 @@ function addProductInfo(name, mId, cId) {
     .into('products')
 
 }
-
