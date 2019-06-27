@@ -62,6 +62,14 @@ menu.startState({
   }
 });
 
+menu.state('start', {
+  run: () => {
+    menu.goStart()
+  }, next: {
+    "1": "country",
+    "2": "goodbye"
+  }
+})
 
 
 /* ----------------------------------------------
@@ -179,6 +187,10 @@ menu.state("buyerProduct", {
         menu.end('error')
       })
 
+  },
+  next: {
+    "0": "start",
+    "99": "buyerCategory"
   }
 });
 
