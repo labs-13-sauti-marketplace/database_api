@@ -47,9 +47,12 @@ function getMarketByCountryId(id) {
 
 function addProductInfo(name, mId, cId) {
   return db('products')
-  .insert({"name": name})
+  .insert({"name": name}, "id")
   .into('products')
   .where({ 'marketplace_id': mId })  
-  .andWhere({'category_id': cId});
+  .andWhere({'category_id': cId})
+  .then(([id]) => {
+    return getProductByMarketAndCatId(id);
+  });
 }
 
