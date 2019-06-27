@@ -14,10 +14,8 @@ router.use(bodyParser.urlencoded({ extended: true }))
 
 // pulling in helper functions
 async function marketPlaces(countryId) {
-  await models.getMarketByCountryId(countryId)
-  .then(res => res)
-  .catch(e => console.log(e))
-  // return result;
+  const result = await models.getMarketByCountryId(countryId);
+  return result;
 }
 
 async function categories() {
@@ -99,16 +97,16 @@ menu.state('market', {
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      // if (res.length < 1) {
-      //   menu.end("No marketplaces in that country.")
-      // }
+      if (res.length < 1) {
+        menu.end("No marketplaces in that country.")
+      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
-      menu.end(stringy);
+      menu.con(stringy);
     })
       .catch(err => {
         console.log(err)
