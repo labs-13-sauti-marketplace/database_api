@@ -81,7 +81,7 @@ menu.state('buyerCountry', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
 
       let stringy = lol.join("");
@@ -89,7 +89,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.goStart('start')
       })
   },
   next: {
@@ -114,7 +114,7 @@ menu.state('buyerMarket', {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -141,7 +141,7 @@ menu.state("buyerCategory", {
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -175,7 +175,7 @@ menu.state("buyerProduct", {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name} ${res[i].price}
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price}
         \n${res[i].seller} \n${res[i].contact_info} `);
       }
       let stringy = lol.join("");
@@ -204,7 +204,7 @@ menu.state('sellerCountry', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
 
       let stringy = lol.join("");
@@ -237,7 +237,7 @@ menu.state('sellerMarket', {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -263,7 +263,7 @@ menu.state("sellerCategory", {
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
