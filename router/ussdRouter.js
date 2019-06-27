@@ -9,8 +9,21 @@ const bodyParser = require('body-parser')
 // const db = require('../data/dbConfig')
 const sessionStore = {};
 
-router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
+
+
+/*
+------------------------------------------------------------------------------------------
+Menu & State Generators
+------------------------------------------------------------------------------------------
+*/
+function generateMenuStringFromDbRows (dbRows) {
+  let stringy = ''
+  dbRows.forEach((row, i) => {
+    const digit = i + 1
+    stringy += `\n${digit}. ${row.name}`
+  })
+  return stringy
+}
 
 // pulling in helper functions
 async function marketPlaces(countryId) {
@@ -44,6 +57,10 @@ async function countries() {
   return result;
 }
 
+async function invalidOptionSelected(menuStr) {
+  menuStr = `Invalid entry.\n` + menuStr;
+  return menuStr;
+}
 
 /* ----------------------------------------------
       START MENU
@@ -89,7 +106,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
-        menu.end('error')
+        menu.go('invalidOptionSelected')
       })
   },
   next: {
@@ -160,8 +177,8 @@ menu.state("buyerCategory", {
   defaultNext: "buyerProduct"
 });
 
-
 menu.state("buyerProduct", {
+
   run: () => {
 
     sessionStore[menu.args.sessionId].categoryId = menu.val;
@@ -283,6 +300,7 @@ menu.state("sellerCategory", {
   },
   defaultNext: "sellerAddName"
 });
+
 
 
 menu.state("sellerAddName", {
