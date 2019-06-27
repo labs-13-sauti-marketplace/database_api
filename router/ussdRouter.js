@@ -111,6 +111,8 @@ menu.state('buyerMarket', {
       console.log("MARKET RES", res)
       if (res.length < 1) {
         menu.goStart('start')
+      }else if(res = null) {
+        menu.goStart('start')
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
