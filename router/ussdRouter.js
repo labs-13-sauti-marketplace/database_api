@@ -274,13 +274,10 @@ menu.state("sellerAddName", {
 
     // console.log("SESSION STORAGE", sessionStore)
 
-    addProducts(name).then(res => {
+
       menu.con("Enter product name:");
-    })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+ 
+    
 
   },
   next: {
@@ -294,9 +291,13 @@ menu.state("sellerPostInfo", {
    
     sessionStore[menu.args.sessionId].productName = menu.val;
 
-      
-      menu.end("post success");
-  
+    addProducts(sessionStore[menu.args.sessionId].productName).then(res => {
+      menu.end("yay");
+    })
+    .catch(err => {
+      console.log(err)
+      menu.end('error')
+    })
 
   }
 });
