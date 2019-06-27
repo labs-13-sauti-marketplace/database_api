@@ -26,8 +26,8 @@ webRouter.get("/country/:id", (req, res) => {
       db("marketplaces")
         .where("country_id", id)
         .then(countries => {
-          console.log(countries);
           country[0].country = countries;
+          console.log(countries);
         })
         .then(() => {
           res.json(country);
@@ -59,7 +59,7 @@ async function addPosts(post) {
   return `New Post ID: ${post.name} : Added :)`;
 }
 
-webRouter.get("/products/:id/:id", async (req, res) => {
+webRouter.get("/products/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let result = await db.getProductByMarketAndCatId(id);
