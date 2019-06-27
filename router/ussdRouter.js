@@ -106,7 +106,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
-        menu.goStart()
+        menu.con('start')
       })
   },
   next: {
@@ -139,7 +139,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
-        menu.goStart()
+        menu.con('start')
       })
 
   },
