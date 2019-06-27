@@ -1,42 +1,37 @@
 const db = require("../data/dbConfig");
 
 module.exports = {
-  findPrice,
-  addProduct,
-  get,
   getMarkets,
   getCat,
   getProducts,
+  getMarketplaceCategories,
+  getCountries,
   getMarketByCountryId,
-  getProductByMarketAndCatId
+  getProductByMarketAndCatId, 
+  addProductInfo
 };
 
-function findPrice(name, product) {
-  return db("markets")
-    .select("price")
-    .where({ name: name, product: product });
+
+
+
+function getProductByMarketAndCatId(mId, cId) {
+  return db("products")
+  .where({ 'marketplace_id': mId })  
+  .andWhere({'category_id': cId});
 }
 
-async function addProduct(product) {
-  const [id] = await db("products").insert(product);
-}
-
-function get() {
-  return db("marketplaces");
-}
-
-function getMarketByCountryId(id) {
-  return db("marketplaces").where({ country_id: id });
-}
-function getProductByMarketAndCatId(id) {
-  return db("products").where({ marketplaces_id: id } && { categories_id: id });
-}
 function getMarkets() {
   return db("marketplaces");
 }
 
 function getCat() {
-  return db("categories");
+  return db('categories')
+ 
+}
+
+function getMarketplaceCategories(input) {
+  return db('categories')
+
 }
 
 function getMarketplaceCategories(input) {
@@ -44,5 +39,25 @@ function getMarketplaceCategories(input) {
 }
 
 function getProducts() {
-  return db("products");
+  return db('products')
 }
+
+function getCountries() {
+  return db('countries')
+}
+
+function getMarketByCountryId(id) {
+  return db('marketplaces')
+    .where({ 'country_id': id })
+}
+
+function addProductInfo(name, mId, cId) {
+  let product = {'name': name, price: "free", seller: "Unicorn" }
+  return db('products')
+  .insert(product)
+  .into('products')
+  .where({ 'marketplace_id': mId })  
+  .andWhere({'category_id': cId})
+  
+}
+
