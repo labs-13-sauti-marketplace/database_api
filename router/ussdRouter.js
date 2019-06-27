@@ -167,7 +167,7 @@ menu.state("product", {
       }
       let stringy = lol.join("");
       
-      menu.con(stringy);
+      menu.end(stringy);
     })
     .catch(err => {
       console.log(err)
