@@ -99,6 +99,12 @@ menu.state("buyerCountry", {
     countries().then(res => {
       console.log('BUYER_CON_RES', res)
       console.log('TEXT, TEXT, TEXT', menu.args.text)
+      let newText = menu.args.text;
+      if(newText == NaN ){
+        return menu.end('Wrong')
+      }
+
+
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
