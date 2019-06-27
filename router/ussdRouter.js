@@ -108,8 +108,7 @@ menu.state("buyerCountry", {
       menu.con(stringy);
     })
       .catch(err => {
-        console.log(err)
-        menu.end('error')
+        menu.goStart();
       })
   },
   next: {
