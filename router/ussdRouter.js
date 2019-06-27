@@ -290,7 +290,7 @@ menu.state("sellerAddProductName", {
     menu.con("Enter product name:");
   },
   next: {
-    "*[a-zA-Z]+": "sellerAddPrice"
+    "*": "sellerAddPrice"
   }
 });
 
@@ -310,7 +310,7 @@ menu.state("sellerAddSellerName", {
     menu.con("Enter contact name:");
   },
   next: {
-    "*[a-zA-Z]+": "sellerAddPhoneNumber"
+    "*": "sellerAddPhoneNumber"
   }
 });
 
