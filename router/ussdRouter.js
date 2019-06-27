@@ -310,7 +310,7 @@ menu.state("sellerAddSellerName", {
     menu.con("Enter contact name:");
   },
   next: {
-    "*[\s\S]+": "sellerAddPhoneNumber"
+    "*[a-zA-Z]+": "sellerAddPhoneNumber"
   }
 });
 
