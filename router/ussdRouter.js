@@ -155,7 +155,7 @@ menu.state("product", {
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No products available.")
+        menu.end("No products available. \n0: Start over \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
