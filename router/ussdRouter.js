@@ -28,8 +28,8 @@ async function products(marketplaceId, categoryId) {
   return result;
 }
 
-async function addProducts(name, marketplaceId, categoryId) {
-  const result = await models.addProductInfo(name, marketplaceId, categoryId);
+async function addProducts(productName, price, sellerName, phoneNumber, marketplace_id, category_id) {
+  const result = await models.addProductInfo(productName, price, sellerName, phoneNumber, marketplace_id, category_id);
   return result;
 }
 
@@ -283,22 +283,47 @@ menu.state("sellerCategory", {
 });
 
 
-menu.state("sellerAddName", {
+menu.state("sellerAddProductName", {
   run: () => {
 
-
     sessionStore[menu.args.sessionId].categoryId = menu.val;
-
-    // console.log("SESSION STORAGE", sessionStore)
-
-
     menu.con("Enter product name:");
-
-
-
   },
   next: {
-    "*[a-zA-Z]+": "sellerPostInfo"
+    "*[a-zA-Z]+": "sellerAddPrice"
+  }
+});
+
+menu.state("sellerAddPrice", {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].productName = menu.val;
+    menu.con("Enter product price:");
+  },
+  next: {
+    "[*]+": "sellerAddContactName"
+  }
+});
+
+menu.state("sellerAddSellerName", {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].price = menu.val;
+    menu.con("Enter contact name:");
+  },
+  next: {
+    "[*]+": "sellerAddPhoneNumber"
+  }
+});
+
+menu.state("sellerAddPhoneNumber", {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].sellerName = menu.val;
+    menu.con("Enter contact phone number:");
+  },
+  next: {
+    "[*]+": "sellerPostInfo"
   }
 });
 
@@ -306,11 +331,18 @@ menu.state("sellerPostInfo", {
   run: () => {
 
 
-    sessionStore[menu.args.sessionId].productName = menu.val;
+    sessionStore[menu.args.sessionId].phoneNumber = menu.val;
 
-    addProducts(sessionStore[menu.args.sessionId].productName).then(res => {
+    const productName = sessionStore[menu.args.sessionId].productName;
+    const price = sessionStore[menu.args.sessionId].price;
+    const sellerName = sessionStore[menu.args.sessionId].sellerName;
+    const phoneNumber = sessionStore[menu.args.sessionId].phoneNumber;
+    const marketplace_id = sessionStore[menu.args.sessionId].marketplaceId;
+    const category_id = sessionStore[menu.args.sessionId].categoryId;
+
+    addProducts(productName, price, sellerName, phoneNumber, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
-      menu.end("yay");
+      menu.end(`Your post of + ${productName} + was successful! `);
     })
       .catch(err => {
         console.log(err)
