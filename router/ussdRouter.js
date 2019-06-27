@@ -57,9 +57,60 @@ async function countries() {
   return result;
 }
 
-async function invalidOptionSelected(menuStr) {
-  menuStr = `Invalid entry.\n` + menuStr;
-  return menuStr;
+async function createSession (menu) {
+  const sessionId = menu.args.sessionId
+  return db.table('sessions').insert({
+    session_id: sessionId, // <--- INDEX THIS COLUMN IN DATABASE
+   
+  })
+}
+
+async function getOrCreateSession (menu) {
+  const sessionId = menu.args.sessionId
+  let session = await db.table('sessions').where('session_id', sessionId).first()
+  if (!session) {
+    session = await this.createSession(menu)
+  }
+  return session
+}
+
+async function updateSessionData (menu, sessionObj) {
+  const sessionId = menu.args.sessionId
+  await db.table('sessions').where('id', sessionId).update(sessionObj)
+}
+
+async function addSessionHistory (menu, state, input) {
+  const sessionId = menu.args.sessionId
+  await db.table('session_history').insert({
+    session_id: sessionId,
+    state,
+    input,
+    timestamp: // add some timestamp value
+  })
+}
+
+async function setErrorMessage (menu, errorMessage) {
+    return updateSessionData(menu, {
+      show_error_message: errorMessage || null
+    })
+}
+
+async function getErrorMessage (menu) {
+  // get the current session
+  const session = await getOrCreateSession(menu)
+  // is there an error message ?
+  if (session.show_error_message) {
+    // remove the error message, so it doesn't show on the next menu
+    await setErrorMessage(menu, null)
+    // return message
+    return session.show_error_message
+  }
+  // otherwise, return null
+  return null
+}
+
+function AddErrorMessageToString (menuStr, errorMessage) {
+  return errorMessage + '\n' + menuStr
 }
 
 /* ----------------------------------------------
@@ -94,7 +145,10 @@ menu.state('start', {
 --------------------------------------------------*/
 menu.state('buyerCountry', {
 
-  run: () => {
+   run: async() => {
+
+    const errorMessage = await getErrorMessage(menu);
+
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -102,6 +156,11 @@ menu.state('buyerCountry', {
       }
 
       let stringy = lol.join("");
+
+      if(errorMessage) {
+        AddErrorMessageToString(menu, errorMessage)
+      }
+
       menu.con(stringy);
     })
       .catch(err => {
@@ -119,9 +178,15 @@ menu.state('buyerCountry', {
 
 
 menu.state('buyerMarket', {
-  run: () => {
+   run: async() => {
 
-    sessionStore[menu.args.sessionId].countryId = menu.val;
+    await updateSessionData(menu,{
+      country_id: menu.val
+    })
+
+    ///.... later, if we want to get the country id
+    const session = await getOrCreateSession(menu)
+    const countryId = session.country_id
 
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
@@ -339,13 +404,16 @@ menu.state("sellerPostInfo", {
 --------------------------------------------------*/
 
 
-router.post('*', (req, res) => {
+router.post('*', async (req, res) => {
   let args = {
     phoneNumber: req.body.phoneNumber,
     sessionId: req.body.sessionId,
     serviceCode: req.body.serviceCode,
     text: req.body.text
   };
+
+  await getOrCreateSession(menu);
+
   menu.run(args, resMsg => {
     console.log("PHONE: ", args.phoneNumber);
     console.log("SESSION: ", args.sessionId);
