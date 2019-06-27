@@ -125,15 +125,8 @@ menu.state("buyerMarket", {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
 
-      console.log('TEXT, TEXT, TEXT', menu.args.text)
-      let newText = menu.args.text;
-      if(newText == NaN ){
-        return menu.end('Wrong')
-      }
-
-
       if (res.length < 1) {
-        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+        menu.goStart()
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
