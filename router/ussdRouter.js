@@ -66,8 +66,8 @@ menu.state('start', {
   run: () => {
     menu.goStart()
   }, next: {
-    "1": "country",
-    "2": "goodbye"
+    "1": "buyerCountry",
+    "2": "sellerCountry"
   }
 })
 
