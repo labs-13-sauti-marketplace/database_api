@@ -51,8 +51,6 @@ function addProductInfo(name, mId, cId) {
   .into('products')
   .where({ 'marketplace_id': mId })  
   .andWhere({'category_id': cId})
-  .then(([id]) => {
-    return getProductByMarketAndCatId(id);
-  });
+  
 }
 
