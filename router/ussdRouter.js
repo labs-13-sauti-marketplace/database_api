@@ -316,8 +316,8 @@ menu.state("sellerAddName", {
 
 menu.state("sellerContact", {
   run: () => {
-    sessionStore[menu.args.sessionId].phoneNumber = menu.val;
-    // console.log("SESSION STORAGE", sessionStore)
+    sessionStore[menu.args.sessionId].contact_info= menu.val;
+    console.log("SESSION STORAGE", sessionStore)
     menu.con("Enter your phone number:");
   },
   next: {
