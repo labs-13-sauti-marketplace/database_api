@@ -4,7 +4,7 @@ module.exports = {
   getMarkets,
   getCat,
   getProducts,
-  getMarketplaceCategories, 
+  getMarketplaceCategories,
   getCountries,
   getMarketByCountryId,
   getProductByMarketAndCatId, 
