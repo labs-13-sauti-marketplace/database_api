@@ -46,10 +46,10 @@ function getMarketByCountryId(id) {
   return db("marketplaces").where({ country_id: id });
 }
 
-function addProductInfo(name, mId, cId) {
+function addProductInfo(name, price, seller, contact_info, marketplace_id, category_id) {
   return db('products')
-
-    .insert({ "name": name, 'marketplace_id': mId, 'category_id': cId })
-    .into('products')
-
+  .insert({"name": name, "price": price, "seller": seller, "contact_info": contact_info, "marketplace_id": marketplace_id, "category_id": category_id})
+  .into('products') 
 }
+
+
