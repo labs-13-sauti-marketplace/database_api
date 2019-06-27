@@ -300,7 +300,7 @@ menu.state("sellerAddPrice", {
     menu.con("Enter product price:");
   },
   next: {
-    "[*]+": "sellerAddContactName"
+    "[*]+": "sellerAddSellerName"
   }
 });
 
