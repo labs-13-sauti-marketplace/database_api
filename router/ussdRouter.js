@@ -279,7 +279,7 @@ menu.state("sellerCategory", {
     "0": "start",
     "99": "category"
   },
-  defaultNext: "sellerAddName"
+  defaultNext: "sellerAddProductName"
 });
 
 
@@ -296,7 +296,6 @@ menu.state("sellerAddProductName", {
 
 menu.state("sellerAddPrice", {
   run: () => {
-
     sessionStore[menu.args.sessionId].productName = menu.val;
     menu.con("Enter product price:");
   },
@@ -307,7 +306,6 @@ menu.state("sellerAddPrice", {
 
 menu.state("sellerAddSellerName", {
   run: () => {
-
     sessionStore[menu.args.sessionId].price = menu.val;
     menu.con("Enter contact name:");
   },
@@ -318,7 +316,6 @@ menu.state("sellerAddSellerName", {
 
 menu.state("sellerAddPhoneNumber", {
   run: () => {
-
     sessionStore[menu.args.sessionId].sellerName = menu.val;
     menu.con("Enter contact phone number:");
   },
@@ -327,16 +324,6 @@ menu.state("sellerAddPhoneNumber", {
   }
 });
 
-// menu.state("sellerAddPrice", {
-//   run: () => {
-//     sessionStore[menu.args.sessionId].productName = menu.val;
-//     // console.log("SESSION STORAGE", sessionStore)
-//     menu.con("Enter product price:");
-//   },
-//   next: {
-//     "*[a-zA-Z]+": "sellerPostInfo"
-//   }
-// });
 
 menu.state("sellerPostInfo", {
   run: () => {
