@@ -320,7 +320,7 @@ menu.state("sellerAddPhoneNumber", {
     menu.con("Enter contact phone number:");
   },
   next: {
-    "*[\s\S\d]+": "sellerPostInfo"
+    "*": "sellerPostInfo"
   }
 });
 
