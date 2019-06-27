@@ -193,7 +193,7 @@ menu.state("buyerProduct", {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller} \n${res[i].contact_info} `);
+        lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price} ${res[i].seller} ${res[i].contact_info} `);
       }
       let stringy = lol.join("");
 
