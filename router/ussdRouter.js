@@ -106,8 +106,6 @@ menu.state("buyerCountry", {
         menu.end('wrong!')
       }else if(lol[0] = NaN){
         menu.end('Wrong!')
-      }else{
-
       }
 
       let stringy = lol.join("");
