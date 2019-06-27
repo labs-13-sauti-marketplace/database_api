@@ -26,6 +26,12 @@ function getMarkets() {
 
 function getCat() {
   return db('categories')
+ 
+}
+
+function getMarketplaceCategories(input) {
+  return db('categories')
+
 }
 
 function getMarketplaceCategories(input) {
