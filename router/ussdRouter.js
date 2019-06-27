@@ -28,8 +28,8 @@ async function products(marketplaceId, categoryId) {
   return result;
 }
 
-async function addProducts(productName, price, sellerName, phoneNumber, marketplace_id, category_id) {
-  const result = await models.addProductInfo(productName, price, sellerName, phoneNumber, marketplace_id, category_id);
+async function addProducts(name, price, seller, contact_info, marketplace_id, category_id) {
+  const result = await models.addProductInfo(name, price, seller, contact_info, marketplace_id, category_id);
   return result;
 }
 
@@ -331,14 +331,14 @@ menu.state("sellerPostInfo", {
 
     sessionStore[menu.args.sessionId].phoneNumber = menu.val;
 
-    const productName = sessionStore[menu.args.sessionId].productName;
+    const name = sessionStore[menu.args.sessionId].productName;
     const price = sessionStore[menu.args.sessionId].price;
-    const sellerName = sessionStore[menu.args.sessionId].sellerName;
-    const phoneNumber = sessionStore[menu.args.sessionId].phoneNumber;
+    const seller = sessionStore[menu.args.sessionId].sellerName;
+    const contact_info = sessionStore[menu.args.sessionId].phoneNumber;
     const marketplace_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
 
-    addProducts(productName, price, sellerName, phoneNumber, marketplace_id, category_id).then(res => {
+    addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
       menu.end(`Your post of + ${productName} + was successful! `);
     })
