@@ -332,7 +332,7 @@ menu.state("sellerPostInfo", {
     const name = sessionStore[menu.args.sessionId].productName;
     const market_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
-    const contactInfo = sessionStore[menu.args.sessionId].phoneNumber;
+    const contactInfo = sessionStore[menu.args.sessionId].contact_info;
 
     addProducts(name, market_id, category_id, contactInfo)
       .then(res => {
