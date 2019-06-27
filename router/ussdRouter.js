@@ -307,11 +307,11 @@ menu.state("sellerAddName", {
 menu.state("sellerPostInfo", {
   run: () => {
     sessionStore[menu.args.sessionId].productName = menu.val;
-    const product = sessionStore[menu.args.sessionId].productName;
+    const name = sessionStore[menu.args.sessionId].productName;
     const market_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
 
-    addProducts(product, market_id, category_id)
+    addProducts(name, market_id, category_id)
       .then(res => {
         console.log("UNICORN RES", res)
         menu.end("yay");
