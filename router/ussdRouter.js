@@ -16,7 +16,7 @@ const sessionStore = {};
 Menu & State Generators
 ------------------------------------------------------------------------------------------
 */
-function generateMenuStringFromDbRows (dbRows) {
+function generateMenuStringFromDbRows(dbRows) {
   let stringy = ''
   dbRows.forEach((row, i) => {
     const digit = i + 1
@@ -87,7 +87,7 @@ menu.state("start", {
   },
   next: {
     "1": "buyerCountry",
-    "2": "goodbye"
+    "2": "sellerCountry"
   }
 });
 
@@ -107,7 +107,7 @@ menu.state("buyerCountry", {
     })
       .catch(err => {
         console.log(err)
-        menu.go('invalidOptionSelected')
+        menu.end('error')
       })
       .catch(err => {
         console.log(err);
@@ -188,23 +188,16 @@ menu.state("buyerProduct", {
 
     console.log("SESSION STORAGE", sessionStore);
 
-    products(
-      sessionStore[menu.args.sessionId].marketplaceId,
-      sessionStore[menu.args.sessionId].categoryId
-    )
-      .then(res => {
-        console.log("MARKET RES", res);
-        if (res.length < 1) {
-          menu.con(
-            "No products available. \n0: Start over \n99: Choose another category"
-          );
-        }
-        let lol = [];
-        for (let i = 0; i < res.length; i++) {
-          lol.push(`\n#${res[i].id}: ${res[i].name} ${res[i].price}
-        \n${res[i].seller} \n${res[i].contact_info} `);
-        }
-        let stringy = lol.join("");
+    products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+      console.log("MARKET RES", res)
+      if (res.length < 1) {
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
+      }
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
+      }
+      let stringy = lol.join("");
 
       menu.end(stringy);
     })
