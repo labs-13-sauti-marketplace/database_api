@@ -137,8 +137,7 @@ menu.state("buyerMarket", {
       menu.con(stringy);
     })
       .catch(err => {
-        console.log(err);
-        menu.end("error");
+        menu.goStart();
       });
   },
 
