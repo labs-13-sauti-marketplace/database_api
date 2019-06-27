@@ -27,7 +27,7 @@ webRouter.get("/country/:id", (req, res) => {
         .where("country_id", id)
         .then(countries => {
           console.log(countries);
-          countries[0].countries = countries;
+          country[0].countries = countries;
         })
         .then(() => {
           res.json(country);
