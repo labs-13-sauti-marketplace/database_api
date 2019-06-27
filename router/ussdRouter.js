@@ -328,11 +328,11 @@ menu.state("sellerContact", {
 
 menu.state("sellerPostInfo", {
   run: () => {
-    sessionStore[menu.args.sessionId].productName = menu.val;
+    sessionStore[menu.args.sessionId].contact = menu.val;
     const name = sessionStore[menu.args.sessionId].productName;
     const market_id = sessionStore[menu.args.sessionId].marketplaceId;
     const category_id = sessionStore[menu.args.sessionId].categoryId;
-    const contact = sessionStore[menu.args.sessionId].sellerInfo
+    const contact = sessionStore[menu.args.sessionId].contact
     addProducts(name, market_id, category_id, contact)
       .then(res => {
         console.log("UNICORN RES", res)
