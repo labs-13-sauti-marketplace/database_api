@@ -58,6 +58,9 @@ menu.startState({
 menu.state('start', {
   run: () => {
     menu.goStart()
+  }, next: {
+    "1": "country",
+    "2": "goodbye"
   }
 })
 
