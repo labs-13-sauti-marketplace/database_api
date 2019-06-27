@@ -62,6 +62,14 @@ menu.startState({
   }
 });
 
+menu.state('start', {
+  run: () => {
+    menu.goStart()
+  }, next: {
+    "1": "country",
+    "2": "goodbye"
+  }
+})
 
 
 /* ----------------------------------------------
@@ -79,10 +87,10 @@ menu.state('buyerCountry', {
       let stringy = lol.join("");
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
   },
   next: {
     '0': 'start'
@@ -139,10 +147,10 @@ menu.state("buyerCategory", {
 
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
 
   },
   next: {
@@ -162,8 +170,8 @@ menu.state("buyerProduct", {
 
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
       console.log("MARKET RES", res)
-      if(res.length < 1) {
-        menu.end("No products available.")
+      if (res.length < 1) {
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -171,14 +179,18 @@ menu.state("buyerProduct", {
         \n${res[i].seller}`);
       }
       let stringy = lol.join("");
-      
+
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
 
+  },
+  next: {
+    "0": "start",
+    "99": "buyerCategory"
   }
 });
 
@@ -196,13 +208,13 @@ menu.state('sellerCountry', {
       }
 
       let stringy = lol.join("");
-      
+
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
   },
   next: {
     '0': 'start'
@@ -220,7 +232,7 @@ menu.state('sellerMarket', {
     console.log("SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      if(res.length < 1) {
+      if (res.length < 1) {
         menu.end("No marketplaces in that country.")
       }
       let lol = [];
@@ -228,16 +240,16 @@ menu.state('sellerMarket', {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
-      
+
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
-   
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
+
   },
- 
+
   next: {
     '0': 'start'
   },
@@ -254,17 +266,18 @@ menu.state("sellerCategory", {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
-      
+
       menu.con(stringy);
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
 
   },
   next: {
-    "0": "start"
+    "0": "start",
+    "99": "category"
   },
   defaultNext: "sellerAddName"
 });
@@ -272,16 +285,16 @@ menu.state("sellerCategory", {
 
 menu.state("sellerAddName", {
   run: () => {
-   
-   
+
+
     sessionStore[menu.args.sessionId].categoryId = menu.val;
 
     // console.log("SESSION STORAGE", sessionStore)
 
 
-      menu.con("Enter product name:");
- 
-    
+    menu.con("Enter product name:");
+
+
 
   },
   next: {
@@ -291,18 +304,18 @@ menu.state("sellerAddName", {
 
 menu.state("sellerPostInfo", {
   run: () => {
-   
-   
+
+
     sessionStore[menu.args.sessionId].productName = menu.val;
 
     addProducts(sessionStore[menu.args.sessionId].productName).then(res => {
       console.log("UNICORN RES", res)
       menu.end("yay");
     })
-    .catch(err => {
-      console.log(err)
-      menu.end('error')
-    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
 
   }
 });
