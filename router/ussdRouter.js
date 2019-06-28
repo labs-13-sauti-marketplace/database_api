@@ -98,7 +98,9 @@ menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
       console.log('BUYER_CON_RES', res)
-      
+      if (res.length < 1) {
+        menu.end("No markets available. ")
+      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -125,7 +127,9 @@ menu.state("buyerMarket", {
     
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-
+      if (res.length < 1) {
+        menu.end("No products available.")
+      }
       
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -153,7 +157,9 @@ menu.state("buyerCategory", {
 
     categories()
       .then(res => {
-        
+        if (res.length < 1) {
+          menu.con("No products available. \n0: Start over \n99: Choose another category")
+        }
 
         let lol = [];
         for (let i = 0; i < res.length; i++) {
