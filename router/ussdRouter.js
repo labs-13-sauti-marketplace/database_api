@@ -112,7 +112,7 @@ menu.state('buyerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -131,6 +131,7 @@ menu.state('buyerMarket', {
 
   next: {
     "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry",
     '0': 'start',
     "99": "buyerCountry"
   },
@@ -240,7 +241,8 @@ menu.state('sellerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -258,7 +260,8 @@ menu.state('sellerMarket', {
   },
 
   next: {
-    '0': 'start'
+    '0': 'start',
+    "99": "sellerCountry"
   },
   defaultNext: 'sellerCategory'
 })
@@ -283,8 +286,8 @@ menu.state("sellerCategory", {
 
   },
   next: {
-    "0": "start",
-    "99": "category"
+    "": "sellerMarket"
+
   },
   defaultNext: "sellerAddProductName"
 });
