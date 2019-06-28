@@ -341,12 +341,20 @@ menu.state("sellerPostInfo", {
         console.log(err)
         menu.end('error')
       })
-      .catch(err => {
-        console.log(err);
-        menu.end("error");
-      });
+      
   }
 });
+
+
+menu.on('error', (e) => {
+  console.log('MENU.ON', e)
+  menu.run('start')
+})
+
+
+
+
+
 
 /* ----------------------------------------------
       POST ENDPOINT
