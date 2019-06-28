@@ -97,7 +97,7 @@ menu.state("start", {
 menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
-      console.log('BUYER_CON_RES', res)
+      // console.log('BUYER_CON_RES', res)
       if (res.length < 1) {
         menu.con("No products available. \n0: Start over \n99: Choose another category")
       }
