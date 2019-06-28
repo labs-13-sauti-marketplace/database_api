@@ -64,14 +64,14 @@ menu.startState({
   }
 });
 
-menu.state('start', {
-  run: () => {
-    menu.goStart()
-  }, next: {
-    "1": "buyerCountry",
-    "2": "sellerCountry"
-  }
-})
+// menu.state('start', {
+//   run: () => {
+//     menu.goStart()
+//   }, next: {
+//     "1": "buyerCountry",
+//     "2": "sellerCountry"
+//   }
+// })
 
 
 /* ----------------------------------------------
@@ -95,9 +95,11 @@ menu.state('buyerCountry', {
       })
   },
   next: {
-    '0': 'start'
+    "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry",
+    "99": "buyerCountry"
   },
-  defaultNext: 'buyerMarket'
+  // defaultNext: 'buyerMarket'
 
 })
 
@@ -132,10 +134,9 @@ menu.state('buyerMarket', {
   next: {
     "": "buyerCountry",
     "*[a-zA-Z]+": "buyerCountry",
-    '0': 'start',
     "99": "buyerCountry"
   },
-  defaultNext: 'buyerCategory'
+  // defaultNext: 'buyerCategory'
 })
 
 
@@ -159,9 +160,11 @@ menu.state("buyerCategory", {
 
   },
   next: {
-    "0": "start"
+    "": "buyerMarket",
+    "*[a-zA-Z]+": "buyerMarket",
+    "99": "buyerMarket"
   },
-  defaultNext: "buyerProduct"
+  // defaultNext: "buyerProduct"
 });
 
 
@@ -197,7 +200,8 @@ menu.state("buyerProduct", {
 
   },
   next: {
-    "0": "start",
+    "": "buyerCategory",
+    "*[a-zA-Z]+": "buyerCategory",
     "99": "buyerCategory"
   }
 });
@@ -225,9 +229,11 @@ menu.state('sellerCountry', {
       })
   },
   next: {
-    '0': 'start'
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry",
+    "99": "sellerCountry"
   },
-  defaultNext: 'sellerMarket'
+  // defaultNext: 'sellerMarket'
 
 })
 
@@ -260,10 +266,11 @@ menu.state('sellerMarket', {
   },
 
   next: {
-    '0': 'start',
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry",
     "99": "sellerCountry"
   },
-  defaultNext: 'sellerCategory'
+  // defaultNext: 'sellerCategory'
 })
 
 
@@ -286,10 +293,11 @@ menu.state("sellerCategory", {
 
   },
   next: {
-    "": "sellerMarket"
-
+    "": "sellerMarket",
+    "*[a-zA-Z]+": "sellerMarket",
+    "99": "sellerMarket"
   },
-  defaultNext: "sellerAddProductName"
+  // defaultNext: "sellerAddProductName"
 });
 
 
