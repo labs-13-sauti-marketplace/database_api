@@ -134,7 +134,7 @@ menu.state('buyerMarket', {
     "*[a-zA-Z]+": "buyerCountry",
     "99": "buyerCountry"
   },
-  // defaultNext: 'buyerCategory'
+  defaultNext: 'buyerCategory'
 })
 
 
@@ -162,7 +162,7 @@ menu.state("buyerCategory", {
     "*[a-zA-Z]+": "buyerMarket",
     "99": "buyerMarket"
   },
-  // defaultNext: "buyerProduct"
+  defaultNext: "buyerProduct"
 });
 
 
@@ -227,11 +227,9 @@ menu.state('sellerCountry', {
       })
   },
   next: {
-    "": "sellerCountry",
-    "*[a-zA-Z]+": "sellerCountry",
-    "99": "sellerCountry"
+    "0": "start"
   },
-  // defaultNext: 'sellerMarket'
+  defaultNext: 'sellerMarket'
 
 })
 
@@ -268,7 +266,7 @@ menu.state('sellerMarket', {
     "*[a-zA-Z]+": "sellerCountry",
     "99": "sellerCountry"
   },
-  // defaultNext: 'sellerCategory'
+  defaultNext: 'sellerCategory'
 })
 
 
@@ -295,7 +293,7 @@ menu.state("sellerCategory", {
     "*[a-zA-Z]+": "sellerMarket",
     "99": "sellerMarket"
   },
-  // defaultNext: "sellerAddProductName"
+  defaultNext: "sellerAddProductName"
 });
 
 
