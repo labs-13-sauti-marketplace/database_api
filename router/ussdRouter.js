@@ -98,9 +98,7 @@ menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
       console.log('BUYER_CON_RES', res)
-      if (res.length < 1) {
-        menu.goStart()
-      }
+      
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -110,7 +108,7 @@ menu.state("buyerCountry", {
       menu.con(stringy);
     })
       .catch(err => {
-        menu.goStart();
+        menu.end();
       })
   },
   next: {
@@ -124,13 +122,11 @@ menu.state("buyerMarket", {
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
     console.log("MARKET SESSION STORAGE", sessionStore)
-    console.log('sessionstore taxt', sessionStore.text)
+    
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
 
-      if (res.length < 1) {
-        menu.goStart()
-      }
+      
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -140,7 +136,7 @@ menu.state("buyerMarket", {
       menu.con(stringy);
     })
       .catch(err => {
-        menu.goStart();
+        menu.end();
       });
   },
 
@@ -157,9 +153,7 @@ menu.state("buyerCategory", {
 
     categories()
       .then(res => {
-        if (res.length < 1) {
-          menu.goStart()
-        }
+        
 
         let lol = [];
         for (let i = 0; i < res.length; i++) {
@@ -170,7 +164,7 @@ menu.state("buyerCategory", {
         menu.con(stringy);
       })
       .catch(err => {
-        menu.goStart();
+        menu.end();
       });
   },
   next: {
@@ -188,9 +182,7 @@ menu.state("buyerProduct", {
     console.log("SESSION STORAGE", sessionStore);
 
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
-      if (res.length < 1) {
-        menu.goStart()
-      }
+      
 
       console.log("MARKET RES", res)
       if (res.length < 1) {
@@ -205,7 +197,7 @@ menu.state("buyerProduct", {
       menu.end(stringy);
     })
       .catch(err => {
-        menu.goStart()
+        menu.end()
       })
       
   },
