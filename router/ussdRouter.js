@@ -83,7 +83,7 @@ menu.startState({
 
 menu.state("start", {
   run: () => {
-    menu.con(`Go to hell as \n1. Buyer \n2. Seller`);
+    menu.goStart(`Go to hell as \n1. Buyer \n2. Seller`);
   },
   next: {
     "1": "buyerCountry",
