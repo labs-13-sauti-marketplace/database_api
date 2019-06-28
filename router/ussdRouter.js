@@ -64,14 +64,14 @@ menu.startState({
   }
 });
 
-// menu.state('start', {
-//   run: () => {
-//     menu.goStart()
-//   }, next: {
-//     "1": "buyerCountry",
-//     "2": "sellerCountry"
-//   }
-// })
+menu.state('start', {
+  run: () => {
+    menu.goStart()
+  }, next: {
+    "1": "buyerCountry",
+    "2": "sellerCountry"
+  }
+})
 
 
 /* ----------------------------------------------
@@ -95,9 +95,7 @@ menu.state('buyerCountry', {
       })
   },
   next: {
-    "": "buyerCountry",
-    "*[a-zA-Z]+": "buyerCountry",
-    "99": "buyerCountry"
+    "0": "start"
   },
   // defaultNext: 'buyerMarket'
 
