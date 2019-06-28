@@ -97,13 +97,9 @@ menu.state("start", {
 menu.state("buyerCountry", {
   run: () => {
     countries().then(res => {
-      // console.log('BUYER_CON_RES', res)
+      console.log('BUYER_CON_RES', res)
       if (res.length < 1) {
-        delete sessionStore.countryId;
-        menu.con('start')
-        
-        
-        // menu.con("No products available. \n0: Start over \n99: Choose another category")
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
