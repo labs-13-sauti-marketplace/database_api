@@ -99,7 +99,7 @@ menu.state("buyerCountry", {
     countries().then(res => {
       console.log('BUYER_CON_RES', res)
       if (res.length < 1) {
-        menu.end("No markets available. ")
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -128,7 +128,7 @@ menu.state("buyerMarket", {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No products available.")
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
       }
       
       let lol = [];
@@ -248,7 +248,7 @@ menu.state("sellerMarket", {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
