@@ -131,9 +131,9 @@ menu.state("buyerMarket", {
     
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      // if (res.length < 1) {
-      //   menu.con("No products available. \n0: Start over \n99: Choose another category")
-      // }
+      if (res.length < 1) {
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
+      }
       
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -161,9 +161,9 @@ menu.state("buyerCategory", {
 
     categories()
       .then(res => {
-        // if (res.length < 1) {
-        //   menu.con("No products available. \n0: Start over \n99: Choose another category")
-        // }
+        if (res.length < 1) {
+          menu.con("No products available. \n0: Start over \n99: Choose another category")
+        }
 
         let lol = [];
         for (let i = 0; i < res.length; i++) {
@@ -195,9 +195,9 @@ menu.state("buyerProduct", {
       
 
       console.log("MARKET RES", res)
-      // if (res.length < 1) {
-      //   menu.con("No products available. \n0: Start over \n99: Choose another category")
-      // }
+      if (res.length < 1) {
+        menu.con("No products available. \n0: Start over \n99: Choose another category")
+      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
@@ -251,9 +251,9 @@ menu.state("sellerMarket", {
     console.log("SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      // if (res.length < 1) {
-      //   menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
-      // }
+      if (res.length < 1) {
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -372,6 +372,7 @@ router.post("*", (req, res) => {
     console.log("SESSION: ", args.sessionId);
     console.log("SERVICE CODE: ", args.serviceCode);
     console.log("TEXT: ", args.text);
+    console.log("TEXT.length: ", args.text.length);
     res.send(resMsg);
   });
 });
