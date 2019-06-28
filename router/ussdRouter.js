@@ -124,6 +124,7 @@ menu.state("buyerMarket", {
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
     console.log("MARKET SESSION STORAGE", sessionStore)
+    console.log('sessionstore taxt', sessionStore.text)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
 
