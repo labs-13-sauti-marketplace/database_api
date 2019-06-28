@@ -96,8 +96,8 @@ menu.state('buyerCountry', {
   },
   next: {
     "0": "start",
-    "": "start",
-    "*[a-zA-Z]+": "start"
+    "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry"
   },
   defaultNext: 'buyerMarket'
 
