@@ -131,7 +131,7 @@ menu.state("buyerMarket", {
     
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      if (res.length < 1) {
+      if (res.length < 3) {
         menu.con("No products available. \n0: Start over \n99: Choose another category")
       }
       
@@ -161,7 +161,7 @@ menu.state("buyerCategory", {
 
     categories()
       .then(res => {
-        if (res.length < 1) {
+        if (res.length < 5) {
           menu.con("No products available. \n0: Start over \n99: Choose another category")
         }
 
