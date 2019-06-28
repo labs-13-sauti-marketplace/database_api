@@ -229,7 +229,9 @@ menu.state('sellerCountry', {
       })
   },
   next: {
-    "0": "start"
+    "0": "start",
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry"
   },
   defaultNext: 'sellerMarket'
 
