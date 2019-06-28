@@ -99,7 +99,7 @@ menu.state("buyerCountry", {
     countries().then(res => {
       // console.log('BUYER_CON_RES', res)
       if (res.length < 1) {
-        delete sessionStore;
+        delete sessionStore.countryId;
         menu.con('start')
         
         
@@ -114,7 +114,7 @@ menu.state("buyerCountry", {
       menu.con(stringy);
     })
       .catch(err => {
-        menu.end();
+        menu.end('Wrong');
       })
   },
   next: {
