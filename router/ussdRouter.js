@@ -83,7 +83,7 @@ menu.startState({
 
 menu.state("start", {
   run: () => {
-    menu.goStart();
+    menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
     "1": "buyerCountry",
