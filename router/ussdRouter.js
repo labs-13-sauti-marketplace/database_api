@@ -170,7 +170,7 @@ menu.state("buyerCategory", {
         menu.con(stringy);
       })
       .catch(err => {
-        menu.end();
+        menu.goStart();
       });
   },
   next: {
@@ -203,14 +203,14 @@ menu.state("buyerProduct", {
       menu.end(stringy);
     })
       .catch(err => {
-        menu.end()
+        menu.goStart()
       })
       
   },
-  next: {
-    "0": "start",
-    "99": "buyerCategory"
-  }
+  // next: {
+  //   "0": "start",
+  //   "99": "buyerCategory"
+  // }
 });
 
 /* ----------------------------------------------
