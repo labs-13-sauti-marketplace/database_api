@@ -203,7 +203,9 @@ menu.state("buyerProduct", {
     "": "buyerCategory",
     "*[a-zA-Z]+": "buyerCategory",
     "99": "buyerCategory"
-  }
+  },
+  defaultNext: "start"
+
 });
 
 
