@@ -382,6 +382,11 @@ router.post('*', (req, res) => {
     serviceCode: req.body.serviceCode,
     text: req.body.text
   };
+  let session = {
+    sessionId: args.sessionId,
+    phoneNumber: args.phoneNumber,
+    text: args.text,
+  };
   menu.run(args, resMsg => {
     console.log("PHONE: ", args.phoneNumber);
     console.log("SESSION: ", args.sessionId);
@@ -389,11 +394,7 @@ router.post('*', (req, res) => {
     console.log("TEXT: ", args.text);
     res.send(resMsg);
 
-    let session = {
-      sessionId: sessionId,
-      phoneNumber: phoneNumber,
-      text: text,
-    };
+
 
     db("sessions")
       .insert(session)
