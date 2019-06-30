@@ -6,7 +6,7 @@ const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
 
-// const db = require('../data/dbConfig')
+const db = require('../data/dbConfig')
 const sessionStore = {};
 
 
@@ -389,6 +389,20 @@ router.post('*', (req, res) => {
     console.log("TEXT: ", args.text);
     res.send(resMsg);
 
+    let session = {
+      sessionId: sessionId,
+      phoneNumber: phoneNumber,
+      text: text,
+    };
+
+    db("sessions")
+      .insert(session)
+      .then(res => {
+        menu.end("session added successfully!");
+      })
+      .catch(err => {
+        menu.end("Fail");
+      });
   });
 })
 
