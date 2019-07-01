@@ -192,7 +192,7 @@ menu.state("buyerProduct", {
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.con("No products available. \n0: Start over \n99: Choose another category")
+        menu.end("No products available. Please try again.")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -215,8 +215,7 @@ menu.state("buyerProduct", {
   },
   next: {
     "": "buyerCategory",
-    "*[a-zA-Z]+": "buyerCategory",
-    "99": "buyerMarket"
+    "*[a-zA-Z]+": "buyerCategory"
   },
   defaultNext: "start"
 
@@ -241,6 +240,7 @@ menu.state('sellerCountry', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
   },
@@ -276,6 +276,7 @@ menu.state('sellerMarket', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -304,6 +305,7 @@ menu.state("sellerCategory", {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -374,6 +376,7 @@ menu.state("sellerPostInfo", {
 
     addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
+      deleteSession(menu.args.sessionId)
       menu.end(`Your post of ${name} was successful! `);
     })
       .catch(err => {
