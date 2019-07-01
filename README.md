@@ -43,6 +43,8 @@ https://sauti-marketplace.herokuapp.com/
 
 `//sauti-marketplace.herokuapp.com/categories` | all categories      | Returns the information for categories. |
 
+`//sauti-marketplace.herokuapp.com/markets` | all markets      | Returns the information for markets. |
+
 `//sauti-marketplace.herokuapp.com/countries` | all countries      | Returns the information for countries. |
 
 `//sauti-marketplace.herokuapp.com/sessions` | all sessions      | Returns the information for sessions. |
