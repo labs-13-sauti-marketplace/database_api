@@ -30,13 +30,8 @@ async function products(marketplaceId, categoryId) {
   return result;
 }
 
-<<<<<<< HEAD
-async function addProducts(name, marketplaceId, categoryId, contact) {
-  const result = await models.addProductInfo(name, marketplaceId, categoryId, contact_info);
-=======
 async function addProducts(name, price, seller, contact_info, marketplace_id, category_id) {
   const result = await models.addProductInfo(name, price, seller, contact_info, marketplace_id, category_id);
->>>>>>> 1ca4d69a58a59e889b2366a62b5f7137ccd77722
   return result;
 }
 
