@@ -106,15 +106,13 @@ menu.state('buyerCountry', {
     // "*[a-zA-Z]+": "buyerCountry"
   },
   defaultNext: 'buyerMarket'
-
 })
-
 
 
 menu.state('buyerMarket', {
   run: () => {
     console.log("MARKET VAL", menu.val)
-    if (!menu.val || menu.val == /[^0-9]/g) {
+    if (!menu.val || menu.val === isNaN) {
       menu.con('Please enter a valid country choice. \n0: Choose another country')
     }
     sessionStore[menu.args.sessionId].countryId = menu.val;
