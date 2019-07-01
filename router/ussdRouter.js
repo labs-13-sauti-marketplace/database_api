@@ -115,7 +115,7 @@ menu.state('buyerMarket', {
   run: () => {
     console.log("MARKET VAL", menu.val)
     if (!menu.val || menu.val === "*[a-zA-Z]+") {
-      menu.con('Please enter a valid country choice. \n99: Choose another country')
+      menu.con('Please enter a valid country choice. \n0: Choose another country')
     }
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
@@ -146,7 +146,8 @@ menu.state('buyerMarket', {
   next: {
     "": "buyerCountry",
     "*[a-zA-Z]+": "buyerCountry",
-    "99": "start"
+    "99": "buyerCountry",
+    "0": "start"
   },
   defaultNext: 'buyerCategory'
 })
