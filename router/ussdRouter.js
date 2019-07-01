@@ -122,6 +122,9 @@ menu.state('buyerMarket', {
       if (res.length < 1) {
         menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
+      if (menu.val === '') {
+        menu.con('Please enter a country choice.')
+      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
