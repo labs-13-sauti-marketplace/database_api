@@ -18,8 +18,8 @@ webRouter.get("/categories", async (req, res) => {
 
 webRouter.get("/country/:id", (req, res) => {
   const { id } = req.params;
-  const country = "";
-  const markets = [];
+  let country = "";
+  let markets = [];
   db("countries")
     .where("id", id)
     .then(coun => {
