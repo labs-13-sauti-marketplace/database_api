@@ -407,10 +407,7 @@ router.post('*', (req, res) => {
     console.log("SERVICE CODE: ", args.serviceCode);
     console.log("TEXT: ", args.text);
     console.log("TEXT.length: ", args.text.length);
-    let trueEnter = args.text.split('*');
-    if (isNaN(trueEnter)){
-      return res.send('Wrong!')
-    }
+    
 
     res.send(resMsg);
 
