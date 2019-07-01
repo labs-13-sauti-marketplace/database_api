@@ -113,17 +113,17 @@ menu.state('buyerCountry', {
 
 menu.state('buyerMarket', {
   run: () => {
-
+    console.log("MARKET VAL", menu.val)
+    if (!menu.val) {
+      menu.con('Please enter a country choice.')
+    }
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      console.log("MARKET VAL", menu.val)
-      if (!sessionStore[menu.args.sessionId].countryId) {
-        menu.con('Please enter a country choice.')
-      }
-      else if (res.length < 1) {
+
+      if (res.length < 1) {
         menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
 
