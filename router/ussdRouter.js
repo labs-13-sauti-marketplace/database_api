@@ -88,7 +88,7 @@ menu.state('buyerCountry', {
 
       let stringy = lol.join("");
       menu.con(stringy);
-      delete sessionStore[menu.args.sessionId] 
+      delete sessionStore.clear(); 
     })
       .catch(err => {
         console.log(err)
