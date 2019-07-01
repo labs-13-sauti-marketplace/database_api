@@ -114,8 +114,9 @@ menu.state('buyerCountry', {
 menu.state('buyerMarket', {
   run: () => {
     console.log("MARKET VAL", menu.val)
-    if (!menu.val) {
+    if (!menu.val || menu.val === "*[a-zA-Z]+") {
       menu.con('Please enter a country choice.')
+      menu.go('buyerCountry')
     }
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
