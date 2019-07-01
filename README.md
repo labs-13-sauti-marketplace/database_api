@@ -32,7 +32,7 @@ NodeJs / Express / USSD / Postgres - for more specifications please check our `p
 
 The webrouter.js is a backend API that can be used to build a front end application with functional end points. 
 
-## Database URL
+## API URL
 
 https://sauti-marketplace.herokuapp.com/
 
