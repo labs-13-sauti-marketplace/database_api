@@ -192,6 +192,7 @@ menu.state("buyerProduct", {
       let stringy = lol.join("");
 
       menu.con(stringy);
+      delete sessionStore.sessionId;
     })
       .catch(err => {
         console.log(err)
