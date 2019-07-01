@@ -46,6 +46,10 @@ async function countries() {
   return result;
 }
 
+const deleteSession = (sessionId) => {
+  delete sessionStore[sessionId]
+}
+
 
 /* ----------------------------------------------
       START MENU
@@ -66,6 +70,7 @@ menu.startState({
 
 menu.state('start', {
   run: () => {
+    sessionStore[menu.args.sessionId] = {}
     menu.goStart()
   }, next: {
     "1": "buyerCountry",
@@ -142,7 +147,9 @@ menu.state('buyerMarket', {
 
 menu.state("buyerCategory", {
   run: () => {
-    sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+    if (menu.val !== '99' || menu.val !== '') {
+      sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+    }
 
     categories().then(res => {
       let lol = [];
@@ -196,9 +203,10 @@ menu.state("buyerProduct", {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       });
-    delete sessionStore.sessionId;
+
 
   },
   next: {
@@ -406,6 +414,7 @@ router.post('*', (req, res) => {
       .catch(err => {
         menu.end("Fail");
       });
+
   });
 })
 
