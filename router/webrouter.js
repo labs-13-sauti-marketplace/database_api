@@ -67,6 +67,17 @@ webRouter.get("/countries", async (req, res) => {
 
 // //-----------------------------------------------
 
+webRouter.get("/markets", async (req, res) => {
+  try {
+    let result = await db("marketplaces"); 
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// //-----------------------------------------------
+
 webRouter.post("/addmarket", (req, res) => {
   console.log("we are trying to add a market");
   let post = req.body;
@@ -173,6 +184,8 @@ webRouter.delete("/deletecountry/:id", (req, res) => {
 });
 
 // //-----------------------------------------------
+
+
 
 webRouter.put("/updatecountry/:id", (req, res) => {
   let updatedId = req.params.id;
