@@ -137,7 +137,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
-        deleteSession(menu.args.sessionId)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
