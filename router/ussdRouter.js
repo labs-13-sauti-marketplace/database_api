@@ -96,6 +96,7 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
   },
@@ -131,6 +132,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -162,6 +164,7 @@ menu.state("buyerCategory", {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -177,8 +180,9 @@ menu.state("buyerCategory", {
 
 menu.state("buyerProduct", {
   run: () => {
-
-    sessionStore[menu.args.sessionId].categoryId = menu.val;
+    if (menu.val !== '99' || menu.val !== '') {
+      sessionStore[menu.args.sessionId].categoryId = menu.val;
+    }
 
     console.log("PRODUCT()")
 
@@ -212,7 +216,7 @@ menu.state("buyerProduct", {
   next: {
     "": "buyerCategory",
     "*[a-zA-Z]+": "buyerCategory",
-    "99": "buyerCategory"
+    "99": "buyerMarket"
   },
   defaultNext: "start"
 
