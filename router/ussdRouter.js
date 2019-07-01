@@ -119,12 +119,13 @@ menu.state('buyerMarket', {
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      if (res.length < 1) {
-        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
-      }
-      else if (menu.val === "") {
+      if (menu.val === "") {
         menu.con('Please enter a country choice.')
       }
+      else if (res.length < 1) {
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+      }
+
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
