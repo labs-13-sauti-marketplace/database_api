@@ -6,7 +6,7 @@ const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
 
-// const db = require('../data/dbConfig')
+const db = require('../data/dbConfig')
 const sessionStore = {};
 
 
@@ -95,7 +95,9 @@ menu.state('buyerCountry', {
       })
   },
   next: {
-    '0': 'start'
+    "0": "start",
+    "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry"
   },
   defaultNext: 'buyerMarket'
 
@@ -112,7 +114,7 @@ menu.state('buyerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -130,7 +132,9 @@ menu.state('buyerMarket', {
   },
 
   next: {
-    '0': 'start'
+    "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry",
+    "99": "buyerCountry"
   },
   defaultNext: 'buyerCategory'
 })
@@ -156,7 +160,9 @@ menu.state("buyerCategory", {
 
   },
   next: {
-    "0": "start"
+    "": "buyerMarket",
+    "*[a-zA-Z]+": "buyerMarket",
+    "99": "buyerMarket"
   },
   defaultNext: "buyerProduct"
 });
@@ -194,9 +200,12 @@ menu.state("buyerProduct", {
 
   },
   next: {
-    "0": "start",
+    "": "buyerCategory",
+    "*[a-zA-Z]+": "buyerCategory",
     "99": "buyerCategory"
-  }
+  },
+  defaultNext: "start"
+
 });
 
 
@@ -222,7 +231,9 @@ menu.state('sellerCountry', {
       })
   },
   next: {
-    '0': 'start'
+    "0": "start",
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry"
   },
   defaultNext: 'sellerMarket'
 
@@ -238,7 +249,8 @@ menu.state('sellerMarket', {
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No marketplaces in that country.")
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
+
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -256,7 +268,9 @@ menu.state('sellerMarket', {
   },
 
   next: {
-    '0': 'start'
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry",
+    "99": "sellerCountry"
   },
   defaultNext: 'sellerCategory'
 })
@@ -281,8 +295,9 @@ menu.state("sellerCategory", {
 
   },
   next: {
-    "0": "start",
-    "99": "category"
+    "": "sellerMarket",
+    "*[a-zA-Z]+": "sellerMarket",
+    "99": "sellerMarket"
   },
   defaultNext: "sellerAddProductName"
 });
@@ -367,6 +382,11 @@ router.post('*', (req, res) => {
     serviceCode: req.body.serviceCode,
     text: req.body.text
   };
+  let session = {
+    sessionId: args.sessionId,
+    phoneNumber: args.phoneNumber,
+    text: args.text,
+  };
   menu.run(args, resMsg => {
     console.log("PHONE: ", args.phoneNumber);
     console.log("SESSION: ", args.sessionId);
@@ -374,6 +394,16 @@ router.post('*', (req, res) => {
     console.log("TEXT: ", args.text);
     res.send(resMsg);
 
+
+
+    db("sessions")
+      .insert(session)
+      .then(res => {
+        menu.end("session added successfully!");
+      })
+      .catch(err => {
+        menu.end("Fail");
+      });
   });
 })
 
