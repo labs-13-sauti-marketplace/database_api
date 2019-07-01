@@ -30,7 +30,7 @@ webRouter.get("/country/:id", (req, res) => {
         .where("country_id", id)
         .then(marketplaces => {
           markets = marketplaces;
-          res.json(country, markets).status(200);
+        res.status(200).json(country, markets);
         })
     )
     .catch(err => {
