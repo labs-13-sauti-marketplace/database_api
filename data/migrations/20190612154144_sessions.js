@@ -10,12 +10,6 @@ exports.up = function (knex, Promise) {
     tbl
       .string('text', 160)
       .notNullable()
-    tbl
-      .integer("user_id")
-      .references("id")
-      .inTable("users")
-      .onDelete("CASCADE")
-      .onUpdate("CASCADE");
   });
 };
 
