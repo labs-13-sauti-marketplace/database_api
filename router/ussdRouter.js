@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const UssdMenu = require('ussd-menu-builder')
 const models = require("./models");
-const sessionModel = require('./sessions-model')
 const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
