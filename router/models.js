@@ -23,11 +23,6 @@ function getMarkets() {
 
 function getCat() {
   return db('categories')
-
-}
-
-function getMarketplaceCategories(input) {
-  return db("categories");
 }
 
 function getMarketplaceCategories(input) {
@@ -46,10 +41,10 @@ function getMarketByCountryId(id) {
   return db("marketplaces").where({ country_id: id });
 }
 
-function addProductInfo(name, mId, cId, cInfo) {
+function addProductInfo(name, price, seller, contact_info, marketplace_id, category_id) {
   return db('products')
-
-    .insert({ "name": name, 'marketplace_id': mId, 'category_id': cId, 'contact_info': cInfo })
+    .insert({ "name": name, "price": price, "seller": seller, "contact_info": contact_info, "marketplace_id": marketplace_id, "category_id": category_id })
     .into('products')
-
 }
+
+

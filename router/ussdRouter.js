@@ -1,29 +1,18 @@
 const router = require("express").Router();
-const UssdMenu = require("ussd-menu-builder");
+const UssdMenu = require('ussd-menu-builder')
 const models = require("./models");
-const sessionModel = require("./sessions-model");
-const menu = new UssdMenu();
+const sessionModel = require('./sessions-model')
+const menu = new UssdMenu()
 
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser')
 
-// const db = require('../data/dbConfig')
+const db = require('../data/dbConfig')
 const sessionStore = {};
 
 
+router.use(bodyParser.json())
+router.use(bodyParser.urlencoded({ extended: true }))
 
-/*
-------------------------------------------------------------------------------------------
-Menu & State Generators
-------------------------------------------------------------------------------------------
-*/
-function generateMenuStringFromDbRows(dbRows) {
-  let stringy = ''
-  dbRows.forEach((row, i) => {
-    const digit = i + 1
-    stringy += `\n${digit}. ${row.name}`
-  })
-  return stringy
-}
 
 // pulling in helper functions
 async function marketPlaces(countryId) {
@@ -37,15 +26,17 @@ async function categories() {
 }
 
 async function products(marketplaceId, categoryId) {
-  const result = await models.getProductByMarketAndCatId(
-    marketplaceId,
-    categoryId
-  );
+  const result = await models.getProductByMarketAndCatId(marketplaceId, categoryId);
   return result;
 }
 
+<<<<<<< HEAD
 async function addProducts(name, marketplaceId, categoryId, contact) {
   const result = await models.addProductInfo(name, marketplaceId, categoryId, contact_info);
+=======
+async function addProducts(name, price, seller, contact_info, marketplace_id, category_id) {
+  const result = await models.addProductInfo(name, price, seller, contact_info, marketplace_id, category_id);
+>>>>>>> 1ca4d69a58a59e889b2366a62b5f7137ccd77722
   return result;
 }
 
@@ -54,15 +45,12 @@ async function countries() {
   return result;
 }
 
+
 async function countries() {
   const result = await models.getCountries();
   return result;
 }
 
-async function invalidOptionSelected(menuStr) {
-  menuStr = `Invalid entry.\n` + menuStr;
-  return menuStr;
-}
 
 /* ----------------------------------------------
       START MENU
@@ -70,9 +58,9 @@ async function invalidOptionSelected(menuStr) {
 // setting initial state of menu
 menu.startState({
   run: () => {
-    console.log("START STATE()");
-    sessionStore[menu.args.sessionId] = {};
-    console.log("NEW SESSION ", sessionStore);
+    console.log("START STATE()")
+    sessionStore[menu.args.sessionId] = {}
+    console.log('NEW SESSION ', sessionStore)
     menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
@@ -81,20 +69,21 @@ menu.startState({
   }
 });
 
-menu.state("start", {
+menu.state('start', {
   run: () => {
-    menu.goStart(`Go to hell as \n1. Buyer \n2. Seller`);
-  },
-  next: {
+    menu.goStart()
+  }, next: {
     "1": "buyerCountry",
     "2": "sellerCountry"
   }
-});
+})
+
 
 /* ----------------------------------------------
       BUYER STATES
 --------------------------------------------------*/
-menu.state("buyerCountry", {
+menu.state('buyerCountry', {
+
   run: () => {
     countries().then(res => {
       console.log('BUYER_CON_RES', res)
@@ -114,21 +103,27 @@ menu.state("buyerCountry", {
       })
   },
   next: {
-    "0": "start"
+    "0": "start",
+    "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry"
   },
-  defaultNext: "buyerMarket"
-});
+  defaultNext: 'buyerMarket'
 
-menu.state("buyerMarket", {
+})
+
+
+
+menu.state('buyerMarket', {
   run: () => {
+
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
     console.log("MARKET SESSION STORAGE", sessionStore)
     
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
-      if (res.length < 3) {
-        menu.con("No products available. \n0: Start over \n99: Choose another category")
+      if (res.length < 1) {
+        menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       
       let lol = [];
@@ -140,52 +135,58 @@ menu.state("buyerMarket", {
       menu.con(stringy);
     })
       .catch(err => {
-        menu.end();
-      });
+        console.log(err)
+        menu.end('error')
+      })
+
   },
 
   next: {
-    '0': 'start',
+    "": "buyerCountry",
+    "*[a-zA-Z]+": "buyerCountry",
     "99": "buyerCountry"
   },
-  defaultNext: "buyerCategory"
-});
+  defaultNext: 'buyerCategory'
+})
+
 
 menu.state("buyerCategory", {
   run: () => {
     sessionStore[menu.args.sessionId].marketplaceId = menu.val;
 
-    categories()
-      .then(res => {
-        if (res.length < 5) {
-          menu.con("No products available. \n0: Start over \n99: Choose another category")
-        }
+    categories().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
 
-        let lol = [];
-        for (let i = 0; i < res.length; i++) {
-          lol.push(`\n#${res[i].id}: ${res[i].name}`);
-        }
-        let stringy = lol.join("");
-
-        menu.con(stringy);
-      })
+      menu.con(stringy);
+    })
       .catch(err => {
-        menu.goStart();
-      });
+        console.log(err)
+        menu.end('error')
+      })
+
   },
   next: {
-    "0": "start"
+    "": "buyerMarket",
+    "*[a-zA-Z]+": "buyerMarket",
+    "99": "buyerMarket"
   },
   defaultNext: "buyerProduct"
 });
 
+
 menu.state("buyerProduct", {
-
   run: () => {
-    sessionStore[menu.args.sessionId].categoryId = menu.val;
-    console.log("PRODUCT()");
 
-    console.log("SESSION STORAGE", sessionStore);
+    sessionStore[menu.args.sessionId].categoryId = menu.val;
+
+    console.log("PRODUCT()")
+
+    console.log("SESSION STORAGE", sessionStore)
+
 
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
       
@@ -196,53 +197,64 @@ menu.state("buyerProduct", {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
+
         lol.push(`\n#${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
+
       }
       let stringy = lol.join("");
 
-      menu.end(stringy);
+      menu.con(stringy);
     })
       .catch(err => {
         menu.goStart()
       })
-      
+
   },
-  // next: {
-  //   "0": "start",
-  //   "99": "buyerCategory"
-  // }
+  next: {
+    "": "buyerCategory",
+    "*[a-zA-Z]+": "buyerCategory",
+    "99": "buyerCategory"
+  },
+  defaultNext: "start"
+
 });
+
 
 /* ----------------------------------------------
       SELLER STATES
 --------------------------------------------------*/
 
-menu.state("sellerCountry", {
+menu.state('sellerCountry', {
   run: () => {
-    countries()
-      .then(res => {
-        let lol = [];
-        for (let i = 0; i < res.length; i++) {
-          lol.push(`\n#${res[i].id}: ${res[i].name}`);
-        }
+    countries().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
 
-        let stringy = lol.join("");
+      let stringy = lol.join("");
 
-        menu.con(stringy);
-      })
+      menu.con(stringy);
+    })
       .catch(err => {
-        console.log(err);
-        menu.end("error");
-      });
+        console.log(err)
+        menu.end('error')
+      })
   },
   next: {
-    "0": "start"
+    "0": "start",
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry"
   },
-  defaultNext: "sellerMarket"
-});
+  defaultNext: 'sellerMarket'
 
-menu.state("sellerMarket", {
+})
+
+
+
+menu.state('sellerMarket', {
   run: () => {
+
     sessionStore[menu.args.sessionId].countryId = menu.val;
     console.log("SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
@@ -265,79 +277,104 @@ menu.state("sellerMarket", {
   },
 
   next: {
-    '0': 'start',
-    '99': 'sellerCountry'
+    "": "sellerCountry",
+    "*[a-zA-Z]+": "sellerCountry",
+    "99": "sellerCountry"
   },
-  defaultNext: "sellerCategory"
-});
+  defaultNext: 'sellerCategory'
+})
+
 
 menu.state("sellerCategory", {
   run: () => {
     sessionStore[menu.args.sessionId].marketplaceId = menu.val;
-    categories()
-      .then(res => {
-        let lol = [];
-        for (let i = 0; i < res.length; i++) {
-          lol.push(`\n#${res[i].id}: ${res[i].name}`);
-        }
-        let stringy = lol.join("");
+    categories().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
 
-        menu.con(stringy);
-      })
-      .catch(err => {
-        console.log(err);
-        menu.end("error");
-      });
-  },
-  next: {
-    "0": "start",
-    "99": "category"
-  },
-  defaultNext: "sellerAddName"
-});
-
-
-
-menu.state("sellerAddName", {
-  run: () => {
-    sessionStore[menu.args.sessionId].categoryId = menu.val;
-    // console.log("SESSION STORAGE", sessionStore)
-    menu.con("Enter product name:");
-  },
-  next: {
-    "*[a-zA-Z]+": "sellerContact"
-  }
-});
-
-
-menu.state("sellerContact", {
-  run: () => {
-    sessionStore[menu.args.sessionId].productName = menu.val;
-    console.log("SESSION STORAGE", sessionStore)
-    menu.con("your phone:");
-  },
-  next: {
-    "*[a-zA-Z]+": "sellerPostInfo"
-  }
-});
-
-menu.state("sellerPostInfo", {
-  run: () => {
-    sessionStore[menu.args.sessionId].contact = menu.val;
-    const name = sessionStore[menu.args.sessionId].productName;
-    const market_id = sessionStore[menu.args.sessionId].marketplaceId;
-    const category_id = sessionStore[menu.args.sessionId].categoryId;
-    const contactInfo = sessionStore[menu.args.sessionId].sellerInfo;
-    addProducts(name, market_id, category_id, contactInfo)
-      .then(res => {
-        console.log("UNICORN RES", res)
-        menu.end("yay");
-      })
+      menu.con(stringy);
+    })
       .catch(err => {
         console.log(err)
         menu.end('error')
       })
-      
+
+  },
+  next: {
+    "": "sellerMarket",
+    "*[a-zA-Z]+": "sellerMarket",
+    "99": "sellerMarket"
+  },
+  defaultNext: "sellerAddProductName"
+});
+
+
+menu.state("sellerAddProductName", {
+  run: () => {
+
+    sessionStore[menu.args.sessionId].categoryId = menu.val;
+    menu.con("Enter product name:");
+  },
+  next: {
+    "*": "sellerAddPrice"
+  }
+});
+
+menu.state("sellerAddPrice", {
+  run: () => {
+    sessionStore[menu.args.sessionId].productName = menu.val;
+    menu.con("Enter product price:");
+  },
+  next: {
+    "*": "sellerAddSellerName"
+  }
+});
+
+menu.state("sellerAddSellerName", {
+  run: () => {
+    sessionStore[menu.args.sessionId].price = menu.val;
+    menu.con("Enter contact name:");
+  },
+  next: {
+    "*": "sellerAddPhoneNumber"
+  }
+});
+
+menu.state("sellerAddPhoneNumber", {
+  run: () => {
+    sessionStore[menu.args.sessionId].sellerName = menu.val;
+    menu.con("Enter contact phone number:");
+  },
+  next: {
+    "*": "sellerPostInfo"
+  }
+});
+
+
+menu.state("sellerPostInfo", {
+  run: () => {
+
+
+    sessionStore[menu.args.sessionId].phoneNumber = menu.val;
+
+    const name = sessionStore[menu.args.sessionId].productName;
+    const price = sessionStore[menu.args.sessionId].price;
+    const seller = sessionStore[menu.args.sessionId].sellerName;
+    const contact_info = sessionStore[menu.args.sessionId].phoneNumber;
+    const marketplace_id = sessionStore[menu.args.sessionId].marketplaceId;
+    const category_id = sessionStore[menu.args.sessionId].categoryId;
+
+    addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
+      console.log("UNICORN RES", res)
+      menu.end(`Your post of ${name} was successful! `);
+    })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
   }
 });
 
@@ -356,12 +393,18 @@ menu.on('error', (e) => {
       POST ENDPOINT
 --------------------------------------------------*/
 
-router.post("*", (req, res) => {
+
+router.post('*', (req, res) => {
   let args = {
     phoneNumber: req.body.phoneNumber,
     sessionId: req.body.sessionId,
     serviceCode: req.body.serviceCode,
     text: req.body.text
+  };
+  let session = {
+    sessionId: args.sessionId,
+    phoneNumber: args.phoneNumber,
+    text: args.text,
   };
   menu.run(args, resMsg => {
     console.log("PHONE: ", args.phoneNumber);
@@ -375,7 +418,18 @@ router.post("*", (req, res) => {
     }
 
     res.send(resMsg);
+
+
+
+    db("sessions")
+      .insert(session)
+      .then(res => {
+        menu.end("session added successfully!");
+      })
+      .catch(err => {
+        menu.end("Fail");
+      });
   });
-});
+})
 
 module.exports = router;
