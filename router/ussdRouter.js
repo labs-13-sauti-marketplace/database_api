@@ -250,8 +250,8 @@ menu.state('sellerCountry', {
   },
   next: {
     "0": "start",
-    "": "sellerCountry",
-    "*[a-zA-Z]+": "sellerCountry"
+    // "": "sellerCountry",
+    // "*[a-zA-Z]+": "sellerCountry"
   },
   defaultNext: 'sellerMarket'
 
@@ -261,6 +261,9 @@ menu.state('sellerCountry', {
 
 menu.state('sellerMarket', {
   run: () => {
+    if (!menu.val) {
+      menu.con('Please enter a valid country choice. \n0: Choose another country.')
+    }
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
     console.log("SESSION STORAGE", sessionStore)
@@ -280,7 +283,7 @@ menu.state('sellerMarket', {
     })
       .catch(err => {
         console.log(err)
-        deleteSession(menu.args.sessionId)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -289,7 +292,8 @@ menu.state('sellerMarket', {
   next: {
     "": "sellerCountry",
     "*[a-zA-Z]+": "sellerCountry",
-    "99": "sellerCountry"
+    "99": "sellerCountry",
+    "0": "start"
   },
   defaultNext: 'sellerCategory'
 })
