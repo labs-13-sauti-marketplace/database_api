@@ -42,7 +42,7 @@ webRouter.get("/country/:id", (req, res) => {
 
 // //-----------------------------------------------
 
-webRouter.get("/products/:id", (req, res) => {
+webRouter.get("/products/byMarketAndCountry", (req, res) => {
   const { marketplace_id, category_id } = req.body;
 
   db("products")
