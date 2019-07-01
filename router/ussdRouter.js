@@ -46,6 +46,10 @@ async function countries() {
   return result;
 }
 
+const deleteSession = (sessionId) => {
+  delete sessionStore[sessionId]
+}
+
 
 /* ----------------------------------------------
       START MENU
@@ -66,6 +70,7 @@ menu.startState({
 
 menu.state('start', {
   run: () => {
+    sessionStore[menu.args.sessionId] = {}
     menu.goStart()
   }, next: {
     "1": "buyerCountry",
@@ -91,31 +96,35 @@ menu.state('buyerCountry', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
   },
   next: {
     "0": "start",
-    "": "buyerCountry",
-    "*[a-zA-Z]+": "buyerCountry"
+    // "": "buyerCountry",
+    // "*[a-zA-Z]+": "buyerCountry"
   },
   defaultNext: 'buyerMarket'
-
 })
-
 
 
 menu.state('buyerMarket', {
   run: () => {
-
+    console.log("MARKET VAL", menu.val)
+    if (!menu.val) {
+      menu.con('Please enter a valid country choice. \n0: Choose another country')
+    }
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
+
       if (res.length < 1) {
         menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
+
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n#${res[i].id}: ${res[i].name}`);
@@ -126,6 +135,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -134,7 +144,8 @@ menu.state('buyerMarket', {
   next: {
     "": "buyerCountry",
     "*[a-zA-Z]+": "buyerCountry",
-    "99": "buyerCountry"
+    "99": "buyerCountry",
+    "0": "start"
   },
   defaultNext: 'buyerCategory'
 })
@@ -142,7 +153,9 @@ menu.state('buyerMarket', {
 
 menu.state("buyerCategory", {
   run: () => {
-    sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+    if (menu.val !== '99' || menu.val !== '') {
+      sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+    }
 
     categories().then(res => {
       let lol = [];
@@ -155,6 +168,7 @@ menu.state("buyerCategory", {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -170,8 +184,9 @@ menu.state("buyerCategory", {
 
 menu.state("buyerProduct", {
   run: () => {
-
-    sessionStore[menu.args.sessionId].categoryId = menu.val;
+    if (menu.val !== '99' || menu.val !== '') {
+      sessionStore[menu.args.sessionId].categoryId = menu.val;
+    }
 
     console.log("PRODUCT()")
 
@@ -181,7 +196,7 @@ menu.state("buyerProduct", {
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.con("No products available. \n0: Start over \n99: Choose another category")
+        menu.end("No products available. Please try again.")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -190,19 +205,21 @@ menu.state("buyerProduct", {
 
       }
       let stringy = lol.join("");
+      deleteSession(menu.args.sessionId)
+      menu.end(stringy);
 
-      menu.con(stringy);
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
-      })
+      });
+
 
   },
   next: {
     "": "buyerCategory",
-    "*[a-zA-Z]+": "buyerCategory",
-    "99": "buyerCategory"
+    "*[a-zA-Z]+": "buyerCategory"
   },
   defaultNext: "start"
 
@@ -227,13 +244,14 @@ menu.state('sellerCountry', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
   },
   next: {
     "0": "start",
-    "": "sellerCountry",
-    "*[a-zA-Z]+": "sellerCountry"
+    // "": "sellerCountry",
+    // "*[a-zA-Z]+": "sellerCountry"
   },
   defaultNext: 'sellerMarket'
 
@@ -243,6 +261,9 @@ menu.state('sellerCountry', {
 
 menu.state('sellerMarket', {
   run: () => {
+    if (!menu.val) {
+      menu.con('Please enter a valid country choice. \n0: Choose another country.')
+    }
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
     console.log("SESSION STORAGE", sessionStore)
@@ -262,6 +283,7 @@ menu.state('sellerMarket', {
     })
       .catch(err => {
         console.log(err)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -270,7 +292,8 @@ menu.state('sellerMarket', {
   next: {
     "": "sellerCountry",
     "*[a-zA-Z]+": "sellerCountry",
-    "99": "sellerCountry"
+    "99": "sellerCountry",
+    "0": "start"
   },
   defaultNext: 'sellerCategory'
 })
@@ -290,6 +313,7 @@ menu.state("sellerCategory", {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -360,6 +384,7 @@ menu.state("sellerPostInfo", {
 
     addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
+      deleteSession(menu.args.sessionId)
       menu.end(`Your post of ${name} was successful! `);
     })
       .catch(err => {
@@ -404,6 +429,7 @@ router.post('*', (req, res) => {
       .catch(err => {
         menu.end("Fail");
       });
+
   });
 })
 
