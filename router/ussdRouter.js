@@ -119,6 +119,7 @@ menu.state('buyerMarket', {
     console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
       console.log("MARKET RES", res)
+      console.log("MARKET VAL", menu.val)
       if (sessionStore[menu.args.sessionId].countryId === "*") {
         menu.con('Please enter a country choice.')
       }
