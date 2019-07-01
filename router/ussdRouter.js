@@ -122,7 +122,7 @@ menu.state('buyerMarket', {
       if (res.length < 1) {
         menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
-      if (menu.val === '') {
+      else if (menu.val === "") {
         menu.con('Please enter a country choice.')
       }
       let lol = [];
