@@ -39,12 +39,6 @@ async function countries() {
   return result;
 }
 
-
-async function countries() {
-  const result = await models.getCountries();
-  return result;
-}
-
 const deleteSession = (sessionId) => {
   delete sessionStore[sessionId]
 }

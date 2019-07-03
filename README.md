@@ -32,7 +32,9 @@ NodeJs / Express / USSD / Postgres - for more specifications please check our `p
 
 The webrouter.js is a backend API that can be used to build a front end application with functional end points. 
 
+## API URL
 
+https://sauti-marketplace.herokuapp.com/
 
 
 | Method | Endpoint                                    | Access Control | Description                                  |
@@ -40,28 +42,49 @@ The webrouter.js is a backend API that can be used to build a front end applicat
 | GET | 
 
 `//sauti-marketplace.herokuapp.com/categories` | all categories      | Returns the information for categories. |
+"name": "" 
+
+`//sauti-marketplace.herokuapp.com/markets` | all markets      | Returns the information for markets. |
 
 `//sauti-marketplace.herokuapp.com/countries` | all countries      | Returns the information for countries. |
+"name": ""
 
 `//sauti-marketplace.herokuapp.com/sessions` | all sessions      | Returns the information for sessions. |
+"sessionId": "",
+"phoneNumber": "",
+"text": "",
+"user_id": ""
+
 
 `//sauti-marketplace.herokuapp.com/country/:id` | all country/:id      | Returns the information for country/:id. |
+"name": ""
 
-`//sauti-marketplace.herokuapp.com/products/:id` | all products/:id      | Returns the information for products/:id. |
+`//sauti-marketplace.herokuapp.com/products/byMarketAndCountry` | all products     | Returns the information for products by Market and Country. |
+ 
+  must be in body for get.
+ "marketplace_id": "marketplace_id", 
+ "category_id": "category_id" 
 
 | POST |
 
 `//sauti-marketplace.herokuapp.com/addmarket` | 
 | Added a new marketplace. |
+"name": ""
 
 `//sauti-marketplace.herokuapp.com/addcountry` | 
 | Added a new country. |
+"name": ""
 
 `//sauti-marketplace.herokuapp.com/addsessions` | 
 | Added a new session. |
+"sessionId": "",
+"phoneNumber": "",
+"text": "",
 
 `//sauti-marketplace.herokuapp.com/addcategories` | 
 | Added a new category. |
+
+"name": ""
 
 | Delete |
 
