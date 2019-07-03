@@ -102,6 +102,7 @@ menu.state('buyerCountry', {
 
 menu.state('buyerMarket', {
   run: () => {
+    console.log("MARKET VAL", menu.val)
     if (!menu.val) {
       menu.con('Please enter a valid country choice. \n0: Choose another country')
     }
@@ -121,6 +122,7 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -174,8 +176,9 @@ menu.state("buyerProduct", {
     }
 
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+
       if (res.length < 1) {
-        menu.con("No products available. \n0: Choose another category")
+        menu.con("No products available. \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
@@ -190,7 +193,7 @@ menu.state("buyerProduct", {
     })
       .catch(err => {
         console.log(err)
-        // deleteSession(menu.args.sessionId)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       });
 
@@ -198,7 +201,7 @@ menu.state("buyerProduct", {
   next: {
     "": "buyerCategory",
     "*[a-zA-Z]+": "buyerCategory",
-    "0": "buyerCategory"
+    "99": "buyerCategory"
   },
   defaultNext: "start"
 
