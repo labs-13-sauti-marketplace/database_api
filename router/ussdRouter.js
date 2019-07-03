@@ -50,9 +50,9 @@ const deleteSession = (sessionId) => {
 // setting initial state of menu
 menu.startState({
   run: () => {
-    console.log("START STATE()")
+    // console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
-    console.log('NEW SESSION ', sessionStore)
+    // console.log('NEW SESSION ', sessionStore)
     menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
@@ -94,9 +94,7 @@ menu.state('buyerCountry', {
       })
   },
   next: {
-    "0": "start",
-    // "": "buyerCountry",
-    // "*[a-zA-Z]+": "buyerCountry"
+    "0": "start"
   },
   defaultNext: 'buyerMarket'
 })
@@ -104,20 +102,15 @@ menu.state('buyerCountry', {
 
 menu.state('buyerMarket', {
   run: () => {
-    console.log("MARKET VAL", menu.val)
     if (!menu.val) {
       menu.con('Please enter a valid country choice. \n0: Choose another country')
     }
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
-    console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
-      console.log("MARKET RES", res)
-
       if (res.length < 1) {
         menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
-
       let lol = [];
       for (let i = 0; i < res.length; i++) {
         lol.push(`\n${res[i].id}: ${res[i].name}`);
@@ -128,7 +121,6 @@ menu.state('buyerMarket', {
     })
       .catch(err => {
         console.log(err)
-        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -180,17 +172,10 @@ menu.state("buyerProduct", {
     if (menu.val !== '99' || menu.val !== '') {
       sessionStore[menu.args.sessionId].categoryId = menu.val;
     }
-
-    console.log("PRODUCT()")
-
-    console.log("SESSION STORAGE", sessionStore)
-
-
+    if (res.length < 1) {
+      menu.con("No products available. \n99: Choose another category")
+    }
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
-      console.log("MARKET RES", res)
-      if (res.length < 1) {
-        menu.con("No products available. \n99: Choose another category")
-      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
 
@@ -207,7 +192,6 @@ menu.state("buyerProduct", {
         deleteSession(menu.args.sessionId)
         menu.end('error')
       });
-
 
   },
   next: {
