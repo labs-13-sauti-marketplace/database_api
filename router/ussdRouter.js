@@ -214,7 +214,7 @@ menu.state("buyerProduct", {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
 
-        lol.push(`\n${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
+        lol.push(`\n${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n`);
 
       }
       let stringy = lol.join("");
@@ -246,9 +246,7 @@ menu.state('buyerSideSellerInfo', {
       sessionStore[menu.args.sessionId].productId
     )
       .then(res => {
-        if (res.length < 1) {
-          return menu.con("No products available. \n99: Choose another category")
-        }
+
         let lol = [];
         for (let i = 0; i < res.length; i++) {
 
