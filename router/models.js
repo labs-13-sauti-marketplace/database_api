@@ -48,9 +48,7 @@ function addProductInfo(name, price, seller, contact_info, marketplace_id, categ
     .into('products')
 }
 
-function sellerForProduct(name, contact_info){
+function sellerForProduct(name, contact_info) {
   return db('products')
-  .where({ name, contact_info })
+    .where({ name, contact_info })
 }
-
-
