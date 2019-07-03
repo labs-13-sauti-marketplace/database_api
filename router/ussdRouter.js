@@ -40,6 +40,7 @@ async function countries() {
 }
 
 const deleteSession = (sessionId) => {
+  console.log('DELETING SESSION', sessionId)
   delete sessionStore[sessionId]
 }
 
