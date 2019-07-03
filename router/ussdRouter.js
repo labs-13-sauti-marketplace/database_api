@@ -189,7 +189,7 @@ menu.state("buyerProduct", {
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
       console.log("MARKET RES", res)
       if (res.length < 1) {
-        menu.end("No products available. \n99: Choose another category")
+        menu.con("No products available. \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
