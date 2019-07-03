@@ -124,7 +124,7 @@ menu.state('buyerMarket', {
       }
       let stringy = lol.join("");
 
-      menu.con(stringy);
+      menu.con('Select a market' + stringy);
     })
       .catch(err => {
         console.log(err)
@@ -157,7 +157,7 @@ menu.state("buyerCategory", {
       }
       let stringy = lol.join("");
 
-      menu.con(stringy);
+      menu.con('Select a category' + stringy);
     })
       .catch(err => {
         console.log(err)
