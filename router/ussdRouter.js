@@ -172,10 +172,11 @@ menu.state("buyerProduct", {
     if (menu.val !== '99' || menu.val !== '') {
       sessionStore[menu.args.sessionId].categoryId = menu.val;
     }
-    if (res.length < 1) {
-      menu.con("No products available. \n99: Choose another category")
-    }
+
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
+      if (res.length < 1) {
+        menu.con("No products available. \n0: Choose another category")
+      }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
 
@@ -197,7 +198,7 @@ menu.state("buyerProduct", {
   next: {
     "": "buyerCategory",
     "*[a-zA-Z]+": "buyerCategory",
-    "99": "buyerCategory"
+    "0": "buyerCategory"
   },
   defaultNext: "start"
 
