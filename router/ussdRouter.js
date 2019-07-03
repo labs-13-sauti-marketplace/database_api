@@ -44,8 +44,8 @@ const deleteSession = (sessionId) => {
   delete sessionStore[sessionId]
 }
 
-async function buyerRouteSellerInfo(name, contact_info) {
-  const result = await models.sellerForProduct(name, contact_info)
+async function buyerRouteSellerInfo(marketplace_id, category_id, id) {
+  const result = await models.sellerForProduct(marketplace_id, category_id, id)
   return result;
 }
 /* ----------------------------------------------
@@ -240,7 +240,7 @@ menu.state("buyerProduct", {
 
 menu.state('buyerSideSellerInfo', {
   run: () => {
-    buyerRouteSellerInfo().then(res=>{
+    buyerRouteSellerInfo().then( res =>{
       menu.end(res)
     })
   }
