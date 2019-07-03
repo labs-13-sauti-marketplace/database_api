@@ -214,8 +214,7 @@ menu.state("buyerProduct", {
 
       }
       let stringy = lol.join("");
-      deleteSession(menu.args.sessionId)
-      menu.end(stringy);
+      menu.con(stringy);
 
     })
       .catch(err => {
