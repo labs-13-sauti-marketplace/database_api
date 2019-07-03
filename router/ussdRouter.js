@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const UssdMenu = require('ussd-menu-builder')
 const models = require("./models");
-const sessionModel = require('./sessions-model')
 const menu = new UssdMenu()
 
 const bodyParser = require('body-parser')
@@ -40,10 +39,9 @@ async function countries() {
   return result;
 }
 
-
-async function countries() {
-  const result = await models.getCountries();
-  return result;
+const deleteSession = (sessionId) => {
+  console.log('DELETING SESSION', sessionId)
+  delete sessionStore[sessionId]
 }
 
 
@@ -53,9 +51,9 @@ async function countries() {
 // setting initial state of menu
 menu.startState({
   run: () => {
-    console.log("START STATE()")
+    // console.log("START STATE()")
     sessionStore[menu.args.sessionId] = {}
-    console.log('NEW SESSION ', sessionStore)
+    // console.log('NEW SESSION ', sessionStore)
     menu.con(`Go to market as \n1. Buyer \n2. Seller`);
   },
   next: {
@@ -66,6 +64,7 @@ menu.startState({
 
 menu.state('start', {
   run: () => {
+    sessionStore[menu.args.sessionId] = {}
     menu.goStart()
   }, next: {
     "1": "buyerCountry",
@@ -83,50 +82,48 @@ menu.state('buyerCountry', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
 
       let stringy = lol.join("");
-      menu.con(stringy);
-      delete sessionStore.clear(); 
+      menu.con('Select a country' + stringy);
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
   },
   next: {
-    "0": "start",
-    "": "buyerCountry",
-    "*[a-zA-Z]+": "buyerCountry"
+    "0": "start"
   },
   defaultNext: 'buyerMarket'
-
 })
-
 
 
 menu.state('buyerMarket', {
   run: () => {
-
+    console.log("MARKET VAL", menu.val)
+    if (!menu.val) {
+      menu.con('Please enter a valid country choice. \n0: Choose another country')
+    }
     sessionStore[menu.args.sessionId].countryId = menu.val;
 
-    console.log("MARKET SESSION STORAGE", sessionStore)
     marketPlaces(sessionStore[menu.args.sessionId].countryId).then(res => {
-      console.log("MARKET RES", res)
       if (res.length < 1) {
         menu.con("No marketplaces in that country. \n0: Start over \n99: Choose another country")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
-      menu.con(stringy);
+      menu.con('Select a market' + stringy);
     })
       .catch(err => {
         console.log(err)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -135,27 +132,57 @@ menu.state('buyerMarket', {
   next: {
     "": "buyerCountry",
     "*[a-zA-Z]+": "buyerCountry",
-    "99": "buyerCountry"
+    "99": "buyerCountry",
+    "0": "start"
   },
   defaultNext: 'buyerCategory'
 })
 
-
-menu.state("buyerCategory", {
+menu.state("reselectCategory", {
   run: () => {
-    sessionStore[menu.args.sessionId].marketplaceId = menu.val;
 
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
-      menu.con(stringy);
+      menu.con('Select a category' + stringy);
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
+        menu.end('error')
+      })
+
+  },
+  next: {
+    "": "buyerMarket",
+    "*[a-zA-Z]+": "buyerMarket",
+    "99": "buyerMarket"
+  },
+  defaultNext: "buyerProduct"
+});
+
+menu.state("buyerCategory", {
+  run: () => {
+    if (menu.val !== '99' || menu.val !== '') {
+      sessionStore[menu.args.sessionId].marketplaceId = menu.val;
+    }
+
+    categories().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
+
+      menu.con('Select a category' + stringy);
+    })
+      .catch(err => {
+        console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -171,39 +198,35 @@ menu.state("buyerCategory", {
 
 menu.state("buyerProduct", {
   run: () => {
-
-    sessionStore[menu.args.sessionId].categoryId = menu.val;
-
-    console.log("PRODUCT()")
-
-    console.log("SESSION STORAGE", sessionStore)
-
-
+    if (menu.val !== '99' || menu.val !== '') {
+      sessionStore[menu.args.sessionId].categoryId = menu.val;
+    }
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
-      console.log("MARKET RES", res)
+
       if (res.length < 1) {
-        menu.con("No products available. \n0: Start over \n99: Choose another category")
+        return menu.con("No products available. \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
 
-        lol.push(`\n#${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
+        lol.push(`\n${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
 
       }
       let stringy = lol.join("");
-
       menu.con(stringy);
+
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
-      })
+      });
 
   },
   next: {
     "": "buyerCategory",
     "*[a-zA-Z]+": "buyerCategory",
-    "99": "buyerCategory"
+    "99": "reselectCategory"
   },
   defaultNext: "start"
 
@@ -219,7 +242,7 @@ menu.state('sellerCountry', {
     countries().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
 
       let stringy = lol.join("");
@@ -228,13 +251,14 @@ menu.state('sellerCountry', {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
   },
   next: {
     "0": "start",
-    "": "sellerCountry",
-    "*[a-zA-Z]+": "sellerCountry"
+    // "": "sellerCountry",
+    // "*[a-zA-Z]+": "sellerCountry"
   },
   defaultNext: 'sellerMarket'
 
@@ -244,6 +268,9 @@ menu.state('sellerCountry', {
 
 menu.state('sellerMarket', {
   run: () => {
+    if (!menu.val) {
+      menu.con('Please enter a valid country choice. \n0: Choose another country.')
+    }
 
     sessionStore[menu.args.sessionId].countryId = menu.val;
     console.log("SESSION STORAGE", sessionStore)
@@ -255,7 +282,7 @@ menu.state('sellerMarket', {
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -263,6 +290,7 @@ menu.state('sellerMarket', {
     })
       .catch(err => {
         console.log(err)
+        // deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -271,7 +299,8 @@ menu.state('sellerMarket', {
   next: {
     "": "sellerCountry",
     "*[a-zA-Z]+": "sellerCountry",
-    "99": "sellerCountry"
+    "99": "sellerCountry",
+    "0": "start"
   },
   defaultNext: 'sellerCategory'
 })
@@ -283,7 +312,7 @@ menu.state("sellerCategory", {
     categories().then(res => {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
-        lol.push(`\n#${res[i].id}: ${res[i].name}`);
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
       }
       let stringy = lol.join("");
 
@@ -291,6 +320,7 @@ menu.state("sellerCategory", {
     })
       .catch(err => {
         console.log(err)
+        deleteSession(menu.args.sessionId)
         menu.end('error')
       })
 
@@ -361,6 +391,7 @@ menu.state("sellerPostInfo", {
 
     addProducts(name, price, seller, contact_info, marketplace_id, category_id).then(res => {
       console.log("UNICORN RES", res)
+      deleteSession(menu.args.sessionId)
       menu.end(`Your post of ${name} was successful! `);
     })
       .catch(err => {
@@ -405,6 +436,7 @@ router.post('*', (req, res) => {
       .catch(err => {
         menu.end("Fail");
       });
+
   });
 })
 
