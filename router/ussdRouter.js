@@ -137,6 +137,32 @@ menu.state('buyerMarket', {
   defaultNext: 'buyerCategory'
 })
 
+menu.state("reselectCategory", {
+  run: () => {
+
+    categories().then(res => {
+      let lol = [];
+      for (let i = 0; i < res.length; i++) {
+        lol.push(`\n${res[i].id}: ${res[i].name}`);
+      }
+      let stringy = lol.join("");
+
+      menu.con('Select a category' + stringy);
+    })
+      .catch(err => {
+        console.log(err)
+        deleteSession(menu.args.sessionId)
+        menu.end('error')
+      })
+
+  },
+  next: {
+    "": "buyerMarket",
+    "*[a-zA-Z]+": "buyerMarket",
+    "99": "buyerMarket"
+  },
+  defaultNext: "buyerProduct"
+});
 
 menu.state("buyerCategory", {
   run: () => {
@@ -201,7 +227,7 @@ menu.state("buyerProduct", {
   next: {
     "": "buyerCategory",
     "*[a-zA-Z]+": "buyerCategory",
-    "99": "buyerCategory"
+    "99": "reselectCategory"
   },
   defaultNext: "start"
 
