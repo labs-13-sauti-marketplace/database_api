@@ -242,7 +242,7 @@ menu.state('buyerSideSellerInfo', {
   run: () => {
     buyerRouteSellerInfo().then( res =>{
       menu.end(res)
-    })
+    }).catch(err =>console.log(err))
   }
 })
 
