@@ -43,7 +43,10 @@ const deleteSession = (sessionId) => {
   delete sessionStore[sessionId]
 }
 
-
+async function buyerRouteSellerInfo(name, contact_info) {
+  const result = await models.sellerForProduct(name, contact_info)
+  return result;
+}
 /* ----------------------------------------------
       START MENU
 --------------------------------------------------*/
@@ -205,7 +208,7 @@ menu.state("buyerProduct", {
       }
       let stringy = lol.join("");
       deleteSession(menu.args.sessionId)
-      menu.end(stringy);
+      menu.con('sellerInfo');
 
     })
       .catch(err => {
@@ -224,6 +227,13 @@ menu.state("buyerProduct", {
 
 });
 
+menu.state('sellerInfo', {
+  run: () => {
+    buyerRouteSellerInfo().then(res=>{
+      menu.end(res)
+    })
+  }
+})
 
 /* ----------------------------------------------
       SELLER STATES

@@ -8,7 +8,8 @@ module.exports = {
   getCountries,
   getMarketByCountryId,
   getProductByMarketAndCatId,
-  addProductInfo
+  addProductInfo,
+  sellerForProduct
 };
 
 function getProductByMarketAndCatId(mId, cId) {
