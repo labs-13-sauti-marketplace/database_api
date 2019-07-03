@@ -39,6 +39,11 @@ async function countries() {
   return result;
 }
 
+async function buyerRouteSellerInfo(marketplace_id, category_id, id) {
+  const result = await models.sellerForProduct(marketplace_id, category_id, id)
+  return result
+}
+
 const deleteSession = (sessionId) => {
   console.log('DELETING SESSION', sessionId)
   delete sessionStore[sessionId]
@@ -215,11 +220,11 @@ menu.state("buyerProduct", {
       let lol = [];
       for (let i = 0; i < res.length; i++) {
 
-        lol.push(`\n${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n${res[i].contact_info} \n`);
+        lol.push(`\n${res[i].id}: ${res[i].name} \n${res[i].price} \n${res[i].seller} \n`);
 
       }
       let stringy = lol.join("");
-      menu.con(stringy);
+      menu.con('Select a product' + stringy);
 
     })
       .catch(err => {
@@ -240,25 +245,30 @@ menu.state("buyerProduct", {
 
 menu.state('buyerSideSellerInfo', {
   run: () => {
-      sessionStore[menu.args.sessionId].productId = menu.val;
-    
-    buyerRouteSellerInfo(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId, sessionStore[menu.args.sessionId].productId)
-    .then(res => {
-      if (res.length < 1) {
-        return menu.con("No products available. \n99: Choose another category")
-      }
-      let lol = [];
-      for (let i = 0; i < res.length; i++) {
+    sessionStore[menu.args.sessionId].productId = menu.val
+    buyerRouteSellerInfo(
+      sessionStore[menu.args.sessionId].marketplaceId,
+      sessionStore[menu.args.sessionId].categoryId,
+      sessionStore[menu.args.sessionId].productId
+    )
+      .then(res => {
 
-        lol.push(`\n${res[i].seller} \n${res[i].contact_info} \n`);
+        let lol = [];
+        for (let i = 0; i < res.length; i++) {
 
-      }
-      let stringy = lol.join("");
-      menu.end(stringy);
+          lol.push(`\n${res[i].seller} \n${res[i].contact_info} \n`);
 
-    }).catch(err =>console.log(err))
+        }
+        let stringy = lol.join("");
+        menu.end(stringy);
+      })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
   }
 })
+
 
 /* ----------------------------------------------
       SELLER STATES

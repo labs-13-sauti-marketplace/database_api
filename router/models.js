@@ -50,8 +50,8 @@ function addProductInfo(name, price, seller, contact_info, marketplace_id, categ
 
 function sellerForProduct(marketplace_id, category_id, id) {
   return db('products')
-  .select("seller", "contact_info")
-  .where({ "marketplace_id": marketplace_id })  
-  .andWhere({ "category_id": category_id })
-  .andWhere({ "id": id })
+    .select("seller", "contact_info")
+    .where({ 'marketplace_id': marketplace_id })
+    .andWhere({ 'category_id': category_id })
+    .andWhere({ "id": id })
 }
