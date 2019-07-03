@@ -205,7 +205,7 @@ menu.state("buyerProduct", {
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
 
       if (res.length < 1) {
-        menu.con("No products available. \n99: Choose another category")
+        return menu.con("No products available. \n99: Choose another category")
       }
       let lol = [];
       for (let i = 0; i < res.length; i++) {
