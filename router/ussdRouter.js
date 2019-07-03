@@ -39,6 +39,11 @@ async function countries() {
   return result;
 }
 
+async function buyerRouteSellerInfo(marketplace_id, category_id, id) {
+  const result = await models.sellerForProduct(marketplace_id, category_id, id)
+  return result
+}
+
 const deleteSession = (sessionId) => {
   console.log('DELETING SESSION', sessionId)
   delete sessionStore[sessionId]
@@ -213,7 +218,7 @@ menu.state("buyerProduct", {
 
       }
       let stringy = lol.join("");
-      menu.con(stringy);
+      menu.con('Select a product' + stringy);
 
     })
       .catch(err => {
@@ -228,9 +233,22 @@ menu.state("buyerProduct", {
     "*[a-zA-Z]+": "buyerCategory",
     "99": "reselectCategory"
   },
-  defaultNext: "start"
+  defaultNext: "buyerSideSellerInfo"
 
 });
+
+menu.state('buyerSideSellerInfo', {
+  run: () => {
+    buyerRouteSellerInfo()
+      .then(res => {
+        menu.end(res)
+      })
+      .catch(err => {
+        console.log(err)
+        menu.end('error')
+      })
+  }
+})
 
 
 /* ----------------------------------------------
