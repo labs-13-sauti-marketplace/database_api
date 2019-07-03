@@ -239,9 +239,24 @@ menu.state("buyerProduct", {
 
 menu.state('buyerSideSellerInfo', {
   run: () => {
-    buyerRouteSellerInfo()
+    sessionStore[menu.args.sessionId].productId = menu.val
+    buyerRouteSellerInfo(
+      sessionStore[menu.args.sessionId].marketplaceId,
+      sessionStore[menu.args.sessionId].categoryId,
+      sessionStore[menu.args.sessionId].productId
+    )
       .then(res => {
-        menu.end(res)
+        if (res.length < 1) {
+          return menu.con("No products available. \n99: Choose another category")
+        }
+        let lol = [];
+        for (let i = 0; i < res.length; i++) {
+
+          lol.push(`\n${res[i].seller} \n${res[i].contact_info} \n`);
+
+        }
+        let stringy = lol.join("");
+        menu.end(stringy);
       })
       .catch(err => {
         console.log(err)
