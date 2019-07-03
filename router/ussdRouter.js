@@ -201,7 +201,6 @@ menu.state("buyerProduct", {
     if (menu.val !== '99' || menu.val !== '') {
       sessionStore[menu.args.sessionId].categoryId = menu.val;
     }
-
     products(sessionStore[menu.args.sessionId].marketplaceId, sessionStore[menu.args.sessionId].categoryId).then(res => {
 
       if (res.length < 1) {
