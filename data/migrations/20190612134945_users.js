@@ -10,10 +10,6 @@ exports.up = function (knex, Promise) {
       .string('phoneNumber')
       .notNullable()
       .unique()
-    users
-      .string('sessionId', 255)
-      .notNullable()
-      .unique()
   })
 
 };
