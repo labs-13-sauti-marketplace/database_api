@@ -8,7 +8,8 @@ module.exports = {
   getCountries,
   getMarketByCountryId,
   getProductByMarketAndCatId,
-  addProductInfo
+  addProductInfo,
+  sellerForProduct
 };
 
 function getProductByMarketAndCatId(mId, cId) {
@@ -47,4 +48,7 @@ function addProductInfo(name, price, seller, contact_info, marketplace_id, categ
     .into('products')
 }
 
-
+function sellerForProduct(name, contact_info) {
+  return db('products')
+    .where({ name, contact_info })
+}
