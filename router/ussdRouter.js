@@ -256,10 +256,7 @@ menu.state('buyerSideSellerInfo', {
         let stringy = lol.join("");
         menu.end(stringy);
       })
-      .catch(err => {
-        console.log(err)
-        menu.end('error')
-      })
+      .catch(err => console.log(err))
   }
 })
 
